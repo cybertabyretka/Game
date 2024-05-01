@@ -2,12 +2,14 @@ import pygame as pg
 import sys
 
 from Models import Entities
+from Controllers import EntityPhysics
 
 
 class Game:
     def __init__(self, display):
         self.player = Entities.Player()
-        self.img = pg.image.load('Data/Entities/Player/Images/player.png')
+        self.player_physic = EntityPhysics.PlayerPhysicsEntity(self.player)
+        self.player_img = pg.image.load('Data/Entities/Player/Images/player.png')
 
         self.display = display
 
@@ -23,30 +25,29 @@ class Game:
         running = True
         while running:
             self.display.screen.fill((125, 125, 125))
-            self.player.collision[1] += self.player.y_movement[1] - self.player.y_movement[0]
-            self.player.collision[0] += self.player.x_movement[1] - self.player.x_movement[0]
-            self.display.draw_img(self.img, (self.player.collision[0], self.player.collision[1]))
+            self.player_physic.update_pos()
+            self.display.draw_img(self.player_img, (self.player.collision[0], self.player.collision[1]))
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     running = False
                 if event.type == pg.KEYDOWN:
                     if event.key == pg.K_w:
-                        self.player.y_movement[0] = True
+                        self.player.velocity[1] -= self.player.max_velocity
                     if event.key == pg.K_s:
-                        self.player.y_movement[1] = True
+                        self.player.velocity[1] += self.player.max_velocity
                     if event.key == pg.K_a:
-                        self.player.x_movement[0] = True
+                        self.player.velocity[0] -= self.player.max_velocity
                     if event.key == pg.K_d:
-                        self.player.x_movement[1] = True
+                        self.player.velocity[0] += self.player.max_velocity
                 if event.type == pg.KEYUP:
                     if event.key == pg.K_w:
-                        self.player.y_movement[0] = False
+                        self.player.velocity[1] += self.player.max_velocity
                     if event.key == pg.K_s:
-                        self.player.y_movement[1] = False
+                        self.player.velocity[1] -= self.player.max_velocity
                     if event.key == pg.K_a:
-                        self.player.x_movement[0] = False
+                        self.player.velocity[0] += self.player.max_velocity
                     if event.key == pg.K_d:
-                        self.player.x_movement[1] = False
+                        self.player.velocity[0] -= self.player.max_velocity
             self.display.update()
             self.clock.tick(self.fps)
         pg.quit()
