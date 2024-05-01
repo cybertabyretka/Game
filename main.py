@@ -1,8 +1,8 @@
 import pygame as pg
 
-import Controller
-import Model
-import View
+from Controllers import Game
+from Views import Display
+
 pg.init()
 
 

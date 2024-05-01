@@ -12,3 +12,6 @@ class Display:
 
     def update(self):
         self.display.flip()
+
+    def draw_img(self, img, pos):
+        self.screen.blit(img, pos)
