@@ -3,10 +3,18 @@ import sys
 
 from Models import Entities
 from Controllers import EntityPhysics
+from Models.Environment import TilesAssets
+from Utils.Maps import create_base_map
 
 
 class Game:
     def __init__(self, display):
+        self.tiles_assets = TilesAssets()
+        self.tile_size = (35, 35)
+
+        self.map_width = 700
+        self.map_height = 700
+
         self.player = Entities.Player()
         self.player_physic = EntityPhysics.PlayerPhysicsEntity(self.player)
         self.player_img = pg.image.load('Data/Entities/Player/Images/player.png')
@@ -21,10 +29,11 @@ class Game:
         self.delta_time = 0.016
 
     def run(self):
+        base_tile_map = create_base_map(self.map_width, self.map_height, self.tile_size, self.tiles_assets)
         self.display.update()
         running = True
         while running:
-            self.display.screen.fill((125, 125, 125))
+            base_tile_map.render(self.display.surface)
             self.player_physic.update_pos()
             self.display.draw_img(self.player_img, (self.player.collision[0], self.player.collision[1]))
             for event in pg.event.get():

@@ -1,12 +1,16 @@
 from random import randint
+from Views.Maps import Tile, TileMap
 
 
-def create_base_map(tile_map):
-    for i in range(0, tile_map.height, tile_map.tile_size):
-        for j in range(0, tile_map.width, tile_map.tile_size):
-            if j == 0 or j == 665:
-                tile_map.tile_map[f'{i};{j}'] = {'type': 'front_wall', 'variant': randint(1, 2), 'pos': (i, j)}
-            elif i == 0 or i == 665:
-                tile_map.tile_map[f'{i};{j}'] = {'type': 'side_wall', 'variant': randint(1, 2), 'pos': (i, j)}
+def create_base_map(width, height, tile_size, assets):
+    tile_map = TileMap(width, height, tile_size, assets)
+    for i in range(0, height, tile_size[0]):
+        for j in range(0, width, tile_size[1]):
+            variant = randint(1, 2)
+            if j == 0 or j == height - tile_size[1]:
+                tile_map.tile_map[f'{i};{j}'] = Tile(assets.base_asset['front_wall'][variant-1], 'front_wall', variant)
+            elif i == 0 or i == width - tile_size[0]:
+                tile_map.tile_map[f'{i};{j}'] = Tile(assets.base_asset['side_wall'][variant-1], 'side_wall', variant)
             else:
-                tile_map.tile_map[f'{i};{j}'] = {'type': 'floor', 'variant': randint(1, 2), 'pos': (i, j)}
+                tile_map.tile_map[f'{i};{j}'] = Tile(assets.base_asset['floor'][variant-1], 'floor', variant)
+    return tile_map
