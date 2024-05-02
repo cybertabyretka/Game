@@ -8,9 +8,11 @@ def create_base_map(width, height, tile_size, assets):
         for j in range(0, width, tile_size[1]):
             variant = randint(1, 2)
             if j == 0 or j == height - tile_size[1]:
-                tile_map.tile_map[f'{i};{j}'] = Tile(assets.base_asset['front_wall'][variant-1], 'front_wall', variant)
+                tile_map.tile_map[f'{i};{j}'] = Tile(assets.base_asset['front_wall'][variant-1], 'front_wall', variant, 1.)
+                tile_map.collision_map[f'{i};{j}'] = {'obstruction': 1., }
             elif i == 0 or i == width - tile_size[0]:
-                tile_map.tile_map[f'{i};{j}'] = Tile(assets.base_asset['side_wall'][variant-1], 'side_wall', variant)
+                tile_map.tile_map[f'{i};{j}'] = Tile(assets.base_asset['side_wall'][variant-1], 'side_wall', variant, 1.)
+                tile_map.collision_map[f'{i};{j}'] = 1.
             else:
-                tile_map.tile_map[f'{i};{j}'] = Tile(assets.base_asset['floor'][variant-1], 'floor', variant)
+                tile_map.tile_map[f'{i};{j}'] = Tile(assets.base_asset['floor'][variant-1], 'floor', variant, 0.)
     return tile_map

@@ -4,6 +4,7 @@ class TileMap:
         self.height = height
         self.tile_size = tile_size
         self.tile_map = {}
+        self.collision_map = {}
         self.assets = assets
 
     def render(self, surface):
@@ -13,11 +14,12 @@ class TileMap:
 
 
 class Tile:
-    def __init__(self, image, kind: str, variant: int, size=(35, 35)):
+    def __init__(self, image, kind: str, variant: int, obstruction: float, size=(35, 35)):
         self.image = image
         self.kind: str = kind
-        self.varint: int = variant
+        self.variant: int = variant
         self.size = size
+        self.obstruction = obstruction
 
     def render(self, surface, pos):
         surface.blit(self.image, pos)
