@@ -2,8 +2,9 @@ import pygame as pg
 import sys
 
 from Models import Entities
-from Models.Environment import TilesAssets
-from Utils.Maps import create_base_map
+from Models.Assets import TilesAssets
+from Utils.Maps import create_base_tile_map
+from Models.Room import Room
 
 
 class Game:
@@ -11,9 +12,10 @@ class Game:
         self.tiles_assets = TilesAssets()
         self.tile_size = (35, 35)
 
-        self.map_width = 700
-        self.map_height = 700
-        self.base_tile_map = create_base_map(self.map_width, self.map_height, self.tile_size, self.tiles_assets)
+        self.width = 700
+        self.height = 700
+        self.base_room = Room(self.width, self.height, self.tiles_assets)
+        self.base_room.tile_map = create_base_tile_map(self.width, self.height, self.tile_size, self.tiles_assets)
 
         self.player = Entities.Player(pg.image.load('Data/Entities/Player/Images/player.png'))
 
@@ -27,10 +29,10 @@ class Game:
         self.delta_time = 0.016
 
     def run(self):
-        self.display.update()
         running = True
+        self.display.render_tile_map(self.base_room.tile_map.tile_map)
+        self.display.update()
         while running:
-            self.base_tile_map.render(self.display.surface)
             self.player.physic.update_collision()
             self.display.draw_img(self.player.image, (self.player.physic.collision.rect[0], self.player.physic.collision.rect[1]))
             for event in pg.event.get():
