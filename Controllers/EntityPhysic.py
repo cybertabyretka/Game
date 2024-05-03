@@ -8,22 +8,39 @@ class EntityPhysics:
         self.max_velocity: float = max_velocity
         self.velocity: list[float] = [0., 0.]
 
-    def update_collision(self):
-        self.collision.pos[0] += self.velocity[0]
-        self.collision.pos[1] += self.velocity[1]
-        self.collision.rect[0] += self.velocity[0]
-        self.collision.rect[1] += self.velocity[1]
+    @staticmethod
+    def contacts_processing(collision, direction, movement):
+        if direction == 'up':
+            if movement[1] < 0:
+                movement[1] *= collision.cross_ability
+        if direction == 'low':
+            if movement[1] > 0:
+                movement[1] *= collision.cross_ability
+        if direction == 'right':
+            if movement[0] > 0:
+                movement[0] *= collision.cross_ability
+        if direction == 'left':
+            if movement[0] < 0:
+                movement[0] *= collision.cross_ability
+        return movement
+
+    def update_collision(self, movement=(0, 0)):
+        movement = [movement[0] + self.velocity[0], movement[1] + self.velocity[1]]
+        for direction in self.collision.collisions_around:
+            collision = self.collision.collisions_around[direction]
+            if self.collision.rect.colliderect(collision.rect):
+                movement = self.contacts_processing(collision, direction, movement)
+        self.collision.rect.x += movement[0]
+        self.collision.rect.y += movement[1]
 
 
 class EntityCollision:
     def __init__(self, pos, size):
-        self.pos = list(pos)
-        self.size = size
         self.rect = pg.Rect(pos[0], pos[1], size[0], size[1])
         self.collisions_around = {}
 
     def get_collisions_around(self, collisions_map, tile_size):
-        tile_loc = (int(self.pos[0] // tile_size), int(self.pos[1] // tile_size))
+        tile_loc = (int(self.rect.x // tile_size), int(self.rect.y // tile_size))
         for offset_name in NEIGHBOUR_OFFSETS:
             check_lock = str((tile_loc[0] + NEIGHBOUR_OFFSETS[offset_name][0]) * tile_size) + ';' + str((tile_loc[1] + NEIGHBOUR_OFFSETS[offset_name][1]) * tile_size)
             if check_lock in collisions_map:
