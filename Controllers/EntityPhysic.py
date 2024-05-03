@@ -1,5 +1,5 @@
 import pygame as pg
-from Utils.Setting import TILE_WITHOUT_COLLISION
+from Utils.Setting import NEIGHBOUR_OFFSETS
 
 
 class EntityPhysics:
@@ -20,49 +20,14 @@ class EntityCollision:
         self.pos = list(pos)
         self.size = size
         self.rect = pg.Rect(pos[0], pos[1], size[0], size[1])
-        self.nearest_collisions = {'up': TILE_WITHOUT_COLLISION, 'up_right': TILE_WITHOUT_COLLISION,
-                                   'left': TILE_WITHOUT_COLLISION, 'left_low': TILE_WITHOUT_COLLISION,
-                                   'right': TILE_WITHOUT_COLLISION, 'right_low': TILE_WITHOUT_COLLISION,
-                                   'low': TILE_WITHOUT_COLLISION, 'low_right': TILE_WITHOUT_COLLISION}
+        self.collisions_around = {}
 
-    def set_start_nearest_collisions(self, collisions_map):
-        self.set_nearest_straight_collisions(collisions_map)
-        self.set_corner_collision('up', 'up_right', 1, collisions_map)
-        self.set_corner_collision('low', 'low_right', 1, collisions_map)
-        self.set_corner_collision('left', 'left_low', 0, collisions_map)
-        self.set_corner_collision('right', 'right_low', 0, collisions_map)
-
-    def set_corner_collision(self, base_name, name, axis, collisions_map):
-        if self.pos[axis] + self.size[axis] > self.nearest_collisions[base_name].pos[axis] + self.nearest_collisions[base_name].size[axis]:
-            for loc in collisions_map:
-                collision = collisions_map[loc]
-                int_loc = tuple(map(int, loc.split(';')))
-                if self.pos[axis] + self.size[axis] in range(int_loc[axis], int_loc[axis] + collision.size[axis] + 1):
-                    self.nearest_collisions[name] = collision
-        else:
-            self.nearest_collisions[name] = self.nearest_collisions[base_name]
-
-    def set_nearest_straight_collisions(self, collisions_map):
-        for loc in collisions_map:
-            int_loc = tuple(map(int, loc.split(';')))
-            collision = collisions_map[loc]
-            tile_width = collision.size[0]
-            tile_height = collision.size[1]
-            if self.pos[0] in range(int_loc[0], int_loc[0] + tile_width):
-                if (int_loc[1] + collisions_map[loc].size[1]) < self.pos[1]:
-                    self.nearest_collisions['up'] = collision
-                else:
-                    if self.nearest_collisions['low'] == TILE_WITHOUT_COLLISION:
-                        self.nearest_collisions['low'] = collision
-            elif self.pos[1] in range(int_loc[1], int_loc[1] + tile_height):
-                if (int_loc[0] + collisions_map[loc].size[0]) < self.pos[1]:
-                    self.nearest_collisions['left'] = collision
-                else:
-                    if self.nearest_collisions['right'] == TILE_WITHOUT_COLLISION:
-                        self.nearest_collisions['right'] = collision
-
-    def update_nearest_collisions(self, collisions_map):
-        self.set_start_nearest_collisions(collisions_map)
+    def get_collisions_around(self, collisions_map, tile_size):
+        tile_loc = (int(self.pos[0] // tile_size), int(self.pos[1] // tile_size))
+        for offset_name in NEIGHBOUR_OFFSETS:
+            check_lock = str((tile_loc[0] + NEIGHBOUR_OFFSETS[offset_name][0]) * tile_size) + ';' + str((tile_loc[1] + NEIGHBOUR_OFFSETS[offset_name][1]) * tile_size)
+            if check_lock in collisions_map:
+                self.collisions_around[offset_name] = collisions_map[check_lock]
 
 
 class PlayerPhysics(EntityPhysics):

@@ -1,12 +1,8 @@
-class MapCollisions:
-    def __init__(self, tile_map):
-        self.collision_map = tile_map.collisions_map
-        self.nearest_collisions = []
+class CollisionsMap:
+    def __init__(self):
+        self.map = {}
 
-    def set_nearest_positions(self, pos):
-        for loc in self.collision_map:
-            pass
-
-    def update_nearest_collisions(self, pos):
-        pass
-
+    def get_map_from_object(self, tile_map):
+        for loc in tile_map:
+            tile = tile_map[loc]
+            self.map[loc] = tile.collision

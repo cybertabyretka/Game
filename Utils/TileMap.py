@@ -9,9 +9,9 @@ def create_base_tile_map(width, height, tile_size, assets):
         for j in range(0, width, tile_size[1]):
             variant = randint(1, 2)
             if j == 0 or j == height - tile_size[1]:
-                tile_map.tile_map[f'{i};{j}'] = Tile(assets.base_asset['front_wall'][variant-1], 'front_wall', variant, 1., (float(i), float(j)))
+                tile_map.tile_map[f'{j};{i}'] = Tile(assets.base_asset['front_wall'][variant-1], 'front_wall', variant, 0., (float(j), float(i)))
             elif i == 0 or i == width - tile_size[0]:
-                tile_map.tile_map[f'{i};{j}'] = Tile(assets.base_asset['side_wall'][variant-1], 'side_wall', variant, 1., (float(i), float(j)))
+                tile_map.tile_map[f'{j};{i}'] = Tile(assets.base_asset['side_wall'][variant-1], 'side_wall', variant, 0., (float(j), float(i)))
             else:
-                tile_map.tile_map[f'{i};{j}'] = Tile(assets.base_asset['floor'][variant-1], 'floor', variant, 0., (float(i), float(j)))
+                tile_map.tile_map[f'{j};{i}'] = Tile(assets.base_asset['floor'][variant-1], 'floor', variant, 1., (float(j), float(i)))
     return tile_map
