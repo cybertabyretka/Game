@@ -28,7 +28,7 @@ class EntityPhysics:
         movement = [movement[0] + self.velocity[0], movement[1] + self.velocity[1]]
         for direction in self.collision.collisions_around:
             collision = self.collision.collisions_around[direction]
-            if self.collision.rect.colliderect(collision.rect):
+            if self.collision.rect.colliderect(collision.rect) and collision.cross_ability != 1:
                 movement = self.contacts_processing(collision, direction, movement)
         self.collision.rect.x += movement[0]
         self.collision.rect.y += movement[1]
