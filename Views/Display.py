@@ -11,7 +11,4 @@ class Display:
         self.name = name
 
     def update(self):
-        self.display.flip()
-
-    def draw_img(self, img, pos):
-        self.surface.blit(img, pos)
+        self.display.update()

@@ -8,12 +8,15 @@ class EntityPhysics:
         self.velocity: list[float] = [0., 0.]
 
     def update_collision(self):
+        self.collision.pos[0] += self.velocity[0]
+        self.collision.pos[1] += self.velocity[1]
         self.collision.rect[0] += self.velocity[0]
         self.collision.rect[1] += self.velocity[1]
 
 
 class PlayerCollision:
     def __init__(self, pos, size):
+        self.pos = list(pos)
         self.rect = pg.Rect(pos[0], pos[1], size[0], size[1])
 
 

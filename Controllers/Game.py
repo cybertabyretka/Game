@@ -1,9 +1,9 @@
 import pygame as pg
 import sys
 
-from Models import Entities
-from Models.Assets import TilesAssets
-from Utils.Maps import create_base_tile_map
+from Models import Entity
+from Models.Asset import TilesAssets
+from Utils.TileMap import create_base_tile_map
 from Models.Room import Room
 
 
@@ -14,12 +14,17 @@ class Game:
 
         self.width = 700
         self.height = 700
-        self.base_room = Room(self.width, self.height, self.tiles_assets)
-        self.base_room.tile_map = create_base_tile_map(self.width, self.height, self.tile_size, self.tiles_assets)
-
-        self.player = Entities.Player(pg.image.load('Data/Entities/Player/Images/player.png'))
 
         self.display = display
+
+        self.base_room_tile_map = create_base_tile_map(self.width, self.height, self.tile_size, self.tiles_assets)
+        self.base_room_surface = pg.Surface((self.width, self.height))
+        self.base_room = Room(self.width, self.height, self.base_room_tile_map)
+        self.base_room.room_view.render_tile_map(self.base_room_surface)
+
+        self.player_surface = pg.Surface((self.width, self.height))
+        self.player_surface.set_colorkey((0, 0, 0))
+        self.player = Entity.Player(pg.image.load('Data/Entities/Player/Images/player.png'))
 
         self.is_paused = False
 
@@ -30,11 +35,13 @@ class Game:
 
     def run(self):
         running = True
-        self.display.render_tile_map(self.base_room.tile_map.tile_map)
-        self.display.update()
         while running:
             self.player.physic.update_collision()
-            self.display.draw_img(self.player.image, (self.player.physic.collision.rect[0], self.player.physic.collision.rect[1]))
+            self.base_room.room_view.render_tile_map(self.base_room_surface)
+            self.player.entity_view.clear_surface(self.player_surface)
+            self.player.entity_view.render(self.player_surface, self.player.physic.collision.pos)
+            self.base_room_surface.blit(self.player_surface, (0., 0.))
+            self.display.surface.blit(self.base_room_surface, self.base_room.room_view.pos)
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     running = False

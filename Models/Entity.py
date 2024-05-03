@@ -1,9 +1,10 @@
-from Controllers.EntityPhysics import EntityPhysics, PlayerPhysics
+from Controllers.EntityPhysic import EntityPhysics, PlayerPhysics
+from Views.Entity import EntityV
 
 
 class Entity:
     def __init__(self, image, width: float, height: float, start_pos=(350., 350.), max_velocity=1):
-        self.image = image
+        self.entity_view = EntityV(image)
         self.width: float = width
         self.height: float = height
         self.physic = EntityPhysics(width, height, start_pos, max_velocity)

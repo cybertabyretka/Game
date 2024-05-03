@@ -1,6 +1,6 @@
 from random import randint
-from Models.TileMaps import TileMap
-from Models.Tiles import Tile
+from Models.TileMap import TileMap
+from Models.Tile import Tile
 
 
 def create_base_tile_map(width, height, tile_size, assets):

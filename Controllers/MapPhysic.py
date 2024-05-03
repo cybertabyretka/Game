@@ -7,7 +7,6 @@ class MapCollisions:
         for loc in self.collision_map:
             pass
 
-
     def update_nearest_collisions(self, pos):
         pass
 

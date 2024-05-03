@@ -1,5 +1,5 @@
-from Utils.Images import load_images
-from Utils.Settings import BASE_PATH
+from Utils.Image import load_images
+from Utils.Setting import BASE_PATH
 
 
 class TilesAssets:
