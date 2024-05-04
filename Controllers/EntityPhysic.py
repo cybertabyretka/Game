@@ -8,28 +8,44 @@ class EntityPhysics:
         self.max_velocity: float = max_velocity
         self.velocity: list[float] = [0., 0.]
 
-    @staticmethod
-    def contacts_processing(collision, direction, movement):
-        if direction == 'up':
-            if movement[1] < 0:
-                movement[1] *= collision.cross_ability
-        if direction == 'low':
-            if movement[1] > 0:
-                movement[1] *= collision.cross_ability
-        if direction == 'right':
-            if movement[0] > 0:
-                movement[0] *= collision.cross_ability
-        if direction == 'left':
-            if movement[0] < 0:
-                movement[0] *= collision.cross_ability
+    def contacts_processing(self, movement):
+        if movement[0] > 0:
+            right = []
+            if self.collision.collisions_around['right'].rect.x - (self.collision.rect.x + self.collision.rect.width) == 0:
+                right.append(self.collision.collisions_around['right'].cross_ability)
+            if self.collision.collisions_around['right_low'].rect.x - (self.collision.rect.x + self.collision.rect.width) == 0 and self.collision.collisions_around['right_low'].rect.y - (self.collision.rect.y + self.collision.rect.height) < 0:
+                right.append(self.collision.collisions_around['right_low'].cross_ability)
+            if len(right):
+                movement[0] *= min(right)
+        if movement[0] < 0:
+            left = []
+            if self.collision.rect.x - (self.collision.collisions_around['left'].rect.x + self.collision.collisions_around['left'].rect.width) == 0:
+                left.append(self.collision.collisions_around['left'].cross_ability)
+            if self.collision.rect.x - (self.collision.collisions_around['left_low'].rect.x + self.collision.collisions_around['left_low'].rect.width) == 0 and (self.collision.collisions_around['left_low'].rect.y - (self.collision.rect.y + self.collision.rect.height) < 0):
+                left.append(self.collision.collisions_around['left_low'].cross_ability)
+            if len(left):
+                movement[0] *= min(left)
+        if movement[1] < 0:
+            up = []
+            if self.collision.rect.y - (self.collision.collisions_around['up'].rect.y + self.collision.collisions_around['up'].rect.height) == 0:
+                up.append(self.collision.collisions_around['up'].cross_ability)
+            if self.collision.rect.y - (self.collision.collisions_around['right_up'].rect.y + self.collision.collisions_around['right_up'].rect.height) == 0 and self.collision.collisions_around['right_up'].rect.x - (self.collision.rect.x + self.collision.rect.width) < 0:
+                up.append(self.collision.collisions_around['right_up'].cross_ability)
+            if len(up):
+                movement[1] *= min(up)
+        if movement[1] > 0:
+            low = []
+            if self.collision.collisions_around['low'].rect.y - (self.collision.rect.y + self.collision.rect.height) == 0:
+                low.append(self.collision.collisions_around['low'].cross_ability)
+            if self.collision.collisions_around['right_low'].rect.y - (self.collision.rect.y + self.collision.rect.height) == 0 and self.collision.collisions_around['right_low'].rect.x - (self.collision.rect.x + self.collision.rect.width) < 0:
+                low.append(self.collision.collisions_around['right_low'].cross_ability)
+            if len(low):
+                movement[1] *= min(low)
         return movement
 
     def update_collision(self, movement=(0, 0)):
         movement = [movement[0] + self.velocity[0], movement[1] + self.velocity[1]]
-        for direction in self.collision.collisions_around:
-            collision = self.collision.collisions_around[direction]
-            if self.collision.rect.colliderect(collision.rect) and collision.cross_ability != 1:
-                movement = self.contacts_processing(collision, direction, movement)
+        movement = self.contacts_processing(movement)
         self.collision.rect.x += movement[0]
         self.collision.rect.y += movement[1]
 
