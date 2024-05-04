@@ -10,37 +10,37 @@ class EntityPhysics:
 
     def contacts_processing(self, movement):
         if movement[0] > 0:
-            right = []
+            minimum = None
             if self.collision.collisions_around['right'].rect.x - (self.collision.rect.x + self.collision.rect.width) == 0:
-                right.append(self.collision.collisions_around['right'].cross_ability)
+                minimum = self.collision.collisions_around['right'].cross_ability
             if self.collision.collisions_around['right_low'].rect.x - (self.collision.rect.x + self.collision.rect.width) == 0 and self.collision.collisions_around['right_low'].rect.y - (self.collision.rect.y + self.collision.rect.height) < 0:
-                right.append(self.collision.collisions_around['right_low'].cross_ability)
-            if len(right):
-                movement[0] *= min(right)
+                minimum = self.collision.collisions_around['right_low'].cross_ability if minimum is None else min(minimum, self.collision.collisions_around['right_low'].cross_ability)
+            if minimum is not None:
+                movement[0] *= minimum
         if movement[0] < 0:
-            left = []
+            minimum = None
             if self.collision.rect.x - (self.collision.collisions_around['left'].rect.x + self.collision.collisions_around['left'].rect.width) == 0:
-                left.append(self.collision.collisions_around['left'].cross_ability)
+                minimum = self.collision.collisions_around['left'].cross_ability
             if self.collision.rect.x - (self.collision.collisions_around['left_low'].rect.x + self.collision.collisions_around['left_low'].rect.width) == 0 and (self.collision.collisions_around['left_low'].rect.y - (self.collision.rect.y + self.collision.rect.height) < 0):
-                left.append(self.collision.collisions_around['left_low'].cross_ability)
-            if len(left):
-                movement[0] *= min(left)
+                minimum = self.collision.collisions_around['left_low'].cross_ability if minimum is None else min(minimum, self.collision.collisions_around['left_low'].cross_ability)
+            if minimum is not None:
+                movement[0] *= minimum
         if movement[1] < 0:
-            up = []
+            minimum = None
             if self.collision.rect.y - (self.collision.collisions_around['up'].rect.y + self.collision.collisions_around['up'].rect.height) == 0:
-                up.append(self.collision.collisions_around['up'].cross_ability)
+                minimum = self.collision.collisions_around['up'].cross_ability
             if self.collision.rect.y - (self.collision.collisions_around['right_up'].rect.y + self.collision.collisions_around['right_up'].rect.height) == 0 and self.collision.collisions_around['right_up'].rect.x - (self.collision.rect.x + self.collision.rect.width) < 0:
-                up.append(self.collision.collisions_around['right_up'].cross_ability)
-            if len(up):
-                movement[1] *= min(up)
+                minimum = self.collision.collisions_around['right_up'].cross_ability if minimum is None else min(minimum, self.collision.collisions_around['right_up'].cross_ability)
+            if minimum is not None:
+                movement[1] *= minimum
         if movement[1] > 0:
-            low = []
+            minimum = None
             if self.collision.collisions_around['low'].rect.y - (self.collision.rect.y + self.collision.rect.height) == 0:
-                low.append(self.collision.collisions_around['low'].cross_ability)
+                minimum = self.collision.collisions_around['low'].cross_ability
             if self.collision.collisions_around['right_low'].rect.y - (self.collision.rect.y + self.collision.rect.height) == 0 and self.collision.collisions_around['right_low'].rect.x - (self.collision.rect.x + self.collision.rect.width) < 0:
-                low.append(self.collision.collisions_around['right_low'].cross_ability)
-            if len(low):
-                movement[1] *= min(low)
+                minimum = self.collision.collisions_around['right_low'].cross_ability if minimum is None else min(minimum, self.collision.collisions_around['right_low'].cross_ability)
+            if minimum is not None:
+                movement[1] *= minimum
         return movement
 
     def update_collision(self, movement=(0, 0)):
