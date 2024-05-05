@@ -37,7 +37,7 @@ class Game:
         running = True
         while running:
             self.player.physic.collision.get_collisions_around(self.base_room.collisions_map.map, self.base_room.room_view.tile_size)
-            self.player.physic.update_collision()
+            self.player.physic.collision.update(self.player.physic.velocity)
             self.base_room.room_view.render_tile_map(self.base_room_surface)
             self.player.entity_view.clear_surface(self.player_surface)
             self.player.entity_view.render(self.player_surface, (self.player.physic.collision.rect.x, self.player.physic.collision.rect.y))
