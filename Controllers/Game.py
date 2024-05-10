@@ -64,6 +64,8 @@ class Game:
                         self.player.physic.velocity[0] += self.player.physic.max_velocity
                     if event.key == pg.K_d:
                         self.player.physic.velocity[0] -= self.player.physic.max_velocity
+                if event.type == pg.MOUSEBUTTONDOWN:
+                    pass
             self.display.update()
             self.clock.tick(self.fps)
         pg.quit()
