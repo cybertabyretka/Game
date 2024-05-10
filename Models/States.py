@@ -43,23 +43,15 @@ class PlayerWalkState(State):
                 self.directions.add(pg.K_d)
         if event.type == pg.KEYUP:
             if event.key == pg.K_w:
-                print(f'kw: {self.directions}')
-                print(f'kw: {pg.K_w}')
                 self.player.physic.velocity[1] = 0
                 self.directions.remove(pg.K_w)
             if event.key == pg.K_s:
-                print(f'ks: {self.directions}')
-                print(f'ks: {pg.K_s}')
                 self.player.physic.velocity[1] = 0
                 self.directions.remove(pg.K_s)
             if event.key == pg.K_a:
-                print(f'ka: {self.directions}')
-                print(f'ka: {pg.K_a}')
                 self.player.physic.velocity[0] = 0
                 self.directions.remove(pg.K_a)
             if event.key == pg.K_d:
-                print(f'kd: {self.directions}')
-                print(f'kd: {pg.K_d}')
                 self.player.physic.velocity[0] = 0
                 self.directions.remove(pg.K_d)
         if len(self.directions) == 0:
