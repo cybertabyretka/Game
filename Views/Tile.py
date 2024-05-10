@@ -3,4 +3,4 @@ class TileV:
         self.image = image
 
     def render(self, surface, pos):
-        surface.blit(self.image.surface, pos)
+        surface.blit(self.image, pos)

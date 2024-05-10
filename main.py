@@ -2,7 +2,6 @@ import pygame as pg
 
 from Controllers import Game
 from Views import Display
-
 pg.init()
 
 

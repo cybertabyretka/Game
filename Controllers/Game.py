@@ -2,7 +2,7 @@ import pygame as pg
 import sys
 
 from Models import Entity
-from Models.Asset import TilesAssets
+from Models.Asset import TilesAssets, PlayerAssets
 from Utils.TileMap import create_base_tile_map
 from Models.Room import Room
 
@@ -22,9 +22,10 @@ class Game:
         self.base_room = Room(self.width, self.height, self.base_room_tile_map)
         self.base_room.collisions_map.get_map_from_object(self.base_room.room_view.tile_map.tile_map)
 
+        self.player_asset = PlayerAssets()
         self.player_surface = pg.Surface((self.width, self.height))
         self.player_surface.set_colorkey((0, 0, 0))
-        self.player = Entity.Player('Data/Entities/Player/Images/player.png', start_pos=(550., 550.))
+        self.player = Entity.Player(self.player_asset, start_pos=(550., 550.))
 
         self.is_paused = False
 

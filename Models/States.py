@@ -72,16 +72,16 @@ class EntityWalkState(State):
     def update(self, room):
         for direction in self.directions:
             if direction == pg.K_w:
-                self.player.entity_view.image.rotate(0)
+                self.player.entity_view.rotate(0)
                 self.player.physic.velocity[1] = -self.player.physic.max_velocity
             elif direction == pg.K_s:
-                self.player.entity_view.image.rotate(180)
+                self.player.entity_view.rotate(180)
                 self.player.physic.velocity[1] = self.player.physic.max_velocity
             elif direction == pg.K_a:
-                self.player.entity_view.image.rotate(270)
+                self.player.entity_view.rotate(270)
                 self.player.physic.velocity[0] = -self.player.physic.max_velocity
             elif direction == pg.K_d:
-                self.player.entity_view.image.rotate(90)
+                self.player.entity_view.rotate(90)
                 self.player.physic.velocity[0] = self.player.physic.max_velocity
         self.player.physic.collision.get_collisions_around(room.collisions_map.map, room.room_view.tile_size)
         self.player.physic.collision.update(self.player.physic.velocity)
