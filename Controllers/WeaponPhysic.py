@@ -1,0 +1,2 @@
+class SwordLikePhysic:
+    pass

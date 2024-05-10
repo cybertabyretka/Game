@@ -5,7 +5,6 @@ from Models import Entity
 from Models.Asset import TilesAssets
 from Utils.TileMap import create_base_tile_map
 from Models.Room import Room
-from Controllers.Mouse import Mouse
 
 
 class Game:
@@ -25,11 +24,9 @@ class Game:
 
         self.player_surface = pg.Surface((self.width, self.height))
         self.player_surface.set_colorkey((0, 0, 0))
-        self.player = Entity.Player(pg.image.load('Data/Entities/Player/Images/player.png'), start_pos=(550., 550.))
+        self.player = Entity.Player('Data/Entities/Player/Images/player.png', start_pos=(550., 550.))
 
         self.is_paused = False
-
-        self.mouse = Mouse(3)
 
         self.clock = pg.time.Clock()
         self.game_speed = 1.0
@@ -46,9 +43,9 @@ class Game:
                 if event.type == pg.QUIT:
                     running = False
                 old_len = self.player.states_stack.size()
-                self.player.states_stack.peek().handle_input(event, self.player.states_stack)
+                self.player.states_stack.peek().handle_input(event, self.player.states_stack, None)
                 if self.player.states_stack.size() != old_len:
-                    self.player.states_stack.peek().handle_input(event, self.player.states_stack)
+                    self.player.states_stack.peek().handle_input(event, self.player.states_stack, None)
             self.player.states_stack.peek().update(self.base_room)
             self.player.states_stack.peek().draw(self.player_surface)
             self.display.update()

@@ -1,13 +1,14 @@
 class Animation:
-    def __init__(self, images, image_duration, loop):
+    def __init__(self, images, image_duration, loop, game_fps):
         self.images = images
         self.image_duration = image_duration
         self.loop = loop
         self.done = False
         self.frame = 0
+        self.duration = (len(images) * image_duration) / game_fps
 
-    def copy(self):
-        return Animation(self.images, self.image_duration, self.loop)
+    def copy(self, game_fps):
+        return Animation(self.images, self.image_duration, self.loop, game_fps)
 
     def get_image(self):
         return self.images[int(self.frame / self.image_duration)]

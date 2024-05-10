@@ -1,4 +1,4 @@
-from Utils.Image import load_images
+from Utils.Picture import load_images
 from Utils.Setting import BASE_PATH
 from Utils.Animation import Animation
 
@@ -12,6 +12,6 @@ class TilesAssets:
 
 
 class AnimationAssets:
-    def __init__(self):
-        self.weapon_assets = {'sword': Animation(load_images(BASE_PATH + '')),
+    def __init__(self, game_fps):
+        self.weapon_assets = {'sword': Animation(load_images(BASE_PATH + ''), 1, False, game_fps),
                               }
