@@ -5,6 +5,7 @@ from Models import Entity
 from Models.Asset import TilesAssets
 from Utils.TileMap import create_base_tile_map
 from Models.Room import Room
+from Controllers.Mouse import Mouse
 
 
 class Game:
@@ -27,6 +28,8 @@ class Game:
         self.player = Entity.Player(pg.image.load('Data/Entities/Player/Images/player.png'), start_pos=(550., 550.))
 
         self.is_paused = False
+
+        self.mouse = Mouse(3)
 
         self.clock = pg.time.Clock()
         self.game_speed = 1.0

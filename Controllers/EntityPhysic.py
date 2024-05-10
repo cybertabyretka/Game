@@ -116,6 +116,7 @@ class EntityCollision:
             movement = self.low_contacts_process(movement)[0]
         return movement
 
+
 class PlayerPhysics(EntityPhysics):
     def __init__(self, width, height, start_pos=(350., 350.), max_velocity=1):
         super().__init__(width, height, start_pos, max_velocity)

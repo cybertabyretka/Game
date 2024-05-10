@@ -20,13 +20,17 @@ class EntityIdleState(State):
     def handle_input(self, event, states_stack):
         if event.type == pg.KEYDOWN:
             if event.key in (pg.K_w, pg.K_s, pg.K_a, pg.K_d):
-                states_stack.push(PlayerWalkState(self.player))
+                states_stack.push(EntityWalkState(self.player))
+        if event.type == pg.MOUSEBUTTONDOWN:
+            pressed_buttons = pg.mouse.get_pressed(3)
+            if pressed_buttons[0]:
+                states_stack.push(EntityPunchState(self.player))
 
     def draw(self, screen):
         self.player.entity_view.render(screen, (self.player.physic.collision.rect.x, self.player.physic.collision.rect.y))
 
 
-class PlayerWalkState(State):
+class EntityWalkState(State):
     def __init__(self, player):
         super().__init__(player)
         self.directions = set()
@@ -56,6 +60,8 @@ class PlayerWalkState(State):
                 self.directions.remove(pg.K_d)
         if len(self.directions) == 0:
             states_stack.pop()
+        if event.type == pg.MOUSEBUTTONDOWN:
+            states_stack.push(EntityPunchState(self.player))
 
     def update(self, room):
         for direction in self.directions:
@@ -73,3 +79,11 @@ class PlayerWalkState(State):
     def draw(self, screen):
         self.player.entity_view.clear_surface(screen)
         self.player.entity_view.render(screen, (self.player.physic.collision.rect.x, self.player.physic.collision.rect.y))
+
+
+class EntityPunchState(State):
+    def __init__(self, player):
+        super().__init__(player)
+
+    def handle_input(self, event, states_stack: Stack):
+        pass

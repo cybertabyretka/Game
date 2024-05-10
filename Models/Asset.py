@@ -13,4 +13,5 @@ class TilesAssets:
 
 class AnimationAssets:
     def __init__(self):
-        self.weapon_assets = {'sword': Animation(load_images(BASE_PATH + ), )}
+        self.weapon_assets = {'sword': Animation(load_images(BASE_PATH + '')),
+                              }
