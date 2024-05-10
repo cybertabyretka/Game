@@ -97,5 +97,13 @@ class EntityPunchState(State):
 
     def handle_input(self, event, states_stack: Stack, current_weapon):
         if time.time() - self.start_time >= self.time:
+            direction_for_punch = None
             if pg.mouse.get_pressed(3)[0]:
                 self.start_time = time.time()
+                for direction in self.player.physic.collision.collisions_around:
+                    if self.player.physic.collision.collisions_around[direction].collidepoint(event.pos):
+                        direction_for_punch = direction
+                        break
+            if direction_for_punch is not None:
+                if direction_for_punch == 'up':
+

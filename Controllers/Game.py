@@ -1,8 +1,8 @@
 import pygame as pg
 import sys
 
-from Models import Entity
-from Models.Asset import TilesAssets, PlayerAssets
+from Models import Entity, Weapon
+from Models.Asset import TilesAssets, PlayerAssets, WeaponsAssets
 from Utils.TileMap import create_base_tile_map
 from Models.Room import Room
 
@@ -34,6 +34,9 @@ class Game:
         self.fps = 60 * self.game_speed
         self.delta_time = 0.016
 
+        self.weapons_assets = WeaponsAssets(self.fps)
+        self.sword = Weapon.SwordLike('Sword', self.weapons_assets.sword_asset)
+
     def run(self):
         running = True
         while running:
@@ -44,9 +47,9 @@ class Game:
                 if event.type == pg.QUIT:
                     running = False
                 old_len = self.player.states_stack.size()
-                self.player.states_stack.peek().handle_input(event, self.player.states_stack, None)
+                self.player.states_stack.peek().handle_input(event, self.player.states_stack, self.sword)
                 if self.player.states_stack.size() != old_len:
-                    self.player.states_stack.peek().handle_input(event, self.player.states_stack, None)
+                    self.player.states_stack.peek().handle_input(event, self.player.states_stack, self.sword)
             self.player.states_stack.peek().update(self.base_room)
             self.player.states_stack.peek().draw(self.player_surface)
             self.display.update()

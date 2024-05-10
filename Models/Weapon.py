@@ -3,9 +3,10 @@ from Controllers.WeaponPhysic import SwordLikePhysic
 
 
 class Weapon:
-    def __init__(self, name, animation):
+    def __init__(self, name, animation_asset):
         self.name = name
-        self.weapon_view = WeaponV(animation)
+        self.weapon_view = WeaponV(animation_asset)
+        self.physic = SwordLikePhysic()
 
 
 class SwordLike(Weapon):

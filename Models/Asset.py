@@ -21,7 +21,7 @@ class PlayerAssets:
                                   'right': load_image(BASE_PATH + 'Data/Entities/Player/Images/player_right.png')}
 
 
-class AnimationAssets:
+class WeaponsAssets:
     def __init__(self, game_fps):
-        self.weapon_assets = {'sword': Animation(load_images(BASE_PATH + ''), 1, False, game_fps),
-                              }
+        self.sword_asset = {'tile_size': (20, 20),
+                            'animation': Animation(load_images(BASE_PATH + 'Data/Weapons/SwordLike/Sword', set_colour=True), 1, False, game_fps)}
