@@ -1,13 +1,14 @@
 from Controllers.EntityPhysic import EntityPhysics, PlayerPhysics
 from Views.Entity import EntityV
-import States
+from Models import States
+from Utils.Stack import Stack
 
 
 class Entity:
     def __init__(self, image, width: float, height: float, start_pos=(350., 350.), max_velocity=1):
         self.entity_view = EntityV(image)
         self.physic = EntityPhysics(width, height, start_pos, max_velocity)
-        self.state = States.EntityIdleState(self)
+        self.states_stack = Stack(States.EntityIdleState(self))
 
 
 class Player(Entity):

@@ -36,36 +36,18 @@ class Game:
     def run(self):
         running = True
         while running:
-            self.player.physic.collision.get_collisions_around(self.base_room.collisions_map.map, self.base_room.room_view.tile_size)
-            self.player.physic.collision.update(self.player.physic.velocity)
             self.base_room.room_view.render_tile_map(self.base_room_surface)
-            self.player.entity_view.clear_surface(self.player_surface)
-            self.player.entity_view.render(self.player_surface, (self.player.physic.collision.rect.x, self.player.physic.collision.rect.y))
             self.base_room_surface.blit(self.player_surface, (0., 0.))
             self.display.surface.blit(self.base_room_surface, self.base_room.room_view.pos)
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     running = False
-                if event.type == pg.KEYDOWN:
-                    if event.key == pg.K_w:
-                        self.player.physic.velocity[1] -= self.player.physic.max_velocity
-                    if event.key == pg.K_s:
-                        self.player.physic.velocity[1] += self.player.physic.max_velocity
-                    if event.key == pg.K_a:
-                        self.player.physic.velocity[0] -= self.player.physic.max_velocity
-                    if event.key == pg.K_d:
-                        self.player.physic.velocity[0] += self.player.physic.max_velocity
-                if event.type == pg.KEYUP:
-                    if event.key == pg.K_w:
-                        self.player.physic.velocity[1] += self.player.physic.max_velocity
-                    if event.key == pg.K_s:
-                        self.player.physic.velocity[1] -= self.player.physic.max_velocity
-                    if event.key == pg.K_a:
-                        self.player.physic.velocity[0] += self.player.physic.max_velocity
-                    if event.key == pg.K_d:
-                        self.player.physic.velocity[0] -= self.player.physic.max_velocity
-                if event.type == pg.MOUSEBUTTONDOWN:
-                    pass
+                old_len = self.player.states_stack.size()
+                self.player.states_stack.peek().handle_input(event, self.player.states_stack)
+                if self.player.states_stack.size() != old_len:
+                    self.player.states_stack.peek().handle_input(event, self.player.states_stack)
+            self.player.states_stack.peek().update(self.base_room)
+            self.player.states_stack.peek().draw(self.player_surface)
             self.display.update()
             self.clock.tick(self.fps)
         pg.quit()
