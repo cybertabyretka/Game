@@ -11,7 +11,8 @@ class Animation:
         return Animation(self.images, self.image_duration, self.loop)
 
     def get_image(self):
-        return self.images[int(self.frame / self.image_duration)]
+        image = self.images[int(self.frame / self.image_duration)]
+        return image
 
     def update(self):
         if self.loop:

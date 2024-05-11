@@ -42,7 +42,6 @@ class Game:
             self.player.states_stack.peek().update(self.base_room, self.player.states_stack)
             self.player.states_stack.peek().draw(self.player.entity_view.surface)
             for event in pg.event.get():
-                print(self.player.states_stack.peek())
                 if event.type == pg.QUIT:
                     running = False
                 old_len = self.player.states_stack.size()

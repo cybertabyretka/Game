@@ -101,7 +101,7 @@ class EntityPunchState(State):
     def handle_input(self, event, states_stack: Stack):
         if self.finished:
             self.events = []
-            if pg.mouse.get_pressed(3)[0]:
+            if pg.mouse.get_pressed(3)[0] and event.type == pg.MOUSEBUTTONDOWN:
                 if event.pos[1] < self.player.physic.collision.rect.y and self.player.physic.collision.rect.x < event.pos[0] < self.player.physic.collision.rect.x + self.player.physic.collision.rect.width:
                     self.player.current_item.weapon_view.set_animation(0, self.player)
                 elif self.player.physic.collision.rect.y < event.pos[1] < self.player.physic.collision.rect.y + self.player.physic.collision.rect.height and event.pos[0] > self.player.physic.collision.rect.x + self.player.physic.collision.rect.width:
