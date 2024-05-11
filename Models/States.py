@@ -118,7 +118,7 @@ class EntityPunchState(State):
             else:
                 self.finished = True
                 states_stack.pop()
-        elif event.type == pg.KEYUP or event.type == pg.KEYDOWN:
+        else:
             self.events.append(event)
 
     def update(self, room, states_stack):
