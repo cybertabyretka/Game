@@ -22,6 +22,9 @@ class PlayerAssets:
 
 
 class WeaponsAssets:
-    def __init__(self, game_fps):
+    def __init__(self):
         self.sword_asset = {'tile_size': (20, 20),
-                            'animation': Animation(load_images(BASE_PATH + 'Data/Weapons/SwordLike/Sword', set_colour=True), 1, False, game_fps)}
+                            'animation_up': Animation(load_images(BASE_PATH + 'Data/Weapons/SwordLike/Sword/Up', set_colour=True), 1, False),
+                            'animation_down': Animation(load_images(BASE_PATH + 'Data/Weapons/SwordLike/Sword/Down', set_colour=True), 1, False),
+                            'animation_left': Animation(load_images(BASE_PATH + 'Data/Weapons/SwordLike/Sword/Left', set_colour=True), 1, False),
+                            'animation_right': Animation(load_images(BASE_PATH + 'Data/Weapons/SwordLike/Sword/Right', set_colour=True), 1, False)}

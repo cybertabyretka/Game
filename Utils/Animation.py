@@ -1,15 +1,14 @@
 class Animation:
-    def __init__(self, images, image_duration, loop, game_fps):
+    def __init__(self, images, image_duration, loop):
         self.images = images
         self.image_duration = image_duration
         self.loop = loop
         self.done = False
         self.frame = 0
-        self.game_fps = game_fps
-        self.duration = (len(images) * image_duration) / game_fps
+        self.pos = (0., 0.)
 
     def copy(self):
-        return Animation(self.images, self.image_duration, self.loop, self.game_fps)
+        return Animation(self.images, self.image_duration, self.loop)
 
     def get_image(self):
         return self.images[int(self.frame / self.image_duration)]
@@ -22,4 +21,6 @@ class Animation:
             if self.frame >= self.image_duration * len(self.images) - 1:
                 self.done = True
 
-    def render(self, pos, surface):
+    def render(self, surface):
+        surface.blit(self.get_image(), self.pos)
+        self.update()
