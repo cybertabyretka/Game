@@ -19,6 +19,7 @@ class EntityV:
             self.current_image = self.image_left
 
     def render(self, pos):
+        self.clear_surface()
         self.surface.blit(self.current_image, pos)
 
     def clear_surface(self, base_colour=(0, 0, 0)):

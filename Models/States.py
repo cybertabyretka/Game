@@ -10,7 +10,11 @@ class State:
     def handle_input(self, event, states_stack: Stack):
         pass
 
-    def update(self, room):
+    def handle_inputs(self, events, states_stack):
+        for event in events:
+            self.handle_input(event, states_stack)
+
+    def update(self, room, states_stack):
         pass
 
     def draw(self, screen):
@@ -47,22 +51,27 @@ class EntityWalkState(State):
         elif event.type == pg.KEYUP:
             if event.key == pg.K_w:
                 self.player.physic.velocity[1] = 0
-                self.directions.remove(pg.K_w)
+                if pg.K_w in self.directions:
+                    self.directions.remove(pg.K_w)
             if event.key == pg.K_s:
                 self.player.physic.velocity[1] = 0
-                self.directions.remove(pg.K_s)
+                if pg.K_s in self.directions:
+                    self.directions.remove(pg.K_s)
             if event.key == pg.K_a:
                 self.player.physic.velocity[0] = 0
-                self.directions.remove(pg.K_a)
+                if pg.K_a in self.directions:
+                    self.directions.remove(pg.K_a)
             if event.key == pg.K_d:
                 self.player.physic.velocity[0] = 0
-                self.directions.remove(pg.K_d)
-        if len(self.directions) == 0:
-            states_stack.pop()
-        if event.type == pg.MOUSEBUTTONDOWN:
+                if pg.K_d in self.directions:
+                    self.directions.remove(pg.K_d)
+        elif event.type == pg.MOUSEBUTTONDOWN:
             states_stack.push(EntityPunchState(self.player))
 
-    def update(self, room):
+    def update(self, room, states_stack):
+        if len(self.directions) == 0:
+            states_stack.pop()
+            return
         for direction in self.directions:
             if direction == pg.K_w:
                 self.player.entity_view.rotate(0)
@@ -87,23 +96,19 @@ class EntityWalkState(State):
 class EntityPunchState(State):
     def __init__(self, player):
         super().__init__(player)
+        self.events = []
 
     def handle_input(self, event, states_stack: Stack):
         if self.finished:
-            direction_for_punch = None
+            self.events = []
             if pg.mouse.get_pressed(3)[0]:
-                for direction in self.player.physic.collision.collisions_around:
-                    if self.player.physic.collision.collisions_around[direction].rect.collidepoint(event.pos):
-                        direction_for_punch = direction
-                        break
-            if direction_for_punch is not None:
-                if direction_for_punch == 'up':
+                if event.pos[1] < self.player.physic.collision.rect.y and self.player.physic.collision.rect.x < event.pos[0] < self.player.physic.collision.rect.x + self.player.physic.collision.rect.width:
                     self.player.current_item.weapon_view.set_animation(0, self.player)
-                elif direction_for_punch == 'right':
+                elif self.player.physic.collision.rect.y < event.pos[1] < self.player.physic.collision.rect.y + self.player.physic.collision.rect.height and event.pos[0] > self.player.physic.collision.rect.x + self.player.physic.collision.rect.width:
                     self.player.current_item.weapon_view.set_animation(90, self.player)
-                elif direction_for_punch == 'down':
+                elif event.pos[1] > self.player.physic.collision.rect.y and self.player.physic.collision.rect.x < event.pos[0] < self.player.physic.collision.rect.x + self.player.physic.collision.rect.width:
                     self.player.current_item.weapon_view.set_animation(180, self.player)
-                elif direction_for_punch == 'left':
+                elif self.player.physic.collision.rect.y < event.pos[1] < self.player.physic.collision.rect.y + self.player.physic.collision.rect.height and event.pos[0] < self.player.physic.collision.rect.x + self.player.physic.collision.rect.width:
                     self.player.current_item.weapon_view.set_animation(270, self.player)
                 if self.player.current_item.weapon_view.copied_animation is not None:
                     self.finished = False
@@ -113,15 +118,15 @@ class EntityPunchState(State):
             else:
                 self.finished = True
                 states_stack.pop()
-        else:
-            if self.player.current_item.weapon_view.copied_animation.done:
-                self.finished = True
-                states_stack.pop()
+        elif event.type == pg.KEYUP or event.type == pg.KEYDOWN:
+            self.events.append(event)
 
-    def update(self, room):
-        self.draw(self.player.entity_view.surface)
+    def update(self, room, states_stack):
+        if self.player.current_item.weapon_view.copied_animation.done:
+            self.finished = True
+            states_stack.pop()
+            states_stack.peek().handle_inputs(self.events, states_stack)
 
     def draw(self, screen):
-        self.player.entity_view.clear_surface()
         self.player.entity_view.render((self.player.physic.collision.rect.x, self.player.physic.collision.rect.y))
         self.player.current_item.weapon_view.copied_animation.render(screen)
