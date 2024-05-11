@@ -1,5 +1,6 @@
 import pygame as pg
 import os
+from PIL import Image
 
 
 def load_image(path, set_colour=False, colour_to_change=(0, 0, 0)):
@@ -14,3 +15,9 @@ def load_images(path, set_colour=False, colour_to_change=(0, 0, 0)):
     for image_name in sorted(os.listdir(path)):
         images.append(load_image(path + '/' + image_name, set_colour, colour_to_change))
     return images
+
+
+def resize_image(path, new_path, new_size):
+    image = Image.open(path)
+    image = image.resize(new_size)
+    image.save(new_path)
