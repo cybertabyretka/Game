@@ -34,8 +34,8 @@ class EntityCollision:
         minimum = None
         if self.collisions_around['right'].rect.x - self.rect.topright[0] == 0:
             minimum = self.collisions_around['right'].cross_ability
-        if self.collisions_around['right_low'].rect.x - self.rect.topright[0] == 0 and self.collisions_around['right_low'].rect.y - self.rect.bottomright[1] < 0:
-            minimum = self.collisions_around['right_low'].cross_ability if minimum is None else min(minimum, self.collisions_around['right_low'].cross_ability)
+        if self.collisions_around['right_down'].rect.x - self.rect.topright[0] == 0 and self.collisions_around['right_down'].rect.y - self.rect.bottomright[1] < 0:
+            minimum = self.collisions_around['right_down'].cross_ability if minimum is None else min(minimum, self.collisions_around['right_down'].cross_ability)
         if minimum is not None:
             movement[0] *= minimum
         return movement, minimum
@@ -44,8 +44,8 @@ class EntityCollision:
         minimum = None
         if self.rect.x - self.collisions_around['left'].rect.topright[0] == 0:
             minimum = self.collisions_around['left'].cross_ability
-        if self.rect.x - self.collisions_around['left_low'].rect.topright[0] == 0 and (self.collisions_around['left_low'].rect.y - self.rect.bottomleft[1] < 0):
-            minimum = self.collisions_around['left_low'].cross_ability if minimum is None else min(minimum, self.collisions_around['left_low'].cross_ability)
+        if self.rect.x - self.collisions_around['left_down'].rect.topright[0] == 0 and (self.collisions_around['left_down'].rect.y - self.rect.bottomleft[1] < 0):
+            minimum = self.collisions_around['left_down'].cross_ability if minimum is None else min(minimum, self.collisions_around['left_down'].cross_ability)
         if minimum is not None:
             movement[0] *= minimum
         return movement, minimum
@@ -62,10 +62,10 @@ class EntityCollision:
 
     def low_contacts_process(self, movement):
         minimum = None
-        if self.collisions_around['low'].rect.y - self.rect.bottomleft[1] == 0:
-            minimum = self.collisions_around['low'].cross_ability
-        if self.collisions_around['right_low'].rect.y - self.rect.bottomleft[1] == 0 and self.collisions_around['right_low'].rect.x - self.rect.bottomright[0] < 0:
-            minimum = self.collisions_around['right_low'].cross_ability if minimum is None else min(minimum, self.collisions_around['right_low'].cross_ability)
+        if self.collisions_around['down'].rect.y - self.rect.bottomleft[1] == 0:
+            minimum = self.collisions_around['down'].cross_ability
+        if self.collisions_around['right_down'].rect.y - self.rect.bottomleft[1] == 0 and self.collisions_around['right_down'].rect.x - self.rect.bottomright[0] < 0:
+            minimum = self.collisions_around['right_down'].cross_ability if minimum is None else min(minimum, self.collisions_around['right_down'].cross_ability)
         if minimum is not None:
             movement[1] *= minimum
         return movement, minimum
@@ -75,8 +75,8 @@ class EntityCollision:
             movement, minimum = self.right_contacts_process(movement)
             movement, minimum = self.low_contacts_process(movement)
             if movement[0] > 0 and movement[1] > 0:
-                if self.collisions_around['right_low'].rect.y - self.rect.bottomleft[1] == 0 and self.collisions_around['right_low'].rect.x - self.rect.bottomright[0] == 0:
-                    minimum = self.collisions_around['right_low'].cross_ability if minimum is None else min(minimum, self.collisions_around['right_low'].cross_ability)
+                if self.collisions_around['right_down'].rect.y - self.rect.bottomleft[1] == 0 and self.collisions_around['right_down'].rect.x - self.rect.bottomright[0] == 0:
+                    minimum = self.collisions_around['right_down'].cross_ability if minimum is None else min(minimum, self.collisions_around['right_down'].cross_ability)
                     movement[0] *= minimum
                     movement[1] *= minimum
         elif movement[0] > 0 > movement[1]:
@@ -91,8 +91,8 @@ class EntityCollision:
             movement, minimum = self.left_contacts_process(movement)
             movement, minimum = self.low_contacts_process(movement)
             if movement[0] < 0 < movement[1]:
-                if self.collisions_around['left_low'].rect.y - self.rect.bottomleft[1] == 0 and self.rect.x - self.collisions_around['left_low'].rect.topright[0] == 0:
-                    minimum = self.collisions_around['left_low'].cross_ability if minimum is None else min(minimum, self.collisions_around['left_low'].cross_ability)
+                if self.collisions_around['left_down'].rect.y - self.rect.bottomleft[1] == 0 and self.rect.x - self.collisions_around['left_down'].rect.topright[0] == 0:
+                    minimum = self.collisions_around['left_down'].cross_ability if minimum is None else min(minimum, self.collisions_around['left_down'].cross_ability)
                     movement[0] *= minimum
                     movement[1] *= minimum
         else:

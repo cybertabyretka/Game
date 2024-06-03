@@ -13,7 +13,7 @@ class CollisionsMap:
 
     def get_graph(self):
         for loc in self.map:
-            straight_directions_cross_ability = {'up': 1, 'left': 1, 'right': 1, 'low': 1}
+            straight_directions_cross_ability = {'up': 1, 'left': 1, 'right': 1, 'down': 1}
             current_tile = self.map[loc]
             if current_tile.cross_ability != 0:
                 loc_int = loc.split(';')
@@ -29,11 +29,11 @@ class CollisionsMap:
                             elif offset == 'right_up':
                                 if straight_directions_cross_ability['right'] != 0 and straight_directions_cross_ability['up'] != 0:
                                     check_loc_is_right = True
-                            elif offset == 'left_low':
-                                if straight_directions_cross_ability['left'] != 0 and straight_directions_cross_ability['low'] != 0:
+                            elif offset == 'left_down':
+                                if straight_directions_cross_ability['left'] != 0 and straight_directions_cross_ability['down'] != 0:
                                     check_loc_is_right = True
-                            elif offset == 'right_low':
-                                if straight_directions_cross_ability['right'] != 0 and straight_directions_cross_ability['low'] != 0:
+                            elif offset == 'right_down':
+                                if straight_directions_cross_ability['right'] != 0 and straight_directions_cross_ability['down'] != 0:
                                     check_loc_is_right = True
                             else:
                                 check_loc_is_right = True
