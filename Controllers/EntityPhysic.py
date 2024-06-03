@@ -15,7 +15,7 @@ class EntityCollision:
         self.collisions_around = {}
 
     def get_collisions_around(self, collisions_map, tile_size):
-        tile_loc = (int(self.rect.x // tile_size), int(self.rect.y // tile_size))
+        tile_loc = (self.rect.x // tile_size, self.rect.y // tile_size)
         for offset_name in NEIGHBOUR_OFFSETS:
             check_lock = str((tile_loc[0] + NEIGHBOUR_OFFSETS[offset_name][0]) * tile_size) + ';' + str((tile_loc[1] + NEIGHBOUR_OFFSETS[offset_name][1]) * tile_size)
             if check_lock in collisions_map:

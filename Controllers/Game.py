@@ -1,6 +1,7 @@
 import pygame as pg
 import sys
 
+from Views.Entity import render_entities
 from Models import Entity, Weapon
 from Models.Asset import TilesAssets, PlayerAssets, WeaponsAssets
 from Utils.TileMap import create_base_tile_map
@@ -19,12 +20,20 @@ class Game:
 
         self.base_room = Room(create_base_tile_map(self.width, self.height, self.tile_size, self.tiles_assets), pg.Surface((self.width, self.height)))
         self.base_room.collisions_map.get_map_from_object(self.base_room.room_view.tile_map.tile_map)
+        self.base_room.collisions_map.get_graph()
+
+        self.entities_surface = pg.Surface((self.width, self.height))
 
         self.weapons_assets = WeaponsAssets()
         self.sword = Weapon.SwordLike('Sword', self.weapons_assets.sword_asset)
 
         self.player_asset = PlayerAssets()
-        self.player = Entity.Player(self.player_asset, pg.Surface((self.width, self.height)), start_pos=(550., 550.), current_item=self.sword)
+
+        self.swordsman = Entity.Swordsman(self.player_asset, self.entities_surface, start_pos=(120., 120.), current_item=self.sword)
+
+        self.player = Entity.Player(self.player_asset, self.entities_surface, start_pos=(550., 550.), current_item=self.sword)
+
+        self.entities = [self.swordsman, self.player]
 
         self.is_paused = False
 
@@ -47,7 +56,7 @@ class Game:
                 if self.player.states_stack.size() != old_len:
                     self.player.states_stack.peek().handle_input(event, self.player.states_stack)
             self.player.states_stack.peek().update(self.base_room, self.player.states_stack)
-            self.player.states_stack.peek().draw(self.player.entity_view.surface)
+            render_entities(self.entities, self.entities_surface)
             self.display.update()
             self.clock.tick(self.fps)
         pg.quit()

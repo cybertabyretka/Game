@@ -19,8 +19,13 @@ class EntityV:
             self.current_image = self.image_left
 
     def render(self, pos):
-        self.clear_surface()
         self.surface.blit(self.current_image, pos)
 
     def clear_surface(self, base_colour=(0, 0, 0)):
         self.surface.fill(base_colour)
+
+
+def render_entities(entities, surface, base_colour=(0, 0, 0)):
+    surface.fill(base_colour)
+    for entity in entities:
+        entity.states_stack.peek().draw(surface)

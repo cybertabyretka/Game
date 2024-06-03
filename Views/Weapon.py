@@ -16,3 +16,6 @@ class WeaponV:
         elif rotation == 270:
             self.copied_animation = self.animation_asset_dict['animation_left'].copy()
             self.copied_animation.pos = (player.physic.collision.rect.x - player.physic.collision.rect.width, player.physic.collision.rect.y)
+
+    def render(self, surface):
+        self.copied_animation.render(surface)

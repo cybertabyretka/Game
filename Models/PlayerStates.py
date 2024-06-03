@@ -89,7 +89,6 @@ class EntityWalkState(State):
         self.player.physic.collision.update(self.player.physic.velocity)
 
     def draw(self, screen):
-        self.player.entity_view.clear_surface()
         self.player.entity_view.render((self.player.physic.collision.rect.x, self.player.physic.collision.rect.y))
 
 
