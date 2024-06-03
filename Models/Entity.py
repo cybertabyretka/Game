@@ -1,7 +1,7 @@
 from Controllers.Entity.EntityPhysic import EntityPhysics
 from Controllers.Entity.EntityMind import Mind
 from Views.Entity import EntityV
-from Models import EntityStates
+from Controllers.Entity import EntityStates
 from Utils.Stack import Stack
 
 
@@ -16,6 +16,7 @@ class Entity:
 class NPC(Entity):
     def __init__(self, images_paths, width: float, height: float, start_pos, max_velocity, current_item, surface):
         super().__init__(images_paths, width, height, start_pos, max_velocity, current_item, surface)
+        self.states_stack = Stack(EntityStates.NPCIdleState(self))
         self.mind = Mind()
 
 
