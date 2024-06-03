@@ -10,6 +10,7 @@ def chebyshev_distance(start_pos, end_pos):
 
 
 def a_star(start_pos, end_pos, graph):
+    path = []
     queue = []
     heappush(queue, (0, start_pos))
     cost_visited = {start_pos: 0}
@@ -28,4 +29,8 @@ def a_star(start_pos, end_pos, graph):
                 heappush(queue, (priority, neigh_node))
                 cost_visited[neigh_node] = new_cost
                 visited[neigh_node] = cur_node
-    return visited
+    path_head, path_segment = end_pos, end_pos
+    while path_segment and path_segment in visited:
+        path.insert(0, path_segment)
+        path_segment = visited[path_segment]
+    return path
