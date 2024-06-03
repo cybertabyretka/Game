@@ -29,9 +29,11 @@ class Game:
 
         self.player_asset = PlayerAssets()
 
-        self.swordsman = Entity.Swordsman(self.player_asset, self.entities_surface, start_pos=(120., 120.), current_item=self.sword)
+        self.swordsman = Entity.Swordsman(self.player_asset, self.entities_surface, start_pos=(140., 140.), current_item=self.sword)
+        self.swordsman.physic.collision.get_collisions_around(self.base_room.collisions_map.map, 35)
 
-        self.player = Entity.Player(self.player_asset, self.entities_surface, start_pos=(550., 550.), current_item=self.sword)
+        self.player = Entity.Player(self.player_asset, self.entities_surface, start_pos=(560., 560.), current_item=self.sword)
+        self.player.physic.collision.get_collisions_around(self.base_room.collisions_map.map, 35)
 
         self.entities = [self.swordsman, self.player]
 
@@ -57,6 +59,14 @@ class Game:
                     self.player.states_stack.peek().handle_input(event, self.player.states_stack)
             self.player.states_stack.peek().update(self.base_room, self.player.states_stack)
             render_entities(self.entities, self.entities_surface)
+            self.swordsman.mind.search_way_in_graph(f'{self.swordsman.physic.collision.collisions_around["center"].rect.x};{self.swordsman.physic.collision.collisions_around["center"].rect.y}', f'{self.player.physic.collision.collisions_around["center"].rect.x};{self.player.physic.collision.collisions_around["center"].rect.y}', self.base_room.collisions_map.graph)
+            for coord in self.swordsman.mind.way:
+                if self.swordsman.mind.way[coord] is not None:
+                    coord1_int = coord.split(';')
+                    coord1_int = (int(coord1_int[0]) + 17, int(coord1_int[1]) + 17)
+                    coord2_int = self.swordsman.mind.way[coord].split(';')
+                    coord2_int = (int(coord2_int[0]) + 17, int(coord2_int[1]) + 17)
+                    pg.draw.line(self.entities_surface, (255, 0, 0), coord1_int, coord2_int)
             self.display.update()
             self.clock.tick(self.fps)
         pg.quit()
