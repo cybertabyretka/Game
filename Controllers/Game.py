@@ -39,8 +39,6 @@ class Game:
             self.base_room.room_view.render_tile_map(self.base_room.room_view.surface)
             self.base_room.room_view.surface.blit(self.player.entity_view.surface, (0., 0.))
             self.display.surface.blit(self.base_room.room_view.surface, (self.base_room.room_view.surface.get_rect().x, self.base_room.room_view.surface.get_rect().y))
-            self.player.states_stack.peek().update(self.base_room, self.player.states_stack)
-            self.player.states_stack.peek().draw(self.player.entity_view.surface)
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     running = False
@@ -48,6 +46,8 @@ class Game:
                 self.player.states_stack.peek().handle_input(event, self.player.states_stack)
                 if self.player.states_stack.size() != old_len:
                     self.player.states_stack.peek().handle_input(event, self.player.states_stack)
+            self.player.states_stack.peek().update(self.base_room, self.player.states_stack)
+            self.player.states_stack.peek().draw(self.player.entity_view.surface)
             self.display.update()
             self.clock.tick(self.fps)
         pg.quit()
