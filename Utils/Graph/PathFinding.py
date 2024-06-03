@@ -1,12 +1,20 @@
 from heapq import *
 
 
+def manhattan_distance(start_pos, end_pos):
+    start_pos = start_pos.split(';')
+    start_pos = (int(start_pos[0]), int(start_pos[1]))
+    end_pos = end_pos.split(';')
+    end_pos = (int(end_pos[0]), int(end_pos[1]))
+    return abs(start_pos[0] - end_pos[0]) + abs(start_pos[1] - end_pos[1])
+
+
 def chebyshev_distance(start_pos, end_pos):
-    start_pos_int = start_pos.split(';')
-    start_pos_int = (int(start_pos_int[0]), int(start_pos_int[1]))
-    end_pos_int = end_pos.split(';')
-    end_pos_int = (int(end_pos_int[0]), int(end_pos_int[1]))
-    return max(abs(start_pos_int[0] - end_pos_int[0]), abs(start_pos_int[1] - end_pos_int[1]))
+    start_pos = start_pos.split(';')
+    start_pos = (int(start_pos[0]), int(start_pos[1]))
+    end_pos = end_pos.split(';')
+    end_pos = (int(end_pos[0]), int(end_pos[1]))
+    return max(abs(start_pos[0] - end_pos[0]), abs(start_pos[1] - end_pos[1]))
 
 
 def a_star(start_pos, end_pos, graph):

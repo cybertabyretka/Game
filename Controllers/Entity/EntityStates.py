@@ -1,5 +1,6 @@
 import pygame as pg
 from Utils.Stack import Stack
+from Utils.Graph.PathFinding import manhattan_distance
 
 
 class State:
@@ -14,7 +15,7 @@ class State:
         for event in events:
             self.handle_input(event, states_stack)
 
-    def update(self, room, states_stack):
+    def update(self, room, states_stack, entities):
         pass
 
     def draw(self, screen):
@@ -30,7 +31,7 @@ class NPCState:
     def handle_input(self, states_stack: Stack):
         pass
 
-    def update(self, room, states_stack, player):
+    def update(self, room, states_stack, player, entities):
         pass
 
     def draw(self, screen):
@@ -38,11 +39,10 @@ class NPCState:
 
 
 class NPCIdleState(NPCState):
-    def update(self, room, states_stack, player):
-        if self.entity.mind.way is None:
-            self.entity.mind.search_way_in_graph(f'{self.entity.physic.collision.collisions_around["center"].rect.x};{self.entity.physic.collision.collisions_around["center"].rect.y}', f'{player.physic.collision.collisions_around["center"].rect.x};{player.physic.collision.collisions_around["center"].rect.y}', room.collisions_map.graph)
-            self.old_player_center_pos = f'{player.physic.collision.collisions_around["center"].rect.x};{player.physic.collision.collisions_around["center"].rect.y}'
-            states_stack.push(NPCWalkState(self.entity))
+    def update(self, room, states_stack, player, entities):
+        self.entity.mind.search_way_in_graph(f'{self.entity.physic.collision.collisions_around["center"].rect.x};{self.entity.physic.collision.collisions_around["center"].rect.y}', f'{player.physic.collision.collisions_around["center"].rect.x};{player.physic.collision.collisions_around["center"].rect.y}', room.collisions_map.graph)
+        self.old_player_center_pos = f'{player.physic.collision.collisions_around["center"].rect.x};{player.physic.collision.collisions_around["center"].rect.y}'
+        states_stack.push(NPCWalkState(self.entity))
 
 
 class PlayerIdleState(State):
@@ -57,12 +57,10 @@ class PlayerIdleState(State):
 class NPCWalkState(NPCState):
     def __init__(self, entity):
         super().__init__(entity)
-        self.directions = set()
 
-    def update(self, room, states_stack, player):
+    def update(self, room, states_stack, player, entities):
         current_player_center_pos = f'{player.physic.collision.collisions_around["center"].rect.x};{player.physic.collision.collisions_around["center"].rect.y}'
-        if current_player_center_pos == self.old_player_center_pos and not self.directions:
-            print(True)
+        if current_player_center_pos == self.old_player_center_pos and manhattan_distance(f'{self.entity.physic.collision.collisions_around["center"].rect.x};{self.entity.physic.collision.collisions_around["center"].rect.y}', current_player_center_pos) > max(player.physic.collision.rect.width, player.physic.collision.rect.height) * 2:
             next_coord = self.entity.mind.way[1]
             next_coord_int = list(map(int, next_coord.split(';')))
             if self.entity.physic.collision.collisions_around['center'].rect.x < next_coord_int[0]:
@@ -77,11 +75,13 @@ class NPCWalkState(NPCState):
             elif self.entity.physic.collision.collisions_around['center'].rect.y > next_coord_int[1]:
                 self.entity.entity_view.rotate(0)
                 self.entity.physic.velocity[1] = -self.entity.physic.max_velocity
-        elif current_player_center_pos != self.old_player_center_pos:
+        elif current_player_center_pos != self.old_player_center_pos and manhattan_distance(f'{self.entity.physic.collision.collisions_around["center"].rect.x};{self.entity.physic.collision.collisions_around["center"].rect.y}', current_player_center_pos) > max(player.physic.collision.rect.width, player.physic.collision.rect.height) * 2:
             self.entity.mind.search_way_in_graph(f'{self.entity.physic.collision.collisions_around["center"].rect.x};{self.entity.physic.collision.collisions_around["center"].rect.y}', current_player_center_pos, room.collisions_map.graph)
             self.old_player_center_pos = current_player_center_pos
+        else:
+            states_stack.pop()
         self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.room_view.tile_size)
-        self.entity.physic.collision.update(self.entity.physic.velocity)
+        self.entity.physic.collision.update(self.entity.physic.velocity, entities)
 
 
 class PlayerWalkState(State):
@@ -119,7 +119,7 @@ class PlayerWalkState(State):
         elif event.type == pg.MOUSEBUTTONDOWN:
             states_stack.push(PlayerPunchState(self.entity))
 
-    def update(self, room, states_stack):
+    def update(self, room, states_stack, entities):
         if len(self.directions) == 0:
             states_stack.pop()
             return
@@ -137,7 +137,7 @@ class PlayerWalkState(State):
                 self.entity.entity_view.rotate(90)
                 self.entity.physic.velocity[0] = self.entity.physic.max_velocity
         self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.room_view.tile_size)
-        self.entity.physic.collision.update(self.entity.physic.velocity)
+        self.entity.physic.collision.update(self.entity.physic.velocity, entities)
 
 
 class PlayerPunchState(State):
@@ -168,7 +168,7 @@ class PlayerPunchState(State):
         else:
             self.events.append(event)
 
-    def update(self, room, states_stack):
+    def update(self, room, states_stack, entities):
         if self.entity.current_item.weapon_view.copied_animation.done:
             self.finished = True
             states_stack.pop()

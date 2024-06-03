@@ -58,10 +58,17 @@ class Game:
                 self.player.states_stack.peek().handle_input(event, self.player.states_stack)
                 if self.player.states_stack.size() != old_len:
                     self.player.states_stack.peek().handle_input(event, self.player.states_stack)
-            self.player.states_stack.peek().update(self.base_room, self.player.states_stack)
+            self.player.states_stack.peek().update(self.base_room, self.player.states_stack, self.entities)
             for NPC in self.NPCs:
-                NPC.states_stack.peek().update(self.base_room, NPC.states_stack, self.player)
+                NPC.states_stack.peek().update(self.base_room, NPC.states_stack, self.player, self.entities)
             render_entities(self.entities, self.entities_surface)
+            self.swordsman.mind.search_way_in_graph(f'{self.swordsman.physic.collision.collisions_around["center"].rect.x};{self.swordsman.physic.collision.collisions_around["center"].rect.y}', f'{self.player.physic.collision.collisions_around["center"].rect.x};{self.player.physic.collision.collisions_around["center"].rect.y}', self.base_room.collisions_map.graph)
+            for i in range(len(self.swordsman.mind.way)-1):
+                coord1_int = self.swordsman.mind.way[i].split(';')
+                coord1_int = (int(coord1_int[0]) + 17, int(coord1_int[1]) + 17)
+                coord2_int = self.swordsman.mind.way[i + 1].split(';')
+                coord2_int = (int(coord2_int[0]) + 17, int(coord2_int[1]) + 17)
+                pg.draw.line(self.entities_surface, (255, 0, 0), coord1_int, coord2_int)
             self.display.update()
             self.clock.tick(self.fps)
         pg.quit()
