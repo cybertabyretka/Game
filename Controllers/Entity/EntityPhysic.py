@@ -1,7 +1,6 @@
 import pygame as pg
 from Utils.Setting import NEIGHBOUR_OFFSETS
 from Utils.Graph.PathFinding import manhattan_distance
-from Utils.CoordinatesConverter import convert_to_int
 
 
 class EntityPhysics:

@@ -5,6 +5,7 @@ class CollisionsMap:
     def __init__(self):
         self.map = {}
         self.graph = {}
+        self.damage_map = {}
 
     def get_map_from_object(self, tile_map):
         for loc in tile_map:
@@ -45,3 +46,9 @@ class CollisionsMap:
                             self.graph[loc].append((cross_ability, check_loc))
                         else:
                             self.graph[loc] = [(cross_ability, check_loc)]
+
+    def add_damage(self, rect, identifier):
+        self.damage_map[identifier] = rect
+
+    def remove_damage(self, identifier):
+        del self.damage_map[identifier]

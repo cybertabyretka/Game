@@ -8,12 +8,12 @@ class State:
         self.entity = entity
         self.finished = True
 
-    def handle_input(self, event, states_stack: Stack):
+    def handle_input(self, event, states_stack: Stack, room):
         pass
 
-    def handle_inputs(self, events, states_stack):
+    def handle_inputs(self, events, states_stack, room):
         for event in events:
-            self.handle_input(event, states_stack)
+            self.handle_input(event, states_stack, room)
 
     def update(self, room, states_stack, entities):
         pass
@@ -46,7 +46,7 @@ class NPCIdleState(NPCState):
 
 
 class PlayerIdleState(State):
-    def handle_input(self, event, states_stack):
+    def handle_input(self, event, states_stack, room):
         if event.type == pg.KEYDOWN:
             if event.key in (pg.K_w, pg.K_s, pg.K_a, pg.K_d):
                 states_stack.push(PlayerWalkState(self.entity))
@@ -88,7 +88,7 @@ class PlayerWalkState(State):
         super().__init__(entity)
         self.directions = set()
 
-    def handle_input(self, event, states_stack):
+    def handle_input(self, event, states_stack, room):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_w:
                 self.directions.add(pg.K_w)
@@ -144,19 +144,20 @@ class PlayerPunchState(State):
         super().__init__(entity)
         self.events = []
 
-    def handle_input(self, event, states_stack: Stack):
+    def handle_input(self, event, states_stack: Stack, room):
         if self.finished:
             self.events = []
             if pg.mouse.get_pressed(3)[0] and event.type == pg.MOUSEBUTTONDOWN:
                 if event.pos[1] < self.entity.physic.collision.rect.y and self.entity.physic.collision.rect.x < event.pos[0] < self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
-                    self.entity.current_item.weapon_view.set_animation(0, self.entity)
+                    self.entity.current_item.set_animation(0, self.entity)
                 elif self.entity.physic.collision.rect.y < event.pos[1] < self.entity.physic.collision.rect.y + self.entity.physic.collision.rect.height and event.pos[0] > self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
-                    self.entity.current_item.weapon_view.set_animation(90, self.entity)
+                    self.entity.current_item.set_animation(90, self.entity)
                 elif event.pos[1] > self.entity.physic.collision.rect.y and self.entity.physic.collision.rect.x < event.pos[0] < self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
-                    self.entity.current_item.weapon_view.set_animation(180, self.entity)
+                    self.entity.current_item.set_animation(180, self.entity)
                 elif self.entity.physic.collision.rect.y < event.pos[1] < self.entity.physic.collision.rect.y + self.entity.physic.collision.rect.height and event.pos[0] < self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
-                    self.entity.current_item.weapon_view.set_animation(270, self.entity)
+                    self.entity.current_item.set_animation(270, self.entity)
                 if self.entity.current_item.weapon_view.copied_animation is not None:
+                    room.collisions_map.add_damage(self.entity.current_item.physic.attack_physic.attack_rect, id(self.entity.current_item.physic.attack_physic.attack_rect))
                     self.finished = False
                 else:
                     self.finished = True
@@ -170,8 +171,9 @@ class PlayerPunchState(State):
     def update(self, room, states_stack, entities):
         if self.entity.current_item.weapon_view.copied_animation.done:
             self.finished = True
+            room.collisions_map.remove_damage(id(self.entity.current_item.physic.attack_physic.attack_rect))
             states_stack.pop()
-            states_stack.peek().handle_inputs(self.events, states_stack)
+            states_stack.peek().handle_inputs(self.events, states_stack, room)
 
     def draw(self, screen):
         self.entity.entity_view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))

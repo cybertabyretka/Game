@@ -25,7 +25,7 @@ class Game:
         self.entities_surface = pg.Surface((self.width, self.height))
 
         self.weapons_assets = WeaponsAssets()
-        self.sword = Weapon.SwordLike('Sword', self.weapons_assets.sword_asset)
+        self.sword = Weapon.SwordLike('Sword', (35, 35), (35, 35), self.weapons_assets.sword_asset)
 
         self.player_asset = PlayerAssets()
 
@@ -55,9 +55,9 @@ class Game:
                 if event.type == pg.QUIT:
                     running = False
                 old_len = self.player.states_stack.size()
-                self.player.states_stack.peek().handle_input(event, self.player.states_stack)
+                self.player.states_stack.peek().handle_input(event, self.player.states_stack, self.base_room)
                 if self.player.states_stack.size() != old_len:
-                    self.player.states_stack.peek().handle_input(event, self.player.states_stack)
+                    self.player.states_stack.peek().handle_input(event, self.player.states_stack, self.base_room)
             self.player.states_stack.peek().update(self.base_room, self.player.states_stack, self.entities)
             for NPC in self.NPCs:
                 NPC.states_stack.peek().update(self.base_room, NPC.states_stack, self.player, self.entities)

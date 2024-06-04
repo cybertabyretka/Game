@@ -18,15 +18,12 @@ def a_star(start_pos, end_pos, graph):
     visited = {start_pos: None}
     while queue:
         cur_cost, cur_node = heappop(queue)
-        print(1, cur_cost, cur_node)
         if cur_node == end_pos:
             break
         next_nodes = graph[convert_to_string(cur_node)]
         for next_node in next_nodes:
             neigh_cost, neigh_node = next_node
-            print(neigh_node)
             neigh_node = convert_to_int(neigh_node)
-            print(neigh_node)
             neigh_cost = 1 - neigh_cost
             new_cost = cost_visited[cur_node] + neigh_cost
             if neigh_node not in cost_visited or new_cost < cost_visited[neigh_node]:

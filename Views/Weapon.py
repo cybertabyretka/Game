@@ -3,19 +3,19 @@ class WeaponV:
         self.animation_asset_dict = animation_asset_dict
         self.copied_animation = None
 
-    def set_animation(self, rotation, player):
+    def set_animation(self, rotation, pos):
         if rotation == 0:
             self.copied_animation = self.animation_asset_dict['animation_up'].copy()
-            self.copied_animation.pos = (player.physic.collision.rect.x, player.physic.collision.rect.y - player.physic.collision.rect.height)
         elif rotation == 90:
             self.copied_animation = self.animation_asset_dict['animation_right'].copy()
-            self.copied_animation.pos = (player.physic.collision.rect.x + player.physic.collision.rect.width, player.physic.collision.rect.y)
         elif rotation == 180:
             self.copied_animation = self.animation_asset_dict['animation_down'].copy()
-            self.copied_animation.pos = (player.physic.collision.rect.x, player.physic.collision.rect.y + player.physic.collision.rect.height)
         elif rotation == 270:
             self.copied_animation = self.animation_asset_dict['animation_left'].copy()
-            self.copied_animation.pos = (player.physic.collision.rect.x - player.physic.collision.rect.width, player.physic.collision.rect.y)
+        self.copied_animation.pos = pos
 
     def render(self, surface):
         self.copied_animation.render(surface)
+
+    def get_pos(self):
+        return self.copied_animation.pos
