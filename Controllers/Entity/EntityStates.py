@@ -74,7 +74,7 @@ class NPCWalkState(NPCState):
             elif self.entity.physic.collision.collisions_around['center'].rect.y > next_coord[1]:
                 self.entity.entity_view.rotate(0)
                 self.entity.physic.velocity[1] = -self.entity.physic.max_velocity
-        elif current_player_center_pos != self.old_player_center_pos and manhattan_distance((self.entity.physic.collision.collisions_around["center"].rect.x, self.entity.physic.collision.collisions_around["center"].rect.y), current_player_center_pos) > max(player.physic.collision.rect.width, player.physic.collision.rect.height) * 3:
+        elif current_player_center_pos != self.old_player_center_pos and manhattan_distance((self.entity.physic.collision.collisions_around["center"].rect.x, self.entity.physic.collision.collisions_around["center"].rect.y), current_player_center_pos) > max(player.physic.collision.rect.width, player.physic.collision.rect.height) * 2:
             self.entity.mind.search_way_in_graph((self.entity.physic.collision.collisions_around["center"].rect.x, self.entity.physic.collision.collisions_around["center"].rect.y), current_player_center_pos, room.collisions_map.graph)
             self.old_player_center_pos = current_player_center_pos
         else:
