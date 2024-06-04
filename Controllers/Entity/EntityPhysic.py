@@ -1,6 +1,7 @@
 import pygame as pg
 from Utils.Setting import NEIGHBOUR_OFFSETS
 from Utils.Graph.PathFinding import manhattan_distance
+from Utils.CoordinatesConverter import convert_to_int
 
 
 class EntityPhysics:
@@ -28,25 +29,30 @@ class EntityCollision:
             movement = self.straight_contacts_process(movement)
         elif movement[0] != 0 and movement[1] != 0:
             movement = self.corner_contacts_process(movement)
-
+        movement = self.entities_contacts_process(movement, entities)
         self.rect.x += movement[0]
         self.rect.y += movement[1]
 
     def entities_contacts_process(self, movement, entities):
         for entity in entities:
-            if entity.physic.collision is not self and manhattan_distance(f'{entity.physic.collision.collisions_around["center"].rect.x};{entity.physic.collision.collisions_around["center"].rect.y}', f'{self.rect.x};{self.rect.y}') <= max(self.rect.width, self.rect.height):
+            if entity.physic.collision is not self and manhattan_distance((entity.physic.collision.collisions_around["center"].rect.x, entity.physic.collision.collisions_around["center"].rect.y), (self.rect.x, self.rect.y)) <= max(self.rect.width, self.rect.height) * 3:
                 if movement[0] > 0:
-                    if entity.physic.collision.collisions_around['right'].rect.x - self.rect.topright[0] == 0 or (entity.physic.collision.collisions_around['right_down'].rect.x - self.rect.topright[0] == 0 and entity.physic.collision.collisions_around['right_down'].rect.y - self.rect.bottomright[1] < 0):
+                    if self.rect.topright[0] == entity.physic.collision.rect.x and abs(self.rect.y - entity.physic.collision.rect.y) < entity.physic.collision.rect.height:
+                        print('movement[0] > 0: True')
                         movement[0] = 0
-                elif movement[0] < 0:
-                    if self.rect.x - entity.physic.collision.collisions_around['left_down'].rect.topright[0] == 0 or (entity.physic.collision.collisions_around['left_down'].rect.x - self.rect.topright[0] == 0 and entity.physic.collision.collisions_around['left_down'].rect.y - self.rect.bottomright[1] < 0):
+                if movement[0] < 0:
+                    if self.rect.x == entity.physic.collision.rect.topright[0] and abs(self.rect.y - entity.physic.collision.rect.y) < entity.physic.collision.rect.height:
+                        print('movement[0] < 0: True')
                         movement[0] = 0
                 if movement[1] > 0:
-                    if entity.physic.collision.collisions_around['down'].rect.y - self.rect.bottomleft[1] == 0 or (entity.physic.collision.collisions_around['right_down'].rect.y - self.rect.bottomleft[1] == 0 and entity.physic.collision.collisions_around['right_down'].rect.x - self.rect.bottomright[0] < 0):
+                    if self.rect.bottomright[1] == entity.physic.collision.rect.y and abs(self.rect.x - entity.physic.collision.rect.x) < self.rect.width:
+                        print('movement[1] > 0: True')
                         movement[1] = 0
-                elif movement[1] < 0:
-                    if self.rect.y - entity.physic.collision.collisions_around['up'].rect.bottomleft[1] == 0 or (self.rect.y - entity.physic.collision.collisions_around['right_up'].rect.bottomleft[1] == 0 and entity.physic.collision.collisions_around['right_up'].rect.x - self.rect.topright[0] < 0):
+                if movement[1] < 0:
+                    if self.rect.y == entity.physic.collision.rect.bottomright[1] and abs(self.rect.x - entity.physic.collision.rect.x) < self.rect.width:
+                        print('movement[1] < 0: True')
                         movement[1] = 0
+        return movement
 
     def right_contacts_process(self, movement):
         minimum = None
