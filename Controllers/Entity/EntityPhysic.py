@@ -28,26 +28,32 @@ class EntityCollision:
             movement = self.straight_contacts_process(movement)
         elif movement[0] != 0 and movement[1] != 0:
             movement = self.corner_contacts_process(movement)
-        movement = self.entities_contacts_process(movement, entities)
+        movement, entities_around = self.entities_contacts_process(movement, entities)
         self.rect.x += movement[0]
         self.rect.y += movement[1]
+        return entities_around
 
     def entities_contacts_process(self, movement, entities):
+        entities_around = {'right': None, 'left': None, 'down': None, 'up': None}
         for entity in entities:
             if entity.physic.collision is not self and manhattan_distance((entity.physic.collision.collisions_around["center"].rect.x, entity.physic.collision.collisions_around["center"].rect.y), (self.rect.x, self.rect.y)) <= max(self.rect.width, self.rect.height) * 4:
                 if movement[0] > 0:
                     if self.rect.topright[0] == entity.physic.collision.rect.x and abs(self.rect.y - entity.physic.collision.rect.y) < entity.physic.collision.rect.height:
                         movement[0] = 0
+                        entities_around['right'] = entity
                 if movement[0] < 0:
                     if self.rect.x == entity.physic.collision.rect.topright[0] and abs(self.rect.y - entity.physic.collision.rect.y) < entity.physic.collision.rect.height:
                         movement[0] = 0
+                        entities_around['left'] = entity
                 if movement[1] > 0:
                     if self.rect.bottomright[1] == entity.physic.collision.rect.y and abs(self.rect.x - entity.physic.collision.rect.x) < self.rect.width:
                         movement[1] = 0
+                        entities_around['down'] = entity
                 if movement[1] < 0:
                     if self.rect.y == entity.physic.collision.rect.bottomright[1] and abs(self.rect.x - entity.physic.collision.rect.x) < self.rect.width:
                         movement[1] = 0
-        return movement
+                        entities_around['up'] = entity
+        return movement, entities_around
 
     def right_contacts_process(self, movement):
         minimum = None

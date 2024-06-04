@@ -26,5 +26,5 @@ class Player(Entity):
 
 
 class Swordsman(NPC):
-    def __init__(self, images_paths, surface, width=35., height=35., start_pos=(120., 120.), max_velocity=0.7, current_item=None):
+    def __init__(self, images_paths, surface, width=35., height=35., start_pos=(120., 120.), max_velocity=1, current_item=None):
         super().__init__(images_paths, width, height, start_pos, max_velocity, current_item, surface)

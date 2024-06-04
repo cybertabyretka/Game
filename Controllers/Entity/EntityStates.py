@@ -80,7 +80,13 @@ class NPCWalkState(NPCState):
         else:
             states_stack.pop()
         self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.room_view.tile_size)
-        self.entity.physic.collision.update(self.entity.physic.velocity, entities)
+        entities_around = self.entity.physic.collision.update(self.entity.physic.velocity, entities)
+        for direction in entities_around:
+            if entities_around[direction] is not None:
+                new_state = NPCPunchState(self.entity)
+                new_state.direction_for_punch = direction
+                states_stack.push(new_state)
+                break
 
 
 class PlayerWalkState(State):
@@ -137,6 +143,34 @@ class PlayerWalkState(State):
                 self.entity.physic.velocity[0] = self.entity.physic.max_velocity
         self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.room_view.tile_size)
         self.entity.physic.collision.update(self.entity.physic.velocity, entities)
+
+
+class NPCPunchState(NPCState):
+    def __init__(self, entity):
+        super().__init__(entity)
+        self.direction_for_punch = None
+
+    def update(self, room, states_stack, player, entities):
+        if self.finished:
+            if self.direction_for_punch == 'up':
+                self.entity.current_item.set_animation(0, self.entity)
+            elif self.direction_for_punch == 'right':
+                self.entity.current_item.set_animation(90, self.entity)
+            elif self.direction_for_punch == 'down':
+                self.entity.current_item.set_animation(180, self.entity)
+            else:
+                self.entity.current_item.set_animation(270, self.entity)
+            room.collisions_map.add_damage(self.entity.current_item.physic.attack_physic.attack_rect, id(self.entity.current_item.physic.attack_physic.attack_rect))
+            self.finished = False
+        elif self.entity.current_item.weapon_view.copied_animation.done:
+            self.finished = True
+            room.collisions_map.remove_damage(id(self.entity.current_item.physic.attack_physic.attack_rect))
+            states_stack.pop()
+
+    def draw(self, screen):
+        self.entity.entity_view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+        if not self.finished:
+            self.entity.current_item.weapon_view.copied_animation.render(screen)
 
 
 class PlayerPunchState(State):

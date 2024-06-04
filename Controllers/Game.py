@@ -25,14 +25,15 @@ class Game:
         self.entities_surface = pg.Surface((self.width, self.height))
 
         self.weapons_assets = WeaponsAssets()
-        self.sword = Weapon.SwordLike('Sword', (35, 35), (35, 35), self.weapons_assets.sword_asset)
+        self.sword1 = Weapon.SwordLike('Sword', (35, 35), (35, 35), self.weapons_assets.sword_asset)
+        self.sword2 = Weapon.SwordLike('Sword', (35, 35), (35, 35), self.weapons_assets.sword_asset)
 
         self.player_asset = PlayerAssets()
 
-        self.swordsman = Entity.Swordsman(self.player_asset, self.entities_surface, start_pos=(140., 595.), current_item=self.sword)
+        self.swordsman = Entity.Swordsman(self.player_asset, self.entities_surface, start_pos=(140., 595.), current_item=self.sword2)
         self.swordsman.physic.collision.get_collisions_around(self.base_room.collisions_map.map, 35)
 
-        self.player = Entity.Player(self.player_asset, self.entities_surface, start_pos=(560., 560.), current_item=self.sword)
+        self.player = Entity.Player(self.player_asset, self.entities_surface, start_pos=(560., 560.), current_item=self.sword1)
         self.player.physic.collision.get_collisions_around(self.base_room.collisions_map.map, 35)
 
         self.entities = [self.swordsman, self.player]
@@ -62,6 +63,8 @@ class Game:
             for NPC in self.NPCs:
                 NPC.states_stack.peek().update(self.base_room, NPC.states_stack, self.player, self.entities)
             render_entities(self.entities, self.entities_surface)
+            for i in range(len(self.swordsman.mind.way) - 1):
+                pg.draw.line(self.entities_surface, (255, 0, 0), self.swordsman.mind.way[i], self.swordsman.mind.way[i + 1])
             self.display.update()
             self.clock.tick(self.fps)
         pg.quit()
