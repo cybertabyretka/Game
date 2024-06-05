@@ -28,7 +28,8 @@ class NPCAfterPunchState(NPCState):
     def update(self, room, player, entities):
         damage = 0
         for damage_type in self.damage:
-            damage += self.damage[damage_type]
+            for damage_rect in self.damage[damage_type]:
+                damage += damage_rect.damage
         self.entity.health.health -= damage
         if self.entity.health.health <= 0:
             self.entity.states_stack.push(NPCDeathState(self.entity))
