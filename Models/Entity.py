@@ -1,4 +1,4 @@
-from Controllers.Entity.EntityPhysic import EntityPhysics
+from Controllers.Entity.EntityPhysic import EntityPhysics, PlayerPhysics, NPCPhysics
 from Controllers.Entity.EntityMind import Mind
 from Views.Entity import EntityV
 from Controllers.Entity import EntityStates
@@ -17,6 +17,7 @@ class Entity:
 class NPC(Entity):
     def __init__(self, images_paths, width: float, height: float, start_pos, max_velocity, current_item, surface, max_health):
         super().__init__(images_paths, width, height, start_pos, max_velocity, current_item, surface, max_health)
+        self.physic = NPCPhysics(width, height, start_pos, max_velocity)
         self.states_stack = Stack(EntityStates.NPCIdleState(self))
         self.mind = Mind()
 
@@ -24,6 +25,7 @@ class NPC(Entity):
 class Player(Entity):
     def __init__(self, images_paths, surface, width=35., height=35., start_pos=(350., 350.), max_velocity=2, current_item=None, max_health=20):
         super().__init__(images_paths, width, height, start_pos, max_velocity, current_item, surface, max_health)
+        self.physic = PlayerPhysics(width, height, start_pos, max_velocity)
 
 
 class Swordsman(NPC):
