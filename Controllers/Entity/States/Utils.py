@@ -5,9 +5,9 @@ def get_damage_and_movement(damage_map, entity_rect):
         damage_rect = damage_map[identifier]
         if entity_rect.colliderect(damage_rect.rect):
             if damage_rect.type not in types:
-                types[damage_rect.type] = [damage_rect]
+                types[damage_rect.type] = [damage_rect.copy()]
             else:
-                types[damage_rect.type].append(damage_rect)
+                types[damage_rect.type].append(damage_rect.copy())
             if damage_rect.direction == 0:
                 movement = (0, -entity_rect.width // 2)
             elif damage_rect.direction == 90:

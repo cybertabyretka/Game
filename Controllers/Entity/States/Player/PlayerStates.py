@@ -1,5 +1,7 @@
 import pygame as pg
 
+from Utils.Setting import GRAY_RGB
+
 from Controllers.Entity.States.Utils import get_damage_and_movement
 from Controllers.Entity.States.BaseStates import State
 
@@ -47,6 +49,8 @@ class PlayerShieldState(State):
         else:
             if event.type == pg.MOUSEBUTTONUP and not pg.mouse.get_pressed(3)[2]:
                 self.finished = True
+                self.entity.states_stack.pop()
+                self.entity.states_stack.peek().handle_inputs(self.events, room)
             elif event.type == pg.KEYUP or event.type == pg.KEYDOWN:
                 self.events.append(event)
 
@@ -69,6 +73,17 @@ class PlayerShieldState(State):
                             damage_rect.damage = 0
             check_damage_for_player_with_ready_damage_and_movement(self.entity, damage, movement)
 
+    def draw(self, screen):
+        if self.direction == 0:
+            pg.draw.rect(screen, GRAY_RGB, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y-2, self.entity.physic.collision.rect.width, 2))
+        elif self.direction == 90:
+            pg.draw.rect(screen, GRAY_RGB, (self.entity.physic.collision.rect.x+self.entity.physic.collision.rect.width, self.entity.physic.collision.rect.y, 2, self.entity.physic.collision.rect.height))
+        elif self.direction == 180:
+            pg.draw.rect(screen, GRAY_RGB, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y+self.entity.physic.collision.rect.height, self.entity.physic.collision.rect.width, 2))
+        else:
+            pg.draw.rect(screen, GRAY_RGB, (self.entity.physic.collision.rect.x-2, self.entity.physic.collision.rect.y, 2, self.entity.physic.collision.rect.height))
+        self.entity.entity_view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+
 
 class PlayerAfterPunchState(State):
     def __init__(self, entity):
@@ -86,6 +101,7 @@ class PlayerAfterPunchState(State):
         for damage_type in self.damage:
             for damage_rect in self.damage[damage_type]:
                 damage += damage_rect.damage
+        print(damage)
         self.entity.health.health -= damage
         self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.room_view.tile_size)
         self.entity.physic.collision.update(self.entity.physic.velocity, entities, movement=self.movement)
