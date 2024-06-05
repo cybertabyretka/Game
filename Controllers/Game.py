@@ -56,12 +56,12 @@ class Game:
                 if event.type == pg.QUIT:
                     running = False
                 old_len = self.player.states_stack.size()
-                self.player.states_stack.peek().handle_input(event, self.player.states_stack, self.base_room)
+                self.player.states_stack.peek().handle_input(event, self.base_room)
                 if self.player.states_stack.size() != old_len:
-                    self.player.states_stack.peek().handle_input(event, self.player.states_stack, self.base_room)
-            self.player.states_stack.peek().update(self.base_room, self.player.states_stack, self.entities)
+                    self.player.states_stack.peek().handle_input(event, self.base_room)
+            self.player.states_stack.peek().update(self.base_room, self.entities)
             for NPC in self.NPCs:
-                NPC.states_stack.peek().update(self.base_room, NPC.states_stack, self.player, self.entities)
+                NPC.states_stack.peek().update(self.base_room, self.player, self.entities)
             render_entities(self.entities, self.entities_surface)
             self.display.update()
             self.clock.tick(self.fps)

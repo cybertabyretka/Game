@@ -35,13 +35,13 @@ class EntityCollision:
     def entities_contacts_process(self, movement, entities):
         for entity in entities:
             if entity.physic.collision is not self and manhattan_distance((entity.physic.collision.collisions_around["center"].rect.x, entity.physic.collision.collisions_around["center"].rect.y), (self.rect.x, self.rect.y)) <= max(self.rect.width, self.rect.height) * 3:
-                if movement[0] > 0 and (entity.physic.collision.rect.x - self.rect.topright[0]) >= 0 and abs(self.rect.y - entity.physic.collision.rect.y) < self.rect.height:
+                if movement[0] > 0 and (entity.physic.collision.rect.x - self.rect.topright[0]) >= 0 and abs(self.rect.y - entity.physic.collision.rect.y) <= self.rect.height:
                     movement[0] = min(movement[0], entity.physic.collision.rect.x - self.rect.topright[0])
-                if movement[0] < 0 and (entity.physic.collision.rect.topright[0] - self.rect.x) <= 0 and abs(self.rect.y - entity.physic.collision.rect.y) < self.rect.height:
+                if movement[0] < 0 and (entity.physic.collision.rect.topright[0] - self.rect.x) <= 0 and abs(self.rect.y - entity.physic.collision.rect.y) <= self.rect.height:
                     movement[0] = max(movement[0], entity.physic.collision.rect.topright[0] - self.rect.x)
-                if movement[1] > 0 and (entity.physic.collision.rect.y - self.rect.bottomleft[1]) >= 0 and abs(self.rect.x - entity.physic.collision.rect.x) < self.rect.width:
+                if movement[1] > 0 and (entity.physic.collision.rect.y - self.rect.bottomleft[1]) >= 0 and abs(self.rect.x - entity.physic.collision.rect.x) <= self.rect.width:
                     movement[1] = min(movement[1], entity.physic.collision.rect.y - self.rect.bottomleft[1])
-                if movement[1] < 0 and (entity.physic.collision.rect.bottomleft[1] - self.rect.y) <= 0 and abs(self.rect.x - entity.physic.collision.rect.x) < self.rect.width:
+                if movement[1] < 0 and (entity.physic.collision.rect.bottomleft[1] - self.rect.y) <= 0 and abs(self.rect.x - entity.physic.collision.rect.x) <= self.rect.width:
                     movement[1] = max(movement[1], entity.physic.collision.rect.bottomleft[1] - self.rect.y)
         return movement
 
