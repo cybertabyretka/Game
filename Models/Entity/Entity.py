@@ -1,7 +1,11 @@
+from Views.Entity.Entity import EntityV
+
+from Models.Entity.HealthBar import HealthBar
+
 from Controllers.Entity.EntityPhysic import EntityPhysics, PlayerPhysics, NPCPhysics
 from Controllers.Entity.EntityMind import Mind
-from Views.Entity import EntityV
 from Controllers.Entity import EntityStates
+
 from Utils.Stack import Stack
 
 
@@ -11,7 +15,7 @@ class Entity:
         self.physic = EntityPhysics(width, height, start_pos, max_velocity)
         self.states_stack = Stack(EntityStates.PlayerIdleState(self))
         self.current_item = current_item
-        self.health = max_health
+        self.health = HealthBar(max_health)
 
 
 class NPC(Entity):
@@ -29,5 +33,5 @@ class Player(Entity):
 
 
 class Swordsman(NPC):
-    def __init__(self, images_paths, surface, width=35., height=35., start_pos=(120., 120.), max_velocity=1, current_item=None, max_health=20):
+    def __init__(self, images_paths, surface, width=35., height=35., start_pos=(120., 120.), max_velocity=1, current_item=None, max_health=15):
         super().__init__(images_paths, width, height, start_pos, max_velocity, current_item, surface, max_health)

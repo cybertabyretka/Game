@@ -106,8 +106,7 @@ class PlayerAfterPunchState(State):
 
 class NPCIdleState(NPCState):
     def update(self, room, player, entities):
-        if check_damage_for_NPC(self.entity, room.collisions_map.damage_map):
-            return
+        check_damage_for_NPC(self.entity, room.collisions_map.damage_map)
         self.entity.mind.search_way_in_graph((self.entity.physic.collision.collisions_around["center"].rect.x, self.entity.physic.collision.collisions_around["center"].rect.y), (player.physic.collision.collisions_around["center"].rect.x, player.physic.collision.collisions_around["center"].rect.y), room.collisions_map.graph)
         self.old_player_center_pos = (player.physic.collision.collisions_around["center"].rect.x, player.physic.collision.collisions_around["center"].rect.y)
         self.entity.states_stack.push(NPCWalkState(self.entity))
@@ -281,7 +280,7 @@ class PlayerPunchState(State):
             else:
                 self.finished = True
                 self.entity.states_stack.pop()
-        elif event.type != pg.MOUSEBUTTONDOWN and len(self.events) < 20:
+        elif event.type == pg.KEYUP and len(self.events) < 20:
             self.events.append(event)
 
     def update(self, room, entities):
