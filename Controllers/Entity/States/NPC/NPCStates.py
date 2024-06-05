@@ -14,6 +14,11 @@ def check_damage_for_NPC(entity, damage_map):
     return False
 
 
+class NPCDeathState(NPCState):
+    def __init__(self, entity):
+        super().__init__(entity)
+
+
 class NPCAfterPunchState(NPCState):
     def __init__(self, entity):
         super().__init__(entity)
@@ -22,6 +27,9 @@ class NPCAfterPunchState(NPCState):
 
     def update(self, room, player, entities):
         self.entity.health.health -= self.damage
+        if self.entity.health.health <= 0:
+            self.entity.states_stack.push(NPCDeathState(self.entity))
+            return
         self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.room_view.tile_size)
         self.entity.physic.collision.update(self.entity.physic.velocity, entities, movement=self.movement)
         self.finished = True

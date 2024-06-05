@@ -34,7 +34,7 @@ class EntityCollision:
 
     def entities_contacts_process(self, movement, entities):
         for entity in entities:
-            if entity.physic.collision is not self and manhattan_distance((entity.physic.collision.rect.x, entity.physic.collision.rect.y), (self.rect.x, self.rect.y)) <= max(self.rect.width, self.rect.height) * 2:
+            if entity.health.health > 0 and entity.physic.collision is not self and manhattan_distance((entity.physic.collision.rect.x, entity.physic.collision.rect.y), (self.rect.x, self.rect.y)) <= max(self.rect.width, self.rect.height) * 2:
                 if movement[0] > 0 and (entity.physic.collision.rect.x - self.rect.topright[0]) >= 0 and abs(self.rect.y - entity.physic.collision.rect.y) <= self.rect.height:
                     movement[0] = min(movement[0], entity.physic.collision.rect.x - self.rect.topright[0])
                 if movement[0] < 0 and (entity.physic.collision.rect.topright[0] - self.rect.x) <= 0 and abs(self.rect.y - entity.physic.collision.rect.y) <= self.rect.height:
