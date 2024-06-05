@@ -63,8 +63,6 @@ class Game:
             for NPC in self.NPCs:
                 NPC.states_stack.peek().update(self.base_room, NPC.states_stack, self.player, self.entities)
             render_entities(self.entities, self.entities_surface)
-            for direction in self.player.physic.collision.collisions_around:
-                pg.draw.rect(self.entities_surface, (255, 0, 0), self.player.physic.collision.collisions_around[direction], 1)
             self.display.update()
             self.clock.tick(self.fps)
         pg.quit()
