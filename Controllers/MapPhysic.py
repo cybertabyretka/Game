@@ -51,4 +51,5 @@ class CollisionsMap:
         self.damage_map[identifier] = rect
 
     def remove_damage(self, identifier):
-        del self.damage_map[identifier]
+        if identifier in self.damage_map:
+            del self.damage_map[identifier]

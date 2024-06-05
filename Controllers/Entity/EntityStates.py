@@ -69,6 +69,23 @@ class NPCAfterPunchState(NPCState):
         self.entity.states_stack.pop()
 
 
+class PlayerAfterPunchState(State):
+    def __init__(self, entity):
+        super().__init__(entity)
+        self.movement = (0, 0)
+        self.events = []
+
+    def handle_input(self, event, states_stack: Stack, room):
+        self.events.append(event)
+
+    def update(self, room, states_stack, entities):
+        self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.room_view.tile_size)
+        self.entity.physic.collision.update(self.entity.physic.velocity, entities, movement=self.movement)
+        self.finished = True
+        self.entity.states_stack.pop()
+        self.entity.states_stack.peek().handle_inputs(self.events, states_stack, room)
+
+
 class NPCIdleState(NPCState):
     def update(self, room, states_stack, player, entities):
         damage, movement = check_damage_map(room.collisions_map.damage_map, self.entity.physic.collision.rect)
@@ -87,6 +104,12 @@ class PlayerIdleState(State):
                 states_stack.push(PlayerWalkState(self.entity))
         if event.type == pg.MOUSEBUTTONDOWN:
             states_stack.push(PlayerPunchState(self.entity))
+
+    def update(self, room, states_stack, entities):
+        damage, movement = check_damage_map(room.collisions_map.damage_map, self.entity.physic.collision.rect)
+        if damage:
+            self.entity.states_stack.push(PlayerAfterPunchState(self.entity))
+            self.entity.states_stack.peek().movement = movement
 
 
 class NPCWalkState(NPCState):
@@ -163,6 +186,10 @@ class PlayerWalkState(State):
             states_stack.push(PlayerPunchState(self.entity))
 
     def update(self, room, states_stack, entities):
+        damage, movement = check_damage_map(room.collisions_map.damage_map, self.entity.physic.collision.rect)
+        if damage:
+            self.entity.states_stack.push(PlayerAfterPunchState(self.entity))
+            self.entity.states_stack.peek().movement = movement
         if len(self.directions) == 0:
             states_stack.pop()
             return
@@ -217,6 +244,10 @@ class PlayerPunchState(State):
         self.events = []
 
     def handle_input(self, event, states_stack: Stack, room):
+        damage, movement = check_damage_map(room.collisions_map.damage_map, self.entity.physic.collision.rect)
+        if damage:
+            self.entity.states_stack.push(PlayerAfterPunchState(self.entity))
+            self.entity.states_stack.peek().movement = movement
         if self.finished:
             self.events = []
             if pg.mouse.get_pressed(3)[0] and event.type == pg.MOUSEBUTTONDOWN:
