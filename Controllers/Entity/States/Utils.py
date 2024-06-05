@@ -1,10 +1,13 @@
-def get_damage_and_direction(damage_map, entity_rect):
-    damage = 0
+def get_damage_and_movement(damage_map, entity_rect):
+    types = {}
     movement = (0, 0)
     for identifier in damage_map:
         damage_rect = damage_map[identifier]
         if entity_rect.colliderect(damage_rect.rect):
-            damage += 1
+            if damage_rect.type not in types:
+                types[damage_rect.type] = [damage_rect]
+            else:
+                types[damage_rect.type].append(damage_rect)
             if damage_rect.direction == 0:
                 movement = (0, -entity_rect.width // 2)
             elif damage_rect.direction == 90:
@@ -13,4 +16,4 @@ def get_damage_and_direction(damage_map, entity_rect):
                 movement = (0, entity_rect.width // 2)
             else:
                 movement = (-entity_rect.width // 2, 0)
-    return damage, movement
+    return types, movement

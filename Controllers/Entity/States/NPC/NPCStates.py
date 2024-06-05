@@ -1,11 +1,11 @@
 from Controllers.Entity.States.BaseStates import NPCState
-from Controllers.Entity.States.Utils import get_damage_and_direction
+from Controllers.Entity.States.Utils import get_damage_and_movement
 
 from Utils.Draw.Graph.PathFinding import manhattan_distance
 
 
 def check_damage_for_NPC(entity, damage_map):
-    damage, movement = get_damage_and_direction(damage_map, entity.physic.collision.rect)
+    damage, movement = get_damage_and_movement(damage_map, entity.physic.collision.rect)
     if damage:
         entity.states_stack.push(NPCAfterPunchState(entity))
         entity.states_stack.peek().movement = movement
@@ -23,10 +23,13 @@ class NPCAfterPunchState(NPCState):
     def __init__(self, entity):
         super().__init__(entity)
         self.movement = (0, 0)
-        self.damage = 0
+        self.damage = {}
 
     def update(self, room, player, entities):
-        self.entity.health.health -= self.damage
+        damage = 0
+        for damage_type in self.damage:
+            damage += self.damage[damage_type]
+        self.entity.health.health -= damage
         if self.entity.health.health <= 0:
             self.entity.states_stack.push(NPCDeathState(self.entity))
             return
@@ -38,7 +41,8 @@ class NPCAfterPunchState(NPCState):
 
 class NPCIdleState(NPCState):
     def update(self, room, player, entities):
-        check_damage_for_NPC(self.entity, room.collisions_map.damage_map)
+        if check_damage_for_NPC(self.entity, room.collisions_map.damage_map):
+            return
         self.entity.mind.search_way_in_graph((self.entity.physic.collision.collisions_around["center"].rect.x, self.entity.physic.collision.collisions_around["center"].rect.y), (player.physic.collision.collisions_around["center"].rect.x, player.physic.collision.collisions_around["center"].rect.y), room.collisions_map.graph)
         self.old_player_center_pos = (player.physic.collision.collisions_around["center"].rect.x, player.physic.collision.collisions_around["center"].rect.y)
         self.entity.states_stack.push(NPCWalkState(self.entity))

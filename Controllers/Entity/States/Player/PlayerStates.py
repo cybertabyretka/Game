@@ -1,11 +1,11 @@
 import pygame as pg
 
-from Controllers.Entity.States.Utils import get_damage_and_direction
+from Controllers.Entity.States.Utils import get_damage_and_movement
 from Controllers.Entity.States.BaseStates import State
 
 
 def check_damage_for_player(entity, damage_map):
-    damage, movement = get_damage_and_direction(damage_map, entity.physic.collision.rect)
+    damage, movement = get_damage_and_movement(damage_map, entity.physic.collision.rect)
     if damage:
         entity.states_stack.push(PlayerAfterPunchState(entity))
         entity.states_stack.peek().movement = movement
@@ -14,11 +14,67 @@ def check_damage_for_player(entity, damage_map):
     return False
 
 
+def check_damage_for_player_with_ready_damage_and_movement(entity, damage, movement):
+    if damage:
+        entity.states_stack.push(PlayerAfterPunchState(entity))
+        entity.states_stack.peek().movement = movement
+        entity.states_stack.peek().damage = damage
+        return True
+    return False
+
+
+class PlayerShieldState(State):
+    def __init__(self, entity):
+        super().__init__(entity)
+        self.direction = None
+        self.events = []
+
+    def handle_input(self, event, room):
+        if self.finished:
+            if event.type == pg.MOUSEBUTTONDOWN and pg.mouse.get_pressed(3)[2]:
+                if event.pos[1] < self.entity.physic.collision.rect.y and self.entity.physic.collision.rect.x < event.pos[0] < self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
+                    self.direction = 0
+                    self.finished = False
+                elif self.entity.physic.collision.rect.y < event.pos[1] < self.entity.physic.collision.rect.y + self.entity.physic.collision.rect.height and event.pos[0] > self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
+                    self.direction = 90
+                    self.finished = False
+                elif event.pos[1] > self.entity.physic.collision.rect.y and self.entity.physic.collision.rect.x < event.pos[0] < self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
+                    self.direction = 180
+                    self.finished = False
+                elif self.entity.physic.collision.rect.y < event.pos[1] < self.entity.physic.collision.rect.y + self.entity.physic.collision.rect.height and event.pos[0] < self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
+                    self.direction = 270
+                    self.finished = False
+        else:
+            if event.type == pg.MOUSEBUTTONUP and not pg.mouse.get_pressed(3)[2]:
+                self.finished = True
+            elif event.type == pg.KEYUP or event.type == pg.KEYDOWN:
+                self.events.append(event)
+
+    def update(self, room, entities):
+        if self.finished:
+            self.entity.states_stack.pop()
+            self.entity.states_stack.peek().handle_inputs(self.events, room)
+        else:
+            damage, movement = get_damage_and_movement(room.collisions_map.damage_map, self.entity.physic.collision.rect)
+            for damage_type in damage:
+                if damage_type == 'sword':
+                    for damage_rect in damage[damage_type]:
+                        if damage_rect.direction == 0 and self.direction == 180:
+                            damage_rect.damage = 0
+                        elif damage_rect.direction == 90 and self.direction == 270:
+                            damage_rect.damage = 0
+                        elif damage_rect.direction == 180 and self.direction == 0:
+                            damage_rect.damage = 0
+                        elif damage_rect.direction == 270 and self.direction == 90:
+                            damage_rect.damage = 0
+            check_damage_for_player_with_ready_damage_and_movement(self.entity, damage, movement)
+
+
 class PlayerAfterPunchState(State):
     def __init__(self, entity):
         super().__init__(entity)
         self.movement = (0, 0)
-        self.damage = 0
+        self.damage = {}
         self.events = []
 
     def handle_input(self, event, room):
@@ -26,7 +82,11 @@ class PlayerAfterPunchState(State):
             self.events.append(event)
 
     def update(self, room, entities):
-        self.entity.health.health -= self.damage
+        damage = 0
+        for damage_type in self.damage:
+            for damage_rect in self.damage[damage_type]:
+                damage += damage_rect.damage
+        self.entity.health.health -= damage
         self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.room_view.tile_size)
         self.entity.physic.collision.update(self.entity.physic.velocity, entities, movement=self.movement)
         self.finished = True
@@ -40,10 +100,14 @@ class PlayerIdleState(State):
             if event.key in (pg.K_w, pg.K_s, pg.K_a, pg.K_d):
                 self.entity.states_stack.push(PlayerWalkState(self.entity))
         if event.type == pg.MOUSEBUTTONDOWN:
-            self.entity.states_stack.push(PlayerPunchState(self.entity))
+            if pg.mouse.get_pressed(3)[0]:
+                self.entity.states_stack.push(PlayerPunchState(self.entity))
+            elif pg.mouse.get_pressed(3)[2]:
+                self.entity.states_stack.push(PlayerShieldState(self.entity))
 
     def update(self, room, entities):
-        check_damage_for_player(self.entity, room.collisions_map.damage_map)
+        if check_damage_for_player(self.entity, room.collisions_map.damage_map):
+            return
 
 
 class PlayerWalkState(State):
@@ -79,7 +143,10 @@ class PlayerWalkState(State):
                 if pg.K_d in self.directions:
                     self.directions.remove(pg.K_d)
         elif event.type == pg.MOUSEBUTTONDOWN:
-            self.entity.states_stack.push(PlayerPunchState(self.entity))
+            if pg.mouse.get_pressed(3)[0]:
+                self.entity.states_stack.push(PlayerPunchState(self.entity))
+            elif pg.mouse.get_pressed(3)[2]:
+                self.entity.states_stack.push(PlayerShieldState(self.entity))
 
     def update(self, room, entities):
         if check_damage_for_player(self.entity, room.collisions_map.damage_map):
@@ -144,4 +211,5 @@ class PlayerPunchState(State):
 
     def draw(self, screen):
         self.entity.entity_view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
-        self.entity.current_item.weapon_view.copied_animation.render(screen)
+        if not self.finished:
+            self.entity.current_item.weapon_view.copied_animation.render(screen)

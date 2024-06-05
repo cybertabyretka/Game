@@ -47,8 +47,8 @@ class CollisionsMap:
                         else:
                             self.graph[loc] = [(cross_ability, check_loc)]
 
-    def add_damage(self, rect, identifier):
-        self.damage_map[identifier] = rect
+    def add_damage(self, damage, identifier):
+        self.damage_map[identifier] = damage
 
     def remove_damage(self, identifier):
         if identifier in self.damage_map:

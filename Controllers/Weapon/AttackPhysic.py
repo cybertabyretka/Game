@@ -6,6 +6,8 @@ class SwordLikeAttackPhysics:
         self.direction = None
         self.attack_size = attack_size
         self.rect = None
+        self.type = 'sword'
+        self.damage = 1
 
     def set_attack_rect(self, start_pos, direction):
         self.rect = pg.Rect(start_pos[0], start_pos[1], self.attack_size[0], self.attack_size[1])
