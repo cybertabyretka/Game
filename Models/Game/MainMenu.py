@@ -6,7 +6,7 @@ from Utils.Stack import Stack
 
 
 class MainMenu:
-    def __init__(self, surface, surface_size, background_rect, buttons):
-        self.view = MainMenuV(surface, surface_size, background_rect)
+    def __init__(self, display, background_surface, buttons):
+        self.view = MainMenuV(display, background_surface)
         self.buttons = buttons
         self.states_stack = Stack(StartState(self))

@@ -27,7 +27,7 @@ class StartState(MainMenuState):
                     if self.selected_button is not None:
                         self.selected_button.view.selected = False
                         current_button_index = self.main_menu.buttons.index(self.selected_button)
-                        self.selected_button = self.main_menu.buttons[(current_button_index+1) % len(self.main_menu.buttons)]
+                        self.selected_button = self.main_menu.buttons[(current_button_index + 1) % len(self.main_menu.buttons)]
                     else:
                         self.selected_button = self.main_menu.buttons[0]
                     self.selected_button.view.selected = True
@@ -35,7 +35,7 @@ class StartState(MainMenuState):
                     if self.selected_button is not None:
                         self.selected_button.view.selected = False
                         current_button_index = self.main_menu.buttons.index(self.selected_button)
-                        self.selected_button = self.main_menu.buttons[(current_button_index-1) % len(self.main_menu.buttons)]
+                        self.selected_button = self.main_menu.buttons[(current_button_index - 1) % len(self.main_menu.buttons)]
                     else:
                         self.selected_button = self.main_menu.buttons[0]
                     self.selected_button.view.selected = True
