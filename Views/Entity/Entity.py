@@ -28,4 +28,4 @@ class EntityV:
 def render_entities(entities, surface, base_colour=(0, 0, 0)):
     surface.fill(base_colour)
     for entity in entities:
-        entity.states_stack.peek().draw(surface)
+        entity.states_stack.peek().render(surface)
