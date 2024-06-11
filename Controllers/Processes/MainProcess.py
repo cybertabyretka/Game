@@ -14,7 +14,7 @@ class MainProcess:
         self.fps = 60 * self.speed
         self.delta_time = 0.016
 
-    def run(self, display):
+    def run(self):
         self.is_running = True
         while self.is_running:
             self.processes_stack.peek().process.do()

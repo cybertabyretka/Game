@@ -36,4 +36,4 @@ if __name__ == '__main__':
     main_menu = MainMenu(DISPLAY, BACKGROUND_PICTURE)
     main = Main(DISPLAY, main_menu, game)
 
-    main.process.run(DISPLAY)
+    main.process.run()
