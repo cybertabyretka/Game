@@ -3,6 +3,7 @@ from Utils.Setting import NEIGHBOUR_OFFSETS
 
 class CollisionsMap:
     def __init__(self):
+        self.doors = {}
         self.map = {}
         self.graph = {}
         self.damage_map = {}

@@ -3,17 +3,17 @@ import pygame as pg
 pg.init()
 pg.font.init()
 
-from Views.Display import Display
-
 from Models.Main import Main
 from Models.Game.Game import Game
 from Models.Game.MainMenu import MainMenu
-from Models.Asset import WeaponsAssets, PlayerAssets
-from Models.RoomsMap import RoomsMap
+from Models.Asset import WeaponsAssets, PlayerAssets, TilesAssets
+from Models.Room.RoomsMap import RoomsMap
 from Models.Entity.Entity import Swordsman, Player
 from Models.Weapon import SwordLike
+from Models.Room.Tile import Tile
 
-from Utils.Setting import DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_NAME, BACKGROUND_PICTURE, DISPLAY, TILE_SIZE
+from Utils.TileMap import add_doors
+from Utils.Setting import DISPLAY_WIDTH, DISPLAY_HEIGHT, BACKGROUND_PICTURE, DISPLAY, TILE_SIZE
 
 
 if __name__ == '__main__':
@@ -29,7 +29,8 @@ if __name__ == '__main__':
     NPCs = [swordsman]
 
     rooms_map = RoomsMap((1, 1))
-    rooms_map.make_room((0, 0), DISPLAY.surface, [swordsman])
+    doors = {(0, 350): Tile(TilesAssets().doors['front_door'][0], 'front_door', 0, 0, (350, 0))}
+    rooms_map.make_room((0, 0), DISPLAY.surface, NPCs, doors)
 
     for NPC in NPCs:
         NPC.physic.collision.get_collisions_around(rooms_map.get_current_room().collisions_map.map, TILE_SIZE)
