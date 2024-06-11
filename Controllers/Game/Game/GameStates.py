@@ -19,14 +19,14 @@ class GameOn(GameState):
             self.game.player.states_stack.peek().handle_input(event, self.game.room)
 
     def update(self):
-        self.game.player.states_stack.peek().update(self.game.room, self.game.entities)
-        for NPC in self.game.NPCs:
-            NPC.states_stack.peek().update(self.game.room, self.game.player, self.game.entities)
+        self.game.player.states_stack.peek().update(self.game.room, self.game.room.NPCs)
+        for NPC in self.game.room.NPCs:
+            NPC.states_stack.peek().update(self.game.room, self.game.player, [*self.game.room.NPCs, self.game.player])
 
     def draw(self):
         self.game.room.view.render_tile_map(self.game.room.view.surface)
         self.game.room.view.surface.blit(self.game.player.view.surface, (0., 0.))
         self.game.view.display.surface.blit(self.game.room.view.surface, (self.game.room.view.surface.get_rect().x, self.game.room.view.surface.get_rect().y))
-        render_entities(self.game.entities, self.game.player.view.surface)
-        render_health_bars(self.game.entities, self.game.player.view.surface)
+        render_entities(self.game.room.NPCs, self.game.player, self.game.player.view.surface)
+        render_health_bars(self.game.room.NPCs, self.game.player, self.game.player.view.surface)
         self.game.view.display.update()

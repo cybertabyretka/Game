@@ -25,7 +25,8 @@ class EntityV:
         self.surface.fill(base_colour)
 
 
-def render_entities(entities, surface, base_colour=(0, 0, 0)):
+def render_entities(NPCs, player, surface, base_colour=(0, 0, 0)):
     surface.fill(base_colour)
-    for entity in entities:
-        entity.states_stack.peek().draw()
+    for NPC in NPCs:
+        NPC.states_stack.peek().draw()
+    player.states_stack.peek().draw()

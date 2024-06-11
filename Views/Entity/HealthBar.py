@@ -14,7 +14,8 @@ class HealthBarV:
             pos[0] += 1
 
 
-def render_health_bars(entities, surface):
-    for entity in entities:
-        if entity.health.health > 0:
-            entity.health.view.draw(surface, entity.physic.collision.rect, entity.health.health, entity.health.max_health)
+def render_health_bars(NPCs, player, surface):
+    for NPC in NPCs:
+        if NPC.health.health > 0:
+            NPC.health.view.draw(surface, NPC.physic.collision.rect, NPC.health.health, NPC.health.max_health)
+    player.health.view.draw(surface, player.physic.collision.rect, player.health.health, player.health.max_health)

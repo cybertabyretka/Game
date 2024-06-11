@@ -11,12 +11,12 @@ class RoomsMap:
         self.current_index = (0, 0)
 
     # noinspection PyTypeChecker
-    def make_room(self, pos, surface, width=DISPLAY_WIDTH, height=DISPLAY_HEIGHT, tile_size=TILE_SIZE, assets=None, tile_map=None):
+    def make_room(self, pos, surface, NPCs, width=DISPLAY_WIDTH, height=DISPLAY_HEIGHT, tile_size=TILE_SIZE, assets=None, tile_map=None):
         if assets is None:
             assets = TilesAssets()
         if tile_map is None:
             tile_map = create_base_tile_map(width, height, tile_size, assets)
-        room = Room(tile_map, surface, tile_size)
+        room = Room(tile_map, surface, tile_size, NPCs)
         room.view.tile_map = tile_map
         room.collisions_map.get_map_from_object(room.view.tile_map.tile_map)
         room.collisions_map.get_graph()
