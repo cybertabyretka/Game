@@ -10,7 +10,7 @@ class GameOn(GameState):
     def __init__(self, game):
         super().__init__(game)
 
-    def handle_input(self, event):
+    def handle_input(self, event, processes_stack):
         if event.type == pg.QUIT:
             pg.quit()
         old_len = self.game.player.states_stack.size()
@@ -24,9 +24,9 @@ class GameOn(GameState):
             NPC.states_stack.peek().update(self.game.room, self.game.player, self.game.entities)
 
     def draw(self):
-        self.game.base_room.view.render_tile_map(self.game.room.view.surface)
-        self.game.base_room.view.surface.blit(self.game.player.view.surface, (0., 0.))
-        self.game.display.surface.blit(self.game.room.view.surface, (self.game.room.view.surface.get_rect().x, self.game.room.view.surface.get_rect().y))
-        render_entities(self.game.entities, self.game.entities_surface)
+        self.game.room.view.render_tile_map(self.game.room.view.surface)
+        self.game.room.view.surface.blit(self.game.player.view.surface, (0., 0.))
+        self.game.view.display.surface.blit(self.game.room.view.surface, (self.game.room.view.surface.get_rect().x, self.game.room.view.surface.get_rect().y))
+        render_entities(self.game.entities, self.game.player.view.surface)
         render_health_bars(self.game.entities, self.game.player.view.surface)
-        self.game.display.update()
+        self.game.view.display.update()

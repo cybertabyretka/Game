@@ -73,15 +73,15 @@ class PlayerShieldState(State):
                             damage_rect.damage = 0
             check_damage_for_player_with_ready_damage_and_movement(self.entity, damage, movement)
 
-    def draw(self, screen):
+    def draw(self):
         if self.direction == 0:
-            pg.draw.rect(screen, GRAY_RGB, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y-2, self.entity.physic.collision.rect.width, 2))
+            pg.draw.rect(self.entity.view.surface, GRAY_RGB, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y-2, self.entity.physic.collision.rect.width, 2))
         elif self.direction == 90:
-            pg.draw.rect(screen, GRAY_RGB, (self.entity.physic.collision.rect.x+self.entity.physic.collision.rect.width, self.entity.physic.collision.rect.y, 2, self.entity.physic.collision.rect.height))
+            pg.draw.rect(self.entity.view.surface, GRAY_RGB, (self.entity.physic.collision.rect.x+self.entity.physic.collision.rect.width, self.entity.physic.collision.rect.y, 2, self.entity.physic.collision.rect.height))
         elif self.direction == 180:
-            pg.draw.rect(screen, GRAY_RGB, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y+self.entity.physic.collision.rect.height, self.entity.physic.collision.rect.width, 2))
+            pg.draw.rect(self.entity.view.surface, GRAY_RGB, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y+self.entity.physic.collision.rect.height, self.entity.physic.collision.rect.width, 2))
         else:
-            pg.draw.rect(screen, GRAY_RGB, (self.entity.physic.collision.rect.x-2, self.entity.physic.collision.rect.y, 2, self.entity.physic.collision.rect.height))
+            pg.draw.rect(self.entity.view.surface, GRAY_RGB, (self.entity.physic.collision.rect.x-2, self.entity.physic.collision.rect.y, 2, self.entity.physic.collision.rect.height))
         self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
 
 
@@ -225,7 +225,7 @@ class PlayerPunchState(State):
             self.entity.states_stack.pop()
             self.entity.states_stack.peek().handle_inputs(self.events, room)
 
-    def draw(self, screen):
+    def draw(self):
         self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
         if not self.finished:
-            self.entity.current_item.weapon_view.copied_animation.render(screen)
+            self.entity.current_item.weapon_view.copied_animation.render(self.entity.view.surface)

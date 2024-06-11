@@ -9,6 +9,9 @@ DISPLAY_WIDTH = 700
 DISPLAY_HEIGHT = 700
 DISPLAY_NAME = 'DUNGEON'
 
+START = 'Start'
+EXIT = 'Exit'
+
 DISPLAY = Display(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_NAME)
 
 BASE_PATH = 'C:/Users/333/PycharmProjects/Game/'
@@ -16,7 +19,7 @@ FONT_PATH = BASE_PATH + 'Data/Fonts/ofont.ru_Hero.ttf'
 
 BACKGROUND_PICTURE = load_image(BASE_PATH + 'Data/Images/MainMenu/background.png')
 
-TILES_SIZE = (35, 35)
+TILE_SIZE = (35, 35)
 
 NEIGHBOUR_OFFSETS = {'up': (0, -1), 'left': (-1, 0), 'center': (0, 0),
                      'right': (1, 0), 'down': (0, 1), 'left_up': (-1, -1),

@@ -117,7 +117,7 @@ class NPCPunchState(NPCState):
             room.collisions_map.remove_damage(id(self.entity.current_item.physic.attack_physic))
             self.entity.states_stack.pop()
 
-    def draw(self, screen):
+    def draw(self):
         self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
         if not self.finished:
-            self.entity.current_item.weapon_view.copied_animation.render(screen)
+            self.entity.current_item.weapon_view.copied_animation.render(self.entity.view.surface)

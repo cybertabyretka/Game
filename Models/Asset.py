@@ -7,8 +7,8 @@ class TilesAssets:
     def __init__(self):
         self.base_map_asset = {'tile_size': (35, 35),
                                'floor': load_images(BASE_PATH + 'Data/Images/Game/Environment/Floors'),
-                               'front_wall': load_images(BASE_PATH + 'Data/Images/Environment/Walls/Front'),
-                               'side_wall': load_images(BASE_PATH + 'Data/Images/Environment/Walls/Side')}
+                               'front_wall': load_images(BASE_PATH + 'Data/Images/Game/Environment/Walls/Front'),
+                               'side_wall': load_images(BASE_PATH + 'Data/Images/Game/Environment/Walls/Side')}
 
 
 class PlayerAssets:

@@ -17,4 +17,4 @@ class HealthBarV:
 def render_health_bars(entities, surface):
     for entity in entities:
         if entity.health.health > 0:
-            entity.health.view.render(surface, entity.physic.collision.rect, entity.health.health, entity.health.max_health)
+            entity.health.view.draw(surface, entity.physic.collision.rect, entity.health.health, entity.health.max_health)

@@ -13,7 +13,7 @@ class State:
     def update(self, room, entities):
         pass
 
-    def draw(self, screen):
+    def draw(self):
         self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
 
 
@@ -29,5 +29,5 @@ class NPCState:
     def update(self, room, player, entities):
         pass
 
-    def draw(self, screen):
+    def draw(self):
         self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
