@@ -3,15 +3,14 @@ from Utils.Setting import NEIGHBOUR_OFFSETS
 
 class CollisionsMap:
     def __init__(self):
-        self.doors = {}
+        self.doors = []
         self.map = {}
         self.graph = {}
         self.damage_map = {}
 
     def get_map_from_object(self, tile_map):
         for loc in tile_map:
-            tile = tile_map[loc]
-            self.map[loc] = tile.collision
+            self.map[loc] = tile_map[loc].collision
 
     def get_graph(self):
         for loc in self.map:

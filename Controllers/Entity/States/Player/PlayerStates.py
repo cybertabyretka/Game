@@ -114,7 +114,7 @@ class PlayerIdleState(State):
         if event.type == pg.KEYDOWN:
             if event.key in (pg.K_w, pg.K_s, pg.K_a, pg.K_d):
                 self.entity.states_stack.push(PlayerWalkState(self.entity))
-        if event.type == pg.MOUSEBUTTONDOWN:
+        elif event.type == pg.MOUSEBUTTONDOWN:
             if pg.mouse.get_pressed(3)[0]:
                 self.entity.states_stack.push(PlayerPunchState(self.entity))
             elif pg.mouse.get_pressed(3)[2]:

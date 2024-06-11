@@ -6,5 +6,5 @@ class RoomV:
 
     def render_tile_map(self, surface):
         for loc in self.tile_map.tile_map:
-            tile = self.tile_map.tile_map[loc]
-            tile.tile_view.render(surface, tuple(map(float, loc.split(';')))[::-1])
+            print(loc)
+            self.tile_map.tile_map[loc].tile_view.render(surface, tuple(map(float, loc.split(';'))))

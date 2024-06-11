@@ -32,6 +32,7 @@ class NPCAfterPunchState(NPCState):
                 damage += damage_rect.damage
         self.entity.health.health -= damage
         if self.entity.health.health <= 0:
+            room.live_NPCs_count -= 1
             self.entity.states_stack.push(NPCDeathState(self.entity))
             return
         self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.view.tile_size)

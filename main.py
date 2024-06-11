@@ -25,21 +25,23 @@ if __name__ == '__main__':
 
     player_asset = PlayerAssets()
 
+    player_start_pos = (120, 120)
+
     swordsman = Swordsman(player_asset, entities_surface, start_pos=(140, 595), current_item=swordsman_sword)
     NPCs = [swordsman]
 
     rooms_map = RoomsMap((1, 2))
-    rooms_map.make_room((0, 0), DISPLAY.surface, NPCs)
-    rooms_map.make_room((1, 0), DISPLAY.surface, NPCs)
-    doors = [Door(Tile(TilesAssets().doors['front_door'][0], 'front_door', 0, 0, (0, 350)),
-                  Tile(TilesAssets().doors['front_door'][0], 'front_door', 0, 0, (650, 350)),
+    rooms_map.make_room((0, 0), DISPLAY.surface, NPCs, player_start_pos)
+    rooms_map.make_room((1, 0), DISPLAY.surface, NPCs, player_start_pos)
+    doors = [Door(Tile(TilesAssets().doors['front_door'][0], 'front_door', 0, 0, (350, 0)),
+                  Tile(TilesAssets().doors['front_door'][0], 'front_door', 0, 0, (350, 650)),
                   rooms_map.map[0][0], rooms_map.map[1][0])]
     rooms_map.connect_rooms(doors[0])
 
     for NPC in NPCs:
         NPC.physic.collision.get_collisions_around(rooms_map.get_current_room().collisions_map.map, TILE_SIZE)
 
-    player = Player(player_asset, entities_surface, start_pos=(560, 560), current_item=player_sword)
+    player = Player(player_asset, entities_surface, start_pos=player_start_pos, current_item=player_sword)
     player.physic.collision.get_collisions_around(rooms_map.get_current_room().collisions_map.map, TILE_SIZE)
 
     game = Game(DISPLAY, rooms_map, player)

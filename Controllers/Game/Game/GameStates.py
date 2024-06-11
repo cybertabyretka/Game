@@ -5,6 +5,8 @@ from Controllers.Game.BaseStates import GameState
 from Views.Entity.Entity import render_entities
 from Views.Entity.HealthBar import render_health_bars
 
+from Utils.Draw.Graph.PathFinding import manhattan_distance
+
 
 class GameOn(GameState):
     def __init__(self, game):
@@ -13,6 +15,19 @@ class GameOn(GameState):
     def handle_input(self, event, processes_stack):
         if event.type == pg.QUIT:
             pg.quit()
+        elif event.type == pg.KEYDOWN:
+            if event.key == pg.K_e:
+                print(0)
+                if not self.game.room.live_NPCs_count:
+                    print(1)
+                    for door in self.game.room.collisions_map.doors:
+                        print(2)
+                        print(door.current_tile.collision.rect.topleft)
+                        if door.current_tile.collision.rect.collidepoint(pg.mouse.get_pos()):
+                            print(3)
+                            if manhattan_distance(door.current_tile.collision.rect.center, self.entity.physic.collision.rect.center <= min(self.entity.physic.collision.rect.width, self.entity.physic.collision.rect.height) * 2):
+                                print(4)
+                                self.game.room = door.get_next_room()
         old_len = self.game.player.states_stack.size()
         self.game.player.states_stack.peek().handle_input(event, self.game.room)
         if self.game.player.states_stack.size() != old_len:
