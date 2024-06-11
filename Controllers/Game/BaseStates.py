@@ -2,7 +2,7 @@ class GameState:
     def __init__(self, game):
         self.game = game
 
-    def handle_input(self):
+    def handle_input(self, event):
         pass
 
     def update(self):
