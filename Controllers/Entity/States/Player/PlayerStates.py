@@ -82,7 +82,7 @@ class PlayerShieldState(State):
             pg.draw.rect(screen, GRAY_RGB, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y+self.entity.physic.collision.rect.height, self.entity.physic.collision.rect.width, 2))
         else:
             pg.draw.rect(screen, GRAY_RGB, (self.entity.physic.collision.rect.x-2, self.entity.physic.collision.rect.y, 2, self.entity.physic.collision.rect.height))
-        self.entity.entity_view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+        self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
 
 
 class PlayerAfterPunchState(State):
@@ -103,7 +103,7 @@ class PlayerAfterPunchState(State):
                 damage += damage_rect.damage
         print(damage)
         self.entity.health.health -= damage
-        self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.room_view.tile_size)
+        self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.view.tile_size)
         self.entity.physic.collision.update(self.entity.physic.velocity, entities, movement=self.movement)
         self.finished = True
         self.entity.states_stack.pop()
@@ -172,18 +172,18 @@ class PlayerWalkState(State):
             return
         for direction in self.directions:
             if direction == pg.K_w:
-                self.entity.entity_view.rotate(0)
+                self.entity.view.rotate(0)
                 self.entity.physic.velocity[1] = -self.entity.physic.max_velocity
             elif direction == pg.K_s:
-                self.entity.entity_view.rotate(180)
+                self.entity.view.rotate(180)
                 self.entity.physic.velocity[1] = self.entity.physic.max_velocity
             elif direction == pg.K_a:
-                self.entity.entity_view.rotate(270)
+                self.entity.view.rotate(270)
                 self.entity.physic.velocity[0] = -self.entity.physic.max_velocity
             elif direction == pg.K_d:
-                self.entity.entity_view.rotate(90)
+                self.entity.view.rotate(90)
                 self.entity.physic.velocity[0] = self.entity.physic.max_velocity
-        self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.room_view.tile_size)
+        self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.view.tile_size)
         self.entity.physic.collision.update(self.entity.physic.velocity, entities)
 
 
@@ -226,6 +226,6 @@ class PlayerPunchState(State):
             self.entity.states_stack.peek().handle_inputs(self.events, room)
 
     def draw(self, screen):
-        self.entity.entity_view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+        self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
         if not self.finished:
             self.entity.current_item.weapon_view.copied_animation.render(screen)

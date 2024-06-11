@@ -23,7 +23,7 @@ class Game:
         self.display = display
 
         self.base_room = Room(create_base_tile_map(self.width, self.height, self.tile_size, self.tiles_assets), pg.Surface((self.width, self.height)))
-        self.base_room.collisions_map.get_map_from_object(self.base_room.room_view.tile_map.tile_map)
+        self.base_room.collisions_map.get_map_from_object(self.base_room.view.tile_map.tile_map)
         self.base_room.collisions_map.get_graph()
 
         self.entities_surface = pg.Surface((self.width, self.height))
@@ -51,9 +51,9 @@ class Game:
     def run(self):
         running = True
         while running:
-            self.base_room.room_view.render_tile_map(self.base_room.room_view.surface)
-            self.base_room.room_view.surface.blit(self.player.entity_view.surface, (0., 0.))
-            self.display.surface.blit(self.base_room.room_view.surface, (self.base_room.room_view.surface.get_rect().x, self.base_room.room_view.surface.get_rect().y))
+            self.base_room.view.render_tile_map(self.base_room.view.surface)
+            self.base_room.view.surface.blit(self.player.view.surface, (0., 0.))
+            self.display.surface.blit(self.base_room.view.surface, (self.base_room.view.surface.get_rect().x, self.base_room.view.surface.get_rect().y))
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     running = False

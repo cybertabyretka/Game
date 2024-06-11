@@ -12,6 +12,8 @@ class StartState(MainMenuState):
 
     def handle_input(self, event):
         for event in pg.event.get():
+            if event.type == pg.QUIT:
+                pg.quit()
             if event.type == pg.MOUSEMOTION:
                 mouse_click_pos = event.pos
                 for button in self.main_menu.buttons:
@@ -45,3 +47,4 @@ class StartState(MainMenuState):
 
     def draw(self):
         self.main_menu.view.render(self.main_menu.buttons)
+        self.main_menu.view.display.update()

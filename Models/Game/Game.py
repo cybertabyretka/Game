@@ -4,7 +4,10 @@ from Utils.Stack import Stack
 
 
 class Game:
-    def __init__(self, surface, rooms_map):
-        self.view = GameV(surface, rooms_map)
+    def __init__(self, display, rooms_map, NPCs, player):
+        self.view = GameV(display, rooms_map)
         self.states_stack = Stack()
-        self.entities =
+        self.room = rooms_map.get_current_room()
+        self.NPCs = NPCs
+        self.player = player
+        self.entities = [*NPCs, player]

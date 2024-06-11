@@ -12,7 +12,7 @@ from Utils.Stack import Stack
 
 class Entity:
     def __init__(self, images_asset, width: float, height: float, start_pos, max_velocity, current_item, surface, max_health):
-        self.entity_view = EntityV(images_asset, surface)
+        self.view = EntityV(images_asset, surface)
         self.physic = EntityPhysics(width, height, start_pos, max_velocity)
         self.states_stack = Stack(PlayerIdleState(self))
         self.current_item = current_item

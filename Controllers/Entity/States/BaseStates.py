@@ -14,7 +14,7 @@ class State:
         pass
 
     def draw(self, screen):
-        self.entity.entity_view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+        self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
 
 
 class NPCState:
@@ -30,4 +30,4 @@ class NPCState:
         pass
 
     def draw(self, screen):
-        self.entity.entity_view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+        self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))

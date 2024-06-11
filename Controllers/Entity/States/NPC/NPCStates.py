@@ -34,7 +34,7 @@ class NPCAfterPunchState(NPCState):
         if self.entity.health.health <= 0:
             self.entity.states_stack.push(NPCDeathState(self.entity))
             return
-        self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.room_view.tile_size)
+        self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.view.tile_size)
         self.entity.physic.collision.update(self.entity.physic.velocity, entities, movement=self.movement)
         self.finished = True
         self.entity.states_stack.pop()
@@ -61,16 +61,16 @@ class NPCWalkState(NPCState):
             if self.entity.mind.way:
                 next_coord = self.entity.mind.way[0]
                 if self.entity.physic.collision.collisions_around['center'].rect.x < next_coord[0]:
-                    self.entity.entity_view.rotate(90)
+                    self.entity.view.rotate(90)
                     self.entity.physic.velocity[0] = self.entity.physic.max_velocity
                 if self.entity.physic.collision.collisions_around['center'].rect.x > next_coord[0]:
-                    self.entity.entity_view.rotate(270)
+                    self.entity.view.rotate(270)
                     self.entity.physic.velocity[0] = -self.entity.physic.max_velocity
                 if self.entity.physic.collision.collisions_around['center'].rect.y < next_coord[1]:
-                    self.entity.entity_view.rotate(180)
+                    self.entity.view.rotate(180)
                     self.entity.physic.velocity[1] = self.entity.physic.max_velocity
                 if self.entity.physic.collision.collisions_around['center'].rect.y > next_coord[1]:
-                    self.entity.entity_view.rotate(0)
+                    self.entity.view.rotate(0)
                     self.entity.physic.velocity[1] = -self.entity.physic.max_velocity
                 elif self.entity.physic.collision.collisions_around['center'].rect.y == next_coord[1] and self.entity.physic.collision.collisions_around['center'].rect.x == next_coord[0]:
                     self.entity.mind.way.pop(0)
@@ -79,7 +79,7 @@ class NPCWalkState(NPCState):
             self.old_player_center_pos = current_player_center_pos
         else:
             self.entity.states_stack.pop()
-        self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.room_view.tile_size)
+        self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.view.tile_size)
         entities_around = self.entity.physic.collision.update(self.entity.physic.velocity, entities)
         for direction in entities_around:
             if entities_around[direction] is not None:
@@ -118,6 +118,6 @@ class NPCPunchState(NPCState):
             self.entity.states_stack.pop()
 
     def draw(self, screen):
-        self.entity.entity_view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+        self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
         if not self.finished:
             self.entity.current_item.weapon_view.copied_animation.render(screen)

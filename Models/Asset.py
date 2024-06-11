@@ -1,5 +1,4 @@
-from Utils.Image import load_images
-from Utils.Image import load_image
+from Utils.Image import load_images, load_image
 from Utils.Setting import BASE_PATH
 from Utils.Animation import Animation
 
@@ -28,6 +27,3 @@ class WeaponsAssets:
                             'animation_down': Animation(load_images(BASE_PATH + 'Data/Images/Game/Weapons/SwordLike/Sword/Down', set_colour=True), 1, False),
                             'animation_left': Animation(load_images(BASE_PATH + 'Data/Images/Game/Weapons/SwordLike/Sword/Left', set_colour=True), 1, False),
                             'animation_right': Animation(load_images(BASE_PATH + 'Data/Images/Game/Weapons/SwordLike/Sword/Right', set_colour=True), 1, False)}
-
-
-BACKGROUND_PICTURE = load_image(BASE_PATH + 'Data/Images/MainMenu/background.png')

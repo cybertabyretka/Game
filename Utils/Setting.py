@@ -1,12 +1,20 @@
 import pygame as pg
 
+from Utils.Image import load_image
 
-BASE_PATH = 'C:/Users/333/PycharmProjects/Game/'
-FONT_PATH = BASE_PATH + 'Data/Fonts/ofont.ru_Hero.ttf'
+from Views.Display import Display
+
 
 DISPLAY_WIDTH = 700
 DISPLAY_HEIGHT = 700
 DISPLAY_NAME = 'DUNGEON'
+
+DISPLAY = Display(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_NAME)
+
+BASE_PATH = 'C:/Users/333/PycharmProjects/Game/'
+FONT_PATH = BASE_PATH + 'Data/Fonts/ofont.ru_Hero.ttf'
+
+BACKGROUND_PICTURE = load_image(BASE_PATH + 'Data/Images/MainMenu/background.png')
 
 TILES_SIZE = (35, 35)
 

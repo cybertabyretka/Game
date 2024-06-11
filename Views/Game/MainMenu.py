@@ -1,9 +1,9 @@
 class MainMenuV:
-    def __init__(self, surface, background_rect):
-        self.surface = surface
+    def __init__(self, display, background_rect):
+        self.display = display
         self.background_surface = background_rect
 
     def render(self, buttons):
-        self.surface.blit(self.background_surface)
+        self.display.surface.blit(self.background_surface, (0., 0.))
         for button in buttons:
-            button.view.render(self.surface)
+            button.view.render(self.display.surface)
