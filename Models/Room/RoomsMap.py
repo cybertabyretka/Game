@@ -11,18 +11,24 @@ class RoomsMap:
         self.current_index = (0, 0)
 
     # noinspection PyTypeChecker
-    def make_room(self, pos, surface, NPCs, doors, width=DISPLAY_WIDTH, height=DISPLAY_HEIGHT, tile_size=TILE_SIZE, assets=None, tile_map=None):
+    def make_room(self, pos, surface, NPCs, width=DISPLAY_WIDTH, height=DISPLAY_HEIGHT, tile_size=TILE_SIZE, assets=None, tile_map=None):
         if assets is None:
             assets = TilesAssets()
         if tile_map is None:
             tile_map = create_base_tile_map(width, height, tile_size, assets)
-        add_doors(doors, tile_map.tile_map)
         room = Room(tile_map, surface, tile_size, NPCs)
         room.view.tile_map = tile_map
         room.collisions_map.get_map_from_object(room.view.tile_map.tile_map)
         room.collisions_map.get_graph()
-        room.collisions_map.doors = doors
         self.map[pos[0]][pos[1]] = room
+
+    @staticmethod
+    def connect_rooms(door):
+        add_doors(door)
+        door.current_room.collisions_map.get_map_from_object(door.current_room.view.tile_map.tile_map)
+        door.current_room.collisions_map.get_graph()
+        door.next_room.collisions_map.get_map_from_object(door.next_room.view.tile_map.tile_map)
+        door.next_room.collisions_map.get_graph()
 
     def get_current_room(self):
         return self.map[self.current_index[0]][self.current_index[1]]

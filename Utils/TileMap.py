@@ -23,7 +23,11 @@ def create_base_tile_map(width, height, tile_size, assets):
     return tile_map
 
 
-def add_doors(doors, tile_map):
-    for coordinate in doors:
-        coordinate_str = convert_to_string(coordinate)
-        tile_map[coordinate_str] = doors[coordinate]
+def add_doors(door):
+    current_str_coordinates = convert_to_string(door.current_tile.collision.rect.topleft)
+    next_str_coordinates = convert_to_string(door.next_tile.collision.rect.topleft)
+    door.current_room.view.tile_map.tile_map[current_str_coordinates] = door.current_tile
+    door.current_room.collisions_map.map[current_str_coordinates] = door.current_tile.collision
+    door.next_room.view.tile_map.tile_map[next_str_coordinates] = door.next_tile
+    door.next_room.collisions_map.map[next_str_coordinates] = door.next_tile.collision
+

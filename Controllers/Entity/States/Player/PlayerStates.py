@@ -93,7 +93,7 @@ class PlayerAfterPunchState(State):
         self.events = []
 
     def handle_input(self, event, room):
-        if len(self.events) < 20:
+        if len(self.events) < 35:
             self.events.append(event)
 
     def update(self, room, entities):
@@ -101,7 +101,6 @@ class PlayerAfterPunchState(State):
         for damage_type in self.damage:
             for damage_rect in self.damage[damage_type]:
                 damage += damage_rect.damage
-        print(damage)
         self.entity.health.health -= damage
         self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.view.tile_size)
         self.entity.physic.collision.update(self.entity.physic.velocity, entities, movement=self.movement)
@@ -215,11 +214,17 @@ class PlayerPunchState(State):
             else:
                 self.finished = True
                 self.entity.states_stack.pop()
-        elif (event.type == pg.KEYUP or event.type == pg.KEYDOWN) and len(self.events) < 20:
+        elif (event.type == pg.KEYUP or event.type == pg.KEYDOWN) and len(self.events) < 35:
             self.events.append(event)
 
     def update(self, room, entities):
-        if self.entity.current_item.weapon_view.copied_animation.done:
+        if self.entity.current_item.weapon_view.copied_animation is not None:
+            if self.entity.current_item.weapon_view.copied_animation.done:
+                self.finished = True
+                room.collisions_map.remove_damage(id(self.entity.current_item.physic.attack_physic))
+                self.entity.states_stack.pop()
+                self.entity.states_stack.peek().handle_inputs(self.events, room)
+        else:
             self.finished = True
             room.collisions_map.remove_damage(id(self.entity.current_item.physic.attack_physic))
             self.entity.states_stack.pop()
