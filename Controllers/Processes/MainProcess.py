@@ -17,5 +17,5 @@ class MainProcess:
     def run(self):
         self.is_running = True
         while self.is_running:
-            self.processes_stack.peek().process.do(self.processes_stack)
+            self.processes_stack.peek().process.do(self.processes_stack, self)
             self.clock.tick(self.fps)

@@ -15,14 +15,14 @@ from Models.Room.Tile import Tile
 
 from Views.Item.ItemIcon import Icon
 
-from Utils.Setting import DISPLAY_WIDTH, DISPLAY_HEIGHT, BACKGROUND_PICTURE, DISPLAY, TILE_SIZE, SWORD_ICON
+from Utils.Setting import DISPLAY_WIDTH, DISPLAY_HEIGHT, BACKGROUND_PICTURE, DISPLAY, SWORD_ICON, TILE_SIZE
 from Utils.RoomsMap import make_room, connect_rooms
 
 if __name__ == '__main__':
     entities_surface = pg.Surface((DISPLAY_WIDTH, DISPLAY_HEIGHT))
 
     weapons_assets = WeaponsAssets()
-    sword_icon = Icon(SWORD_ICON, TILE_SIZE)
+    sword_icon = Icon(SWORD_ICON)
     player_sword = SwordLike('Sword', (35, 35), (35, 35), sword_icon, weapons_assets.sword_asset)
     swordsman_sword = SwordLike('Sword', (35, 35), (35, 35), sword_icon, weapons_assets.sword_asset)
 
@@ -34,8 +34,8 @@ if __name__ == '__main__':
     NPCs = [swordsman]
 
     rooms_map = RoomsMap((1, 2))
-    make_room(rooms_map.map, (0, 0), DISPLAY.surface, NPCs, player_start_pos)
-    make_room(rooms_map.map, (1, 0), DISPLAY.surface, [], player_start_pos)
+    make_room(rooms_map.map, (0, 0), DISPLAY.surface, NPCs)
+    make_room(rooms_map.map, (1, 0), DISPLAY.surface, [])
     doors = [Door(Tile(TilesAssets().doors['front_door'][0], 'front_door', 0, 0, (350, 0)),
                   Tile(TilesAssets().doors['front_door'][0], 'front_door', 0, 0, (350, 665)),
                   rooms_map.map[0][0], rooms_map.map[1][0],

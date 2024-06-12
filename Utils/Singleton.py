@@ -1,4 +1,4 @@
-class Singleton(object):
+class Singleton:
     def __new__(cls, *args, **kwargs):
         it = cls.__dict__.get('__it__')
         if it is not None:

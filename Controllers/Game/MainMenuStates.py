@@ -1,3 +1,5 @@
+import sys
+
 import pygame as pg
 import pygame.locals as loc
 
@@ -12,9 +14,9 @@ class StartState(MainMenuState):
         self.selected_button = None
         self.any_button_selected = False
 
-    def handle_input(self, event, processes_stack):
+    def handle_input(self, event, processes_stack, main_process):
         if event.type == pg.QUIT:
-            pg.quit()
+            main_process.is_running = False
         if event.type == pg.MOUSEMOTION:
             mouse_pos = event.pos
             for button in self.main_menu.buttons:
@@ -32,7 +34,7 @@ class StartState(MainMenuState):
                 if self.selected_button.view.text.view.text == START:
                     processes_stack.push(self.game)
                 elif self.selected_button.view.text.view.text == EXIT:
-                    pg.quit()
+                    main_process.is_running = False
         elif event.type == pg.KEYDOWN:
             if event.key == loc.K_s or event.key == loc.K_DOWN:
                 if self.selected_button is not None:
@@ -55,7 +57,7 @@ class StartState(MainMenuState):
                     if self.selected_button.view.text.view.text == START:
                         processes_stack.push(self.game)
                     elif self.selected_button.view.text.view.text == EXIT:
-                        pg.quit()
+                        main_process.is_running = False
 
     def update(self):
         pass

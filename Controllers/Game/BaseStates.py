@@ -2,7 +2,7 @@ class GameState:
     def __init__(self, game):
         self.game = game
 
-    def handle_input(self, event, processes_stack):
+    def handle_input(self, event, processes_stack, main_process):
         pass
 
     def update(self):
@@ -17,7 +17,7 @@ class MainMenuState:
         self.main_menu = main_menu
         self.game = game
 
-    def handle_input(self, event, processes_stack):
+    def handle_input(self, event, processes_stack, main_process):
         pass
 
     def update(self):

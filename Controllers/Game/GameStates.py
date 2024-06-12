@@ -1,3 +1,5 @@
+import sys
+
 import pygame as pg
 
 from Controllers.Game.BaseStates import GameState
@@ -12,16 +14,18 @@ class Running(GameState):
     def __init__(self, game):
         super().__init__(game)
 
-    def handle_input(self, event, processes_stack):
+    def handle_input(self, event, processes_stack, main_process):
         if event.type == pg.QUIT:
-            pg.quit()
+            main_process.is_running = False
         elif event.type == pg.KEYDOWN:
-            if event.key == pg.K_e:
+            if event.key == pg.K_f:
                 if not self.game.room.live_NPCs_count:
                     for door in self.game.room.collisions_map.doors:
                         if door.current_tile.collision.rect.collidepoint(pg.mouse.get_pos()):
                             if manhattan_distance(door.current_tile.collision.rect.center, self.game.player.physic.collision.rect.center) <= min(self.game.player.physic.collision.rect.width, self.game.player.physic.collision.rect.height) * 2:
                                 self.game.room, self.game.player.physic.collision.rect.topleft = door.get_next_room(self.game.room)
+            elif event.key in [pg.K_e, pg.K_p]:
+                self.game.states_stack.push(OnPause(self.game))
         old_len = self.game.player.states_stack.size()
         self.game.player.states_stack.peek().handle_input(event, self.game.room)
         if self.game.player.states_stack.size() != old_len:
@@ -45,8 +49,12 @@ class OnPause(GameState):
     def __init__(self, game):
         super().__init__(game)
 
-    def handle_input(self, event, processes_stack):
-        pass
+    def handle_input(self, event, processes_stack, main_process):
+        if event.type == pg.QUIT:
+            main_process.is_running = False
+        elif event.type == pg.KEYDOWN:
+            if event.key in [pg.K_e, pg.K_p]:
+                self.game.states_stack.pop()
 
     def update(self):
         pass
