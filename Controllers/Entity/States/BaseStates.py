@@ -1,4 +1,4 @@
-class State:
+class PlayerState:
     def __init__(self, entity):
         self.entity = entity
         self.finished = True

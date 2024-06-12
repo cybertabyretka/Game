@@ -10,11 +10,11 @@ from Models.Game.MainMenu import MainMenu
 from Models.Asset import WeaponsAssets, PlayerAssets, TilesAssets
 from Models.Room.RoomsMap import RoomsMap
 from Models.Entity.Entity import Swordsman, Player
-from Models.Weapon import SwordLike
+from Models.Item.Weapon import SwordLike
 from Models.Room.Tile import Tile
 
 from Utils.Setting import DISPLAY_WIDTH, DISPLAY_HEIGHT, BACKGROUND_PICTURE, DISPLAY, TILE_SIZE
-from Utils.RoomsMap import make_room, connect_rooms, add_doors
+from Utils.RoomsMap import make_room, connect_rooms
 
 if __name__ == '__main__':
     entities_surface = pg.Surface((DISPLAY_WIDTH, DISPLAY_HEIGHT))

@@ -8,7 +8,7 @@ from Views.Entity.HealthBar import render_health_bars
 from Utils.DistanceCounting import manhattan_distance
 
 
-class GameOn(GameState):
+class Running(GameState):
     def __init__(self, game):
         super().__init__(game)
 
@@ -39,3 +39,17 @@ class GameOn(GameState):
         render_entities(self.game.room.NPCs, self.game.player, self.game.player.view.surface)
         render_health_bars(self.game.room.NPCs, self.game.player, self.game.player.view.surface)
         self.game.view.display.update()
+
+
+class OnPause(GameState):
+    def __init__(self, game):
+        super().__init__(game)
+
+    def handle_input(self, event, processes_stack):
+        pass
+
+    def update(self):
+        pass
+
+    def draw(self):
+        pass

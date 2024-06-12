@@ -1,5 +1,10 @@
-class WeaponV:
-    def __init__(self, animation_asset_dict):
+from Views.Item.ItemIcon import Icon
+from Views.Item.Item import ItemV
+
+
+class WeaponV(ItemV):
+    def __init__(self, icon, animation_asset_dict):
+        super().__init__(icon)
         self.animation_asset_dict = animation_asset_dict
         self.copied_animation = None
 
@@ -14,7 +19,7 @@ class WeaponV:
             self.copied_animation = self.animation_asset_dict['animation_left'].copy()
         self.copied_animation.pos = pos
 
-    def render(self, surface):
+    def render_animation(self, surface):
         self.copied_animation.render(surface)
 
     def get_pos(self):

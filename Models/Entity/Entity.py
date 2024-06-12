@@ -5,7 +5,7 @@ from Models.Entity.HealthBar import HealthBar
 from Controllers.Entity.EntityPhysic import EntityPhysics, PlayerPhysics, NPCPhysics
 from Controllers.Entity.EntityMind import Mind
 from Controllers.Entity.States.NPCStates import NPCIdleState
-from Controllers.Entity.States.PlayerStates import PlayerIdleState
+from Controllers.Entity.States.PlayerStates import PlayerIdlePlayerState
 
 from Utils.Stack import Stack
 
@@ -14,7 +14,7 @@ class Entity:
     def __init__(self, images_asset, width: float, height: float, start_pos, max_velocity, current_item, surface, max_health):
         self.view = EntityV(images_asset, surface)
         self.physic = EntityPhysics(width, height, start_pos, max_velocity)
-        self.states_stack = Stack(PlayerIdleState(self))
+        self.states_stack = Stack(PlayerIdlePlayerState(self))
         self.current_item = current_item
         self.health = HealthBar(max_health)
 

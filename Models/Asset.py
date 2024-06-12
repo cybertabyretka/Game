@@ -25,7 +25,7 @@ class PlayerAssets:
 class WeaponsAssets:
     def __init__(self):
         self.tile_size = (35, 35)
-        self.sword_asset = {'animation_up': Animation(load_images(BASE_PATH + 'Data/Images/Game/Weapons/SwordLike/Sword/Up', set_colour=True), 1, False),
-                            'animation_down': Animation(load_images(BASE_PATH + 'Data/Images/Game/Weapons/SwordLike/Sword/Down', set_colour=True), 1, False),
-                            'animation_left': Animation(load_images(BASE_PATH + 'Data/Images/Game/Weapons/SwordLike/Sword/Left', set_colour=True), 1, False),
-                            'animation_right': Animation(load_images(BASE_PATH + 'Data/Images/Game/Weapons/SwordLike/Sword/Right', set_colour=True), 1, False)}
+        self.sword_asset = {'animation_up': Animation(load_images(BASE_PATH + 'Data/Images/Game/Items/Weapons/SwordLike/Sword/Up', set_colour=True), 1, False),
+                            'animation_down': Animation(load_images(BASE_PATH + 'Data/Images/Game/Items/Weapons/SwordLike/Sword/Down', set_colour=True), 1, False),
+                            'animation_left': Animation(load_images(BASE_PATH + 'Data/Images/Game/Items/Weapons/SwordLike/Sword/Left', set_colour=True), 1, False),
+                            'animation_right': Animation(load_images(BASE_PATH + 'Data/Images/Game/Items/Weapons/SwordLike/Sword/Right', set_colour=True), 1, False)}

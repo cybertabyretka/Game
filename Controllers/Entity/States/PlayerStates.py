@@ -3,13 +3,13 @@ import pygame as pg
 from Utils.Setting import GRAY_RGB
 
 from Controllers.Entity.States.Utils import get_damage_and_movement
-from Controllers.Entity.States.BaseStates import State
+from Controllers.Entity.States.BaseStates import PlayerState
 
 
 def check_damage_for_player(entity, damage_map):
     damage, movement = get_damage_and_movement(damage_map, entity.physic.collision.rect)
     if damage:
-        entity.states_stack.push(PlayerAfterPunchState(entity))
+        entity.states_stack.push(PlayerAfterPunchPlayerState(entity))
         entity.states_stack.peek().movement = movement
         entity.states_stack.peek().damage = damage
         return True
@@ -18,14 +18,14 @@ def check_damage_for_player(entity, damage_map):
 
 def check_damage_for_player_with_ready_damage_and_movement(entity, damage, movement):
     if damage:
-        entity.states_stack.push(PlayerAfterPunchState(entity))
+        entity.states_stack.push(PlayerAfterPunchPlayerState(entity))
         entity.states_stack.peek().movement = movement
         entity.states_stack.peek().damage = damage
         return True
     return False
 
 
-class PlayerShieldState(State):
+class PlayerShieldPlayerState(PlayerState):
     def __init__(self, entity):
         super().__init__(entity)
         self.direction = None
@@ -85,7 +85,7 @@ class PlayerShieldState(State):
         self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
 
 
-class PlayerAfterPunchState(State):
+class PlayerAfterPunchPlayerState(PlayerState):
     def __init__(self, entity):
         super().__init__(entity)
         self.movement = (0, 0)
@@ -109,23 +109,23 @@ class PlayerAfterPunchState(State):
         self.entity.states_stack.peek().handle_inputs(self.events, room)
 
 
-class PlayerIdleState(State):
+class PlayerIdlePlayerState(PlayerState):
     def handle_input(self, event, room):
         if event.type == pg.KEYDOWN:
             if event.key in (pg.K_w, pg.K_s, pg.K_a, pg.K_d):
-                self.entity.states_stack.push(PlayerWalkState(self.entity))
+                self.entity.states_stack.push(PlayerWalkPlayerState(self.entity))
         elif event.type == pg.MOUSEBUTTONDOWN:
             if pg.mouse.get_pressed(3)[0]:
-                self.entity.states_stack.push(PlayerPunchState(self.entity))
+                self.entity.states_stack.push(PlayerPunchPlayerState(self.entity))
             elif pg.mouse.get_pressed(3)[2]:
-                self.entity.states_stack.push(PlayerShieldState(self.entity))
+                self.entity.states_stack.push(PlayerShieldPlayerState(self.entity))
 
     def update(self, room, entities):
         if check_damage_for_player(self.entity, room.collisions_map.damage_map):
             return
 
 
-class PlayerWalkState(State):
+class PlayerWalkPlayerState(PlayerState):
     def __init__(self, entity):
         super().__init__(entity)
         self.directions = set()
@@ -159,9 +159,9 @@ class PlayerWalkState(State):
                     self.directions.remove(pg.K_d)
         elif event.type == pg.MOUSEBUTTONDOWN:
             if pg.mouse.get_pressed(3)[0]:
-                self.entity.states_stack.push(PlayerPunchState(self.entity))
+                self.entity.states_stack.push(PlayerPunchPlayerState(self.entity))
             elif pg.mouse.get_pressed(3)[2]:
-                self.entity.states_stack.push(PlayerShieldState(self.entity))
+                self.entity.states_stack.push(PlayerShieldPlayerState(self.entity))
 
     def update(self, room, entities):
         if check_damage_for_player(self.entity, room.collisions_map.damage_map):
@@ -186,7 +186,7 @@ class PlayerWalkState(State):
         self.entity.physic.collision.update(self.entity.physic.velocity, entities)
 
 
-class PlayerPunchState(State):
+class PlayerPunchPlayerState(PlayerState):
     def __init__(self, entity):
         super().__init__(entity)
         self.events = []
@@ -234,3 +234,17 @@ class PlayerPunchState(State):
         self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
         if not self.finished:
             self.entity.current_item.weapon_view.copied_animation.render(self.entity.view.surface)
+
+
+class InventoryOpen(PlayerState):
+    def __init__(self, entity):
+        super().__init__(entity)
+
+    def handle_input(self, event, room):
+        pass
+
+    def update(self, room, entities):
+        pass
+
+    def draw(self):
+        pass

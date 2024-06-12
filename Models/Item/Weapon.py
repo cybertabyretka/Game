@@ -1,4 +1,4 @@
-from Views.Weapon import WeaponV
+from Views.Item.Weapon import WeaponV
 from Controllers.Weapon.WeaponPhysic import SwordLikePhysic
 
 

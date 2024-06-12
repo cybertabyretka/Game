@@ -17,6 +17,7 @@ DISPLAY = Display(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_NAME)
 BASE_PATH = 'C:/Users/333/PycharmProjects/Game/'
 FONT_PATH = BASE_PATH + 'Data/Fonts/ofont.ru_Hero.ttf'
 
+EMPTY_ICON = load_image(BASE_PATH + 'Data/Images/Game/Items/empty_icon.png')
 BACKGROUND_PICTURE = load_image(BASE_PATH + 'Data/Images/MainMenu/background.png')
 
 TILE_SIZE = (35, 35)
