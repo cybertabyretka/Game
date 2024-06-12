@@ -13,10 +13,12 @@ from Models.Entity.Entity import Swordsman, Player
 from Models.Item.Weapon import SwordLike
 from Models.Room.Tile import Tile
 from Models.Entity.Inventory.Inventory import Inventory
+from Models.InGameWindow import InGameWindow
+from Models.Text import Text
 
 from Views.Item.ItemIcon import Icon
 
-from Utils.Setting import DISPLAY_WIDTH, DISPLAY_HEIGHT, BACKGROUND_PICTURE, DISPLAY, SWORD_ICON, TILE_SIZE
+from Utils.Setting import DISPLAY_WIDTH, DISPLAY_HEIGHT, BACKGROUND_PICTURE, DISPLAY, SWORD_ICON, TILE_SIZE, BASE_PLAYER_START_POS, DARK_GRAY_RGB, WHITE_RGB, FONT_PATH
 from Utils.RoomsMap import make_room, connect_rooms
 
 if __name__ == '__main__':
@@ -29,9 +31,9 @@ if __name__ == '__main__':
 
     player_asset = PlayerAssets()
 
-    player_start_pos = (120, 120)
+    player_inventory = Inventory((10, 10), (20, 20))
 
-    player_inventory = Inventory((10, 10), (20, 20), (200, 200))
+    player_windows = {'inventory_base': InGameWindow(Text('Your inventory', WHITE_RGB, 15, FONT_PATH), (200, 200), (200, 200), DARK_GRAY_RGB)}
 
     swordsman = Swordsman(player_asset, entities_surface, start_pos=(140, 595), current_item=swordsman_sword)
     NPCs = [swordsman]
@@ -48,7 +50,7 @@ if __name__ == '__main__':
     for NPC in NPCs:
         NPC.physic.collision.get_collisions_around(rooms_map.get_current_room().collisions_map.map, TILE_SIZE)
 
-    player = Player(player_asset, entities_surface, player_inventory, start_pos=player_start_pos, current_item=player_sword)
+    player = Player(player_asset, entities_surface, player_inventory, player_windows, start_pos=BASE_PLAYER_START_POS, current_item=player_sword)
     player.physic.collision.get_collisions_around(rooms_map.get_current_room().collisions_map.map, TILE_SIZE)
 
     game = Game(DISPLAY, rooms_map, player)

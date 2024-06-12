@@ -26,6 +26,7 @@ class Running(GameState):
                                 self.game.room, self.game.player.physic.collision.rect.topleft = door.get_next_room(self.game.room)
             elif event.key in [pg.K_e, pg.K_p]:
                 self.game.states_stack.push(OnPause(self.game))
+                self.game.states_stack.peek().handle_input(event, processes_stack, main_process)
                 self.game.player.states_stack.peek().handle_input(event, self.game.room)
                 return
         old_len = self.game.player.states_stack.size()
@@ -52,12 +53,11 @@ class OnPause(GameState):
         super().__init__(game)
 
     def handle_input(self, event, processes_stack, main_process):
-        print(event)
         if event.type == pg.QUIT:
             main_process.is_running = False
         elif event.type == pg.KEYDOWN:
             if event.key in [pg.K_e, pg.K_p]:
-                self.finished = True
+                self.finished = not self.finished
         self.game.player.states_stack.peek().handle_input(event, self.game.room)
 
     def update(self):

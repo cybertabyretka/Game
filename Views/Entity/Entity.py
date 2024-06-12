@@ -30,3 +30,9 @@ def render_entities(NPCs, player, surface, base_colour=(0, 0, 0)):
     for NPC in NPCs:
         NPC.states_stack.peek().draw()
     player.states_stack.peek().draw()
+
+
+class PlayerV(EntityV):
+    def __init__(self, asset, surface, windows):
+        super().__init__(asset, surface)
+        self.windows = windows

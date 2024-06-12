@@ -115,9 +115,6 @@ class PlayerIdleState(PlayerState):
             if event.key in (pg.K_w, pg.K_s, pg.K_a, pg.K_d):
                 self.entity.states_stack.push(PlayerWalkState(self.entity))
             elif event.key == pg.K_e:
-                print('0'*70)
-                print(True)
-                print('0'*70)
                 self.entity.states_stack.push(InventoryOpenState(self.entity))
         elif event.type == pg.MOUSEBUTTONDOWN:
             if pg.mouse.get_pressed(3)[0]:
@@ -203,7 +200,7 @@ class PlayerPunchState(PlayerState):
             return
         if self.finished:
             self.events = []
-            if pg.mouse.get_pressed(3)[0] and event.type == pg.MOUSEBUTTONDOWN:
+            if event.type == pg.MOUSEBUTTONDOWN and pg.mouse.get_pressed(3)[0]:
                 if event.pos[1] < self.entity.physic.collision.rect.y and self.entity.physic.collision.rect.x < event.pos[0] < self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
                     self.entity.current_item.set_animation(0, self.entity)
                 elif self.entity.physic.collision.rect.y < event.pos[1] < self.entity.physic.collision.rect.y + self.entity.physic.collision.rect.height and event.pos[0] > self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
@@ -250,11 +247,13 @@ class InventoryOpenState(PlayerState):
     def handle_input(self, event, room):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_e:
-                self.finished = True
+                self.finished = not self.finished
+                print(self.finished)
 
     def update(self, room, entities):
         if self.finished:
             self.entity.states_stack.pop()
 
     def draw(self):
-        self.entity.inventory.view.draw(self.entity.view.surface, self.entity.inventory.cells)
+        self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+        self.entity.view.windows['inventory_base'].view.draw(self.entity.view.surface, self.entity.inventory.view, self.entity.inventory.cells)
