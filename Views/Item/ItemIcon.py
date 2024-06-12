@@ -1,15 +1,15 @@
+from Utils.Singleton import Singleton
 from Utils.Setting import EMPTY_ICON
 
 
 class Icon:
-    def __init__(self, image, size):
+    def __init__(self, image):
         self.image = image
-        self.size = size
 
     def draw(self, surface, start_pos):
         surface.blit(self.image, start_pos)
 
 
-class EmptyIcon(Icon):
-    def __init__(self, size):
-        super().__init__(EMPTY_ICON, size)
+class EmptyIcon(Icon, Singleton):
+    def __init__(self):
+        super().__init__(EMPTY_ICON)

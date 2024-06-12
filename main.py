@@ -13,15 +13,18 @@ from Models.Entity.Entity import Swordsman, Player
 from Models.Item.Weapon import SwordLike
 from Models.Room.Tile import Tile
 
-from Utils.Setting import DISPLAY_WIDTH, DISPLAY_HEIGHT, BACKGROUND_PICTURE, DISPLAY, TILE_SIZE
+from Views.Item.ItemIcon import Icon
+
+from Utils.Setting import DISPLAY_WIDTH, DISPLAY_HEIGHT, BACKGROUND_PICTURE, DISPLAY, TILE_SIZE, SWORD_ICON
 from Utils.RoomsMap import make_room, connect_rooms
 
 if __name__ == '__main__':
     entities_surface = pg.Surface((DISPLAY_WIDTH, DISPLAY_HEIGHT))
 
     weapons_assets = WeaponsAssets()
-    player_sword = SwordLike('Sword', (35, 35), (35, 35), weapons_assets.sword_asset)
-    swordsman_sword = SwordLike('Sword', (35, 35), (35, 35), weapons_assets.sword_asset)
+    sword_icon = Icon(SWORD_ICON, TILE_SIZE)
+    player_sword = SwordLike('Sword', (35, 35), (35, 35), sword_icon, weapons_assets.sword_asset)
+    swordsman_sword = SwordLike('Sword', (35, 35), (35, 35), sword_icon, weapons_assets.sword_asset)
 
     player_asset = PlayerAssets()
 

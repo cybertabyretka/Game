@@ -107,13 +107,13 @@ class NPCPunchState(NPCState):
                 self.entity.current_item.set_animation(180, self.entity)
             else:
                 self.entity.current_item.set_animation(270, self.entity)
-            if self.entity.current_item.weapon_view.copied_animation is not None:
+            if self.entity.current_item.view.copied_animation is not None:
                 room.collisions_map.add_damage(self.entity.current_item.physic.attack_physic, id(self.entity.current_item.physic.attack_physic))
                 self.finished = False
             else:
                 self.finished = True
                 self.entity.states_stack.pop()
-        elif self.entity.current_item.weapon_view.copied_animation.done:
+        elif self.entity.current_item.view.copied_animation.done:
             self.finished = True
             room.collisions_map.remove_damage(id(self.entity.current_item.physic.attack_physic))
             self.entity.states_stack.pop()
@@ -121,4 +121,4 @@ class NPCPunchState(NPCState):
     def draw(self):
         self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
         if not self.finished:
-            self.entity.current_item.weapon_view.copied_animation.render(self.entity.view.surface)
+            self.entity.current_item.view.copied_animation.render(self.entity.view.surface)
