@@ -1,6 +1,6 @@
 import pygame as pg
 from Utils.Setting import NEIGHBOUR_OFFSETS
-from Utils.Draw.Graph.PathFinding import manhattan_distance
+from Utils.DistanceCounting import manhattan_distance
 
 
 class EntityPhysics:

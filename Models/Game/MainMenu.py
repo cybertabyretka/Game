@@ -1,6 +1,6 @@
 from Views.Game.MainMenu import MainMenuV
 
-from Controllers.Game.MainMenu.MainMenuStates import StartState
+from Controllers.Game.MainMenuStates import StartState
 from Controllers.Processes.MainMenuProcess import MainMenuProcess
 
 from Utils.Stack import Stack

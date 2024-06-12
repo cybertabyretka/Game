@@ -1,7 +1,7 @@
 from Controllers.Entity.States.BaseStates import NPCState
 from Controllers.Entity.States.Utils import get_damage_and_movement
 
-from Utils.Draw.Graph.PathFinding import manhattan_distance
+from Utils.DistanceCounting import manhattan_distance
 
 
 def check_damage_for_NPC(entity, damage_map):

@@ -13,8 +13,8 @@ from Models.Entity.Entity import Swordsman, Player
 from Models.Weapon import SwordLike
 from Models.Room.Tile import Tile
 
-from Utils.TileMap import add_doors
 from Utils.Setting import DISPLAY_WIDTH, DISPLAY_HEIGHT, BACKGROUND_PICTURE, DISPLAY, TILE_SIZE
+from Utils.RoomsMap import make_room, connect_rooms, add_doors
 
 if __name__ == '__main__':
     entities_surface = pg.Surface((DISPLAY_WIDTH, DISPLAY_HEIGHT))
@@ -31,13 +31,13 @@ if __name__ == '__main__':
     NPCs = [swordsman]
 
     rooms_map = RoomsMap((1, 2))
-    rooms_map.make_room((0, 0), DISPLAY.surface, NPCs, player_start_pos)
-    rooms_map.make_room((1, 0), DISPLAY.surface, [], player_start_pos)
+    make_room(rooms_map.map, (0, 0), DISPLAY.surface, NPCs, player_start_pos)
+    make_room(rooms_map.map, (1, 0), DISPLAY.surface, [], player_start_pos)
     doors = [Door(Tile(TilesAssets().doors['front_door'][0], 'front_door', 0, 0, (350, 0)),
                   Tile(TilesAssets().doors['front_door'][0], 'front_door', 0, 0, (350, 665)),
                   rooms_map.map[0][0], rooms_map.map[1][0],
                   (350, 35), (350, 630))]
-    rooms_map.connect_rooms(doors[0])
+    connect_rooms(doors[0])
 
     for NPC in NPCs:
         NPC.physic.collision.get_collisions_around(rooms_map.get_current_room().collisions_map.map, TILE_SIZE)

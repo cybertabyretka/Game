@@ -4,8 +4,8 @@ from Models.Entity.HealthBar import HealthBar
 
 from Controllers.Entity.EntityPhysic import EntityPhysics, PlayerPhysics, NPCPhysics
 from Controllers.Entity.EntityMind import Mind
-from Controllers.Entity.States.NPC.NPCStates import NPCIdleState
-from Controllers.Entity.States.Player.PlayerStates import PlayerIdleState
+from Controllers.Entity.States.NPCStates import NPCIdleState
+from Controllers.Entity.States.PlayerStates import PlayerIdleState
 
 from Utils.Stack import Stack
 

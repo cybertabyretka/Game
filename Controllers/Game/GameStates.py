@@ -5,7 +5,7 @@ from Controllers.Game.BaseStates import GameState
 from Views.Entity.Entity import render_entities
 from Views.Entity.HealthBar import render_health_bars
 
-from Utils.Draw.Graph.PathFinding import manhattan_distance
+from Utils.DistanceCounting import manhattan_distance
 
 
 class GameOn(GameState):

@@ -3,7 +3,7 @@ from Views.Game.Game import GameV
 from Utils.Stack import Stack
 
 from Controllers.Processes.GameProcess import GameProcess
-from Controllers.Game.Game.GameStates import GameOn
+from Controllers.Game.GameStates import GameOn
 
 
 class Game:

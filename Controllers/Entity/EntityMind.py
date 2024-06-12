@@ -1,4 +1,4 @@
-from Utils.Draw.Graph.PathFinding import a_star
+from Utils.Graph.PathFinding import a_star
 
 
 class Mind:
