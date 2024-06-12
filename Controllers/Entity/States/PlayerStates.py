@@ -243,16 +243,19 @@ class PlayerPunchState(PlayerState):
 class InventoryOpenState(PlayerState):
     def __init__(self, entity):
         super().__init__(entity)
+        self.events = []
 
     def handle_input(self, event, room):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_e:
                 self.finished = not self.finished
-                print(self.finished)
+        elif event.type == pg.KEYUP and len(self.events) < 35:
+            self.events.append(event)
 
     def update(self, room, entities):
         if self.finished:
             self.entity.states_stack.pop()
+            self.entity.states_stack.peek().handle_inputs(self.events, room)
 
     def draw(self):
         self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
