@@ -32,10 +32,11 @@ if __name__ == '__main__':
 
     rooms_map = RoomsMap((1, 2))
     rooms_map.make_room((0, 0), DISPLAY.surface, NPCs, player_start_pos)
-    rooms_map.make_room((1, 0), DISPLAY.surface, NPCs, player_start_pos)
+    rooms_map.make_room((1, 0), DISPLAY.surface, [], player_start_pos)
     doors = [Door(Tile(TilesAssets().doors['front_door'][0], 'front_door', 0, 0, (350, 0)),
-                  Tile(TilesAssets().doors['front_door'][0], 'front_door', 0, 0, (350, 650)),
-                  rooms_map.map[0][0], rooms_map.map[1][0])]
+                  Tile(TilesAssets().doors['front_door'][0], 'front_door', 0, 0, (350, 665)),
+                  rooms_map.map[0][0], rooms_map.map[1][0],
+                  (350, 35), (350, 630))]
     rooms_map.connect_rooms(doors[0])
 
     for NPC in NPCs:

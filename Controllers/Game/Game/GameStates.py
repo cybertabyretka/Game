@@ -21,7 +21,7 @@ class GameOn(GameState):
                     for door in self.game.room.collisions_map.doors:
                         if door.current_tile.collision.rect.collidepoint(pg.mouse.get_pos()):
                             if manhattan_distance(door.current_tile.collision.rect.center, self.game.player.physic.collision.rect.center) <= min(self.game.player.physic.collision.rect.width, self.game.player.physic.collision.rect.height) * 2:
-                                self.game.room = door.get_next_room()
+                                self.game.room, self.game.player.physic.collision.rect.topleft = door.get_next_room(self.game.room)
         old_len = self.game.player.states_stack.size()
         self.game.player.states_stack.peek().handle_input(event, self.game.room)
         if self.game.player.states_stack.size() != old_len:
