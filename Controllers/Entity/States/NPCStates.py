@@ -1,5 +1,5 @@
 from Controllers.Entity.States.BaseStates import NPCState
-from Controllers.Entity.States.Utils import get_damage_and_movement
+from Controllers.Entity.Utils import get_damage_and_movement
 
 from Utils.DistanceCounting import manhattan_distance
 

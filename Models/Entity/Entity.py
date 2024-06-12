@@ -28,9 +28,10 @@ class NPC(Entity):
 
 
 class Player(Entity):
-    def __init__(self, images_paths, surface, width=35., height=35., start_pos=(0, 0), max_velocity=2, current_item=None, max_health=20):
+    def __init__(self, images_paths, surface, inventory, width=35., height=35., start_pos=(0, 0), max_velocity=2, current_item=None, max_health=20):
         super().__init__(images_paths, width, height, start_pos, max_velocity, current_item, surface, max_health)
         self.physic = PlayerPhysics(width, height, start_pos, max_velocity)
+        self.inventory = inventory
 
 
 class Swordsman(NPC):

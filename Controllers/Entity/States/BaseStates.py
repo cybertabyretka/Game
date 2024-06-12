@@ -1,7 +1,7 @@
 class PlayerState:
     def __init__(self, entity):
         self.entity = entity
-        self.finished = True
+        self.finished = False
 
     def handle_input(self, event, room):
         pass
@@ -21,7 +21,7 @@ class NPCState:
     def __init__(self, entity):
         self.entity = entity
         self.old_player_center_pos = None
-        self.finished = True
+        self.finished = False
 
     def handle_input(self):
         pass

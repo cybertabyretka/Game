@@ -12,6 +12,7 @@ from Models.Room.RoomsMap import RoomsMap
 from Models.Entity.Entity import Swordsman, Player
 from Models.Item.Weapon import SwordLike
 from Models.Room.Tile import Tile
+from Models.Entity.Inventory.Inventory import Inventory
 
 from Views.Item.ItemIcon import Icon
 
@@ -30,6 +31,8 @@ if __name__ == '__main__':
 
     player_start_pos = (120, 120)
 
+    player_inventory = Inventory((10, 10), (20, 20), (200, 200))
+
     swordsman = Swordsman(player_asset, entities_surface, start_pos=(140, 595), current_item=swordsman_sword)
     NPCs = [swordsman]
 
@@ -45,7 +48,7 @@ if __name__ == '__main__':
     for NPC in NPCs:
         NPC.physic.collision.get_collisions_around(rooms_map.get_current_room().collisions_map.map, TILE_SIZE)
 
-    player = Player(player_asset, entities_surface, start_pos=player_start_pos, current_item=player_sword)
+    player = Player(player_asset, entities_surface, player_inventory, start_pos=player_start_pos, current_item=player_sword)
     player.physic.collision.get_collisions_around(rooms_map.get_current_room().collisions_map.map, TILE_SIZE)
 
     game = Game(DISPLAY, rooms_map, player)

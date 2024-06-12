@@ -1,9 +1,9 @@
 import pygame as pg
 
-from Utils.Setting import GRAY_RGB
-
-from Controllers.Entity.States.Utils import get_damage_and_movement
+from Controllers.Entity.Utils import get_damage_and_movement
 from Controllers.Entity.States.BaseStates import PlayerState
+
+from Utils.Setting import GRAY_RGB
 
 
 def check_damage_for_player(entity, damage_map):
@@ -114,6 +114,11 @@ class PlayerIdleState(PlayerState):
         if event.type == pg.KEYDOWN:
             if event.key in (pg.K_w, pg.K_s, pg.K_a, pg.K_d):
                 self.entity.states_stack.push(PlayerWalkState(self.entity))
+            elif event.key == pg.K_e:
+                print('0'*70)
+                print(True)
+                print('0'*70)
+                self.entity.states_stack.push(InventoryOpenState(self.entity))
         elif event.type == pg.MOUSEBUTTONDOWN:
             if pg.mouse.get_pressed(3)[0]:
                 self.entity.states_stack.push(PlayerPunchState(self.entity))
@@ -134,26 +139,28 @@ class PlayerWalkState(PlayerState):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_w:
                 self.directions.add(pg.K_w)
-            if event.key == pg.K_s:
+            elif event.key == pg.K_s:
                 self.directions.add(pg.K_s)
-            if event.key == pg.K_a:
+            elif event.key == pg.K_a:
                 self.directions.add(pg.K_a)
-            if event.key == pg.K_d:
+            elif event.key == pg.K_d:
                 self.directions.add(pg.K_d)
+            elif event.key == pg.K_e:
+                self.entity.states_stack.push(InventoryOpenState(self.entity))
         elif event.type == pg.KEYUP:
             if event.key == pg.K_w:
                 self.entity.physic.velocity[1] = 0
                 if pg.K_w in self.directions:
                     self.directions.remove(pg.K_w)
-            if event.key == pg.K_s:
+            elif event.key == pg.K_s:
                 self.entity.physic.velocity[1] = 0
                 if pg.K_s in self.directions:
                     self.directions.remove(pg.K_s)
-            if event.key == pg.K_a:
+            elif event.key == pg.K_a:
                 self.entity.physic.velocity[0] = 0
                 if pg.K_a in self.directions:
                     self.directions.remove(pg.K_a)
-            if event.key == pg.K_d:
+            elif event.key == pg.K_d:
                 self.entity.physic.velocity[0] = 0
                 if pg.K_d in self.directions:
                     self.directions.remove(pg.K_d)
@@ -236,15 +243,18 @@ class PlayerPunchState(PlayerState):
             self.entity.current_item.view.copied_animation.render(self.entity.view.surface)
 
 
-class InventoryOpen(PlayerState):
+class InventoryOpenState(PlayerState):
     def __init__(self, entity):
         super().__init__(entity)
 
     def handle_input(self, event, room):
-        pass
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_e:
+                self.finished = True
 
     def update(self, room, entities):
-        pass
+        if self.finished:
+            self.entity.states_stack.pop()
 
     def draw(self):
-        pass
+        self.entity.inventory.view.draw(self.entity.view.surface, self.entity.inventory.cells)

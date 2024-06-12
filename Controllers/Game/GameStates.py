@@ -26,6 +26,8 @@ class Running(GameState):
                                 self.game.room, self.game.player.physic.collision.rect.topleft = door.get_next_room(self.game.room)
             elif event.key in [pg.K_e, pg.K_p]:
                 self.game.states_stack.push(OnPause(self.game))
+                self.game.player.states_stack.peek().handle_input(event, self.game.room)
+                return
         old_len = self.game.player.states_stack.size()
         self.game.player.states_stack.peek().handle_input(event, self.game.room)
         if self.game.player.states_stack.size() != old_len:
@@ -50,14 +52,23 @@ class OnPause(GameState):
         super().__init__(game)
 
     def handle_input(self, event, processes_stack, main_process):
+        print(event)
         if event.type == pg.QUIT:
             main_process.is_running = False
         elif event.type == pg.KEYDOWN:
             if event.key in [pg.K_e, pg.K_p]:
-                self.game.states_stack.pop()
+                self.finished = True
+        self.game.player.states_stack.peek().handle_input(event, self.game.room)
 
     def update(self):
-        pass
+        if self.finished:
+            self.game.states_stack.pop()
+        else:
+            self.game.player.states_stack.peek().update(self.game.room, self.game.room.NPCs)
 
     def draw(self):
-        pass
+        self.game.room.view.render_tile_map(self.game.room.view.surface)
+        self.game.room.view.surface.blit(self.game.player.view.surface, (0., 0.))
+        self.game.view.display.surface.blit(self.game.room.view.surface, (self.game.room.view.surface.get_rect().x, self.game.room.view.surface.get_rect().y))
+        self.game.player.states_stack.peek().draw()
+        self.game.view.display.update()
