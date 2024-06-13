@@ -1,6 +1,8 @@
 from Controllers.Entity.States.BaseStates import NPCState
 from Controllers.Entity.Utils import get_damage_and_movement
 
+from Models.Room.Tile import LootTile
+
 from Utils.DistanceCounting import manhattan_distance
 
 
@@ -33,6 +35,7 @@ class NPCAfterPunchState(NPCState):
         self.entity.health.health -= damage
         if self.entity.health.health <= 0:
             room.live_NPCs_count -= 1
+            room.collisions_map.loot_tiles.append(LootTile(self.entity.view.current_image, 1, self.entity.physic.collision.rect.topleft, self.entity.inventory))
             self.entity.states_stack.push(NPCDeathState(self.entity))
             return
         self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.view.tile_size)

@@ -35,19 +35,22 @@ if __name__ == '__main__':
 
     player_asset = PlayerAssets()
 
+    swordsman_inventory = Inventory((5, 5), (30, 30))
+    swordsman_inventory.place_item((0, 0), swordsman_sword)
     player_inventory = Inventory((10, 10), (30, 30))
     player_inventory.place_items([(0, 0), (1, 0)], [player_sword, player_shield])
 
-    player_windows = {'inventory_base': InGameWindow(Text('Your inventory', WHITE_RGB, 15, FONT_PATH), (300, 315), (200, 100), DARK_GRAY_RGB)}
+    player_windows = {'inventory_base': InGameWindow(Text('Your inventory', WHITE_RGB, 15, FONT_PATH), (300, 315), (200, 100), DARK_GRAY_RGB),
+                      'inventory_for_steal': InGameWindow(Text('Loot', WHITE_RGB, 15, FONT_PATH), (300, 315), (200, 400), DARK_GRAY_RGB)}
 
-    swordsman = Swordsman(player_asset, entities_surface, start_pos=(140, 595), current_weapon=swordsman_sword)
+    swordsman = Swordsman(player_asset, entities_surface, swordsman_inventory, start_pos=(140, 595), current_weapon=swordsman_sword)
     NPCs = [swordsman]
 
     rooms_map = RoomsMap((1, 2))
     make_room(rooms_map.map, (0, 0), DISPLAY.surface, NPCs)
     make_room(rooms_map.map, (1, 0), DISPLAY.surface, [])
-    doors = [Door(Tile(TilesAssets().doors['front_door'][0], 'front_door', 0, 0, (350, 0)),
-                  Tile(TilesAssets().doors['front_door'][0], 'front_door', 0, 0, (350, 665)),
+    doors = [Door(Tile(TilesAssets().doors['front_door'][0], 0, (350, 0)),
+                  Tile(TilesAssets().doors['front_door'][0], 0, (350, 665)),
                   rooms_map.map[0][0], rooms_map.map[1][0],
                   (350, 35), (350, 630))]
     connect_rooms(doors[0])
