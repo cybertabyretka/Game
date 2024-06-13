@@ -244,11 +244,25 @@ class InventoryOpenState(PlayerState):
     def __init__(self, entity):
         super().__init__(entity)
         self.events = []
+        self.first_selected_index = None
 
     def handle_input(self, event, room):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_e:
                 self.finished = not self.finished
+        elif event.type == pg.MOUSEBUTTONDOWN:
+            if pg.mouse.get_pressed(3)[0]:
+                mouse_click_pos = event.pos
+                inventory_start_pos = (self.entity.view.windows['inventory_base'].view.rect.topleft[0], self.entity.view.windows['inventory_base'].view.rect.topleft[1] + self.entity.view.windows['inventory_base'].view.name.view.font_size)
+                inventory_cell_position = list(map(lambda x: x // self.entity.inventory.view.tile_size[0], (mouse_click_pos[0] - inventory_start_pos[0], mouse_click_pos[1] - inventory_start_pos[1])))
+                if inventory_cell_position[0] < self.entity.inventory.size[0] and inventory_cell_position[1] < self.entity.inventory.size[1]:
+                    if self.first_selected_index is None:
+                        self.first_selected_index = inventory_cell_position
+                        self.entity.inventory.change_cell_state(inventory_cell_position)
+                    else:
+                        self.entity.inventory.switch_items(self.first_selected_index, inventory_cell_position)
+                        self.entity.inventory.change_cell_state(self.first_selected_index)
+                        self.first_selected_index = None
         elif event.type == pg.KEYUP and len(self.events) < 35:
             self.events.append(event)
 
