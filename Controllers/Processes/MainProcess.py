@@ -1,8 +1,6 @@
 import pygame as pg
 
-from Utils.Stack import Stack
-
-from Models.Game.MainMenu import MainMenu
+from Utils.Settings.DataStructures.Stack import Stack
 
 
 class MainProcess:

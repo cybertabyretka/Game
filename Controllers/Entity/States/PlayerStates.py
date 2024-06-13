@@ -3,7 +3,7 @@ import pygame as pg
 from Controllers.Entity.Utils import get_damage_and_movement
 from Controllers.Entity.States.BaseStates import PlayerState
 
-from Utils.Setting import GRAY_RGB
+from Utils.Settings.Colours import GRAY_RGB
 
 
 def check_damage_for_player(entity, damage_map):
@@ -61,16 +61,16 @@ class PlayerShieldState(PlayerState):
         else:
             damage, movement = get_damage_and_movement(room.collisions_map.damage_map, self.entity.physic.collision.rect)
             for damage_type in damage:
-                if damage_type == 'sword':
+                if damage_type in self.entity.current_shield.damage_types:
                     for damage_rect in damage[damage_type]:
                         if damage_rect.direction == 0 and self.direction == 180:
-                            damage_rect.damage = 0
+                            damage_rect.damage = max(0, damage_rect.damage - self.entity.current_shield.strength)
                         elif damage_rect.direction == 90 and self.direction == 270:
-                            damage_rect.damage = 0
+                            damage_rect.damage = max(0, damage_rect.damage - self.entity.current_shield.strength)
                         elif damage_rect.direction == 180 and self.direction == 0:
-                            damage_rect.damage = 0
+                            damage_rect.damage = max(0, damage_rect.damage - self.entity.current_shield.strength)
                         elif damage_rect.direction == 270 and self.direction == 90:
-                            damage_rect.damage = 0
+                            damage_rect.damage = max(0, damage_rect.damage - self.entity.current_shield.strength)
             check_damage_for_player_with_ready_damage_and_movement(self.entity, damage, movement)
 
     def draw(self):

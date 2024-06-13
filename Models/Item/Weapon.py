@@ -6,8 +6,8 @@ from Models.Item.Item import Item
 
 
 class Weapon(Item):
-    def __init__(self, name, size, attack_size, icon, animation_asset_dict):
-        super().__init__(name, size, icon)
+    def __init__(self, name, size, attack_size, icon, animation_asset_dict, buttons):
+        super().__init__(name, size, icon, buttons)
         self.view = WeaponV(icon, animation_asset_dict)
         self.physic = SwordLikePhysic(attack_size)
 

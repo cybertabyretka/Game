@@ -1,5 +1,5 @@
 from Utils.Singleton import Singleton
-from Utils.Setting import EMPTY_ICON
+from Utils.Settings.Icons import EMPTY_ICON
 
 
 class Icon:

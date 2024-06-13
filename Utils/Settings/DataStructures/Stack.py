@@ -1,4 +1,4 @@
-from Utils.LinkedList import LinkedList
+from Utils.Settings.DataStructures.LinkedList import LinkedList
 
 
 class Stack:

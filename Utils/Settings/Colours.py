@@ -1,0 +1,5 @@
+GREEN_RGB = (0, 255, 0)
+RED_RGB = (255, 0, 0)
+WHITE_RGB = (0, 0, 0)
+GRAY_RGB = (122, 122, 122)
+DARK_GRAY_RGB = (75, 75, 75)

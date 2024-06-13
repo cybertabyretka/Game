@@ -1,5 +1,5 @@
 import pygame as pg
-from Utils.Setting import GREEN_RGB, RED_RGB
+from Utils.Settings.Colours import GREEN_RGB, RED_RGB
 
 
 class HealthBarV:
