@@ -120,9 +120,8 @@ class PlayerIdleState(PlayerState):
                     for robbed_tile in room.collisions_map.loot_tiles:
                         if robbed_tile.collision.rect.collidepoint(mouse_pos):
                             self.entity.states_stack.push(PlayerStealState(self.entity, robbed_tile.inventory))
-                            break
-                else:
-                    self.entity.states_stack.push(InventoryOpenState(self.entity))
+                            return
+                self.entity.states_stack.push(InventoryOpenState(self.entity))
         elif event.type == pg.MOUSEBUTTONDOWN:
             if pg.mouse.get_pressed(3)[0]:
                 self.entity.states_stack.push(PlayerPunchState(self.entity))
@@ -153,11 +152,10 @@ class PlayerWalkState(PlayerState):
                 if not room.live_NPCs_count:
                     mouse_pos = pg.mouse.get_pos()
                     for robbed_tile in room.collisions_map.loot_tiles:
-                        if robbed_tile.view.rect.collidepoint(mouse_pos):
+                        if robbed_tile.collision.rect.collidepoint(mouse_pos):
                             self.entity.states_stack.push(PlayerStealState(self.entity, robbed_tile.inventory))
-                            break
-                else:
-                    self.entity.states_stack.push(InventoryOpenState(self.entity))
+                            return
+                self.entity.states_stack.push(InventoryOpenState(self.entity))
         elif event.type == pg.KEYUP:
             if event.key == pg.K_w:
                 self.entity.physic.velocity[1] = 0
