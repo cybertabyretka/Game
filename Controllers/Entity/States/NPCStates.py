@@ -100,25 +100,25 @@ class NPCPunchState(NPCState):
             return
         if self.finished:
             if self.direction_for_punch == 'up':
-                self.entity.current_item.set_animation(0, self.entity)
+                self.entity.current_weapon.set_animation(0, self.entity)
             elif self.direction_for_punch == 'right':
-                self.entity.current_item.set_animation(90, self.entity)
+                self.entity.current_weapon.set_animation(90, self.entity)
             elif self.direction_for_punch == 'down':
-                self.entity.current_item.set_animation(180, self.entity)
+                self.entity.current_weapon.set_animation(180, self.entity)
             else:
-                self.entity.current_item.set_animation(270, self.entity)
-            if self.entity.current_item.view.copied_animation is not None:
-                room.collisions_map.add_damage(self.entity.current_item.physic.attack_physic, id(self.entity.current_item.physic.attack_physic))
+                self.entity.current_weapon.set_animation(270, self.entity)
+            if self.entity.current_weapon.view.copied_animation is not None:
+                room.collisions_map.add_damage(self.entity.current_weapon.physic.attack_physic, id(self.entity.current_weapon.physic.attack_physic))
                 self.finished = False
             else:
                 self.finished = True
                 self.entity.states_stack.pop()
-        elif self.entity.current_item.view.copied_animation.done:
+        elif self.entity.current_weapon.view.copied_animation.done:
             self.finished = True
-            room.collisions_map.remove_damage(id(self.entity.current_item.physic.attack_physic))
+            room.collisions_map.remove_damage(id(self.entity.current_weapon.physic.attack_physic))
             self.entity.states_stack.pop()
 
     def draw(self):
         self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
         if not self.finished:
-            self.entity.current_item.view.copied_animation.render(self.entity.view.surface)
+            self.entity.current_weapon.view.copied_animation.render(self.entity.view.surface)

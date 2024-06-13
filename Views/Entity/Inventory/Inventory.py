@@ -5,4 +5,4 @@ class InventoryV:
     def draw(self, surface, cells, start_pos):
         for i in range(len(cells[0])):
             for j in range(len(cells)):
-                cells[i][j].view.draw(surface, (start_pos[0] + (i * self.tile_size[0]), start_pos[1] + (j * self.tile_size[1])))
+                cells[i][j].view.draw(surface, (start_pos[0] + (i * self.tile_size[0]), start_pos[1] + (j * self.tile_size[1])), cells[i][j].item.view.icon)

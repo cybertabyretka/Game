@@ -15,10 +15,11 @@ from Models.Room.Tile import Tile
 from Models.Entity.Inventory.Inventory import Inventory
 from Models.InGameWindow import InGameWindow
 from Models.Text import Text
+from Models.Item.Shield import Shield
 
 from Views.Item.ItemIcon import Icon
 
-from Utils.Setting import DISPLAY_WIDTH, DISPLAY_HEIGHT, BACKGROUND_PICTURE, DISPLAY, SWORD_ICON, TILE_SIZE, BASE_PLAYER_START_POS, DARK_GRAY_RGB, WHITE_RGB, FONT_PATH
+from Utils.Setting import DISPLAY_WIDTH, DISPLAY_HEIGHT, BACKGROUND_PICTURE, DISPLAY, SWORD_ICON, TILE_SIZE, BASE_PLAYER_START_POS, DARK_GRAY_RGB, WHITE_RGB, FONT_PATH, SHIELD_ICON
 from Utils.RoomsMap import make_room, connect_rooms
 
 if __name__ == '__main__':
@@ -26,16 +27,20 @@ if __name__ == '__main__':
 
     weapons_assets = WeaponsAssets()
     sword_icon = Icon(SWORD_ICON)
-    player_sword = SwordLike('Sword', (35, 35), (35, 35), sword_icon, weapons_assets.sword_asset)
-    swordsman_sword = SwordLike('Sword', (35, 35), (35, 35), sword_icon, weapons_assets.sword_asset)
+    player_sword = SwordLike('Base sword', (20, 20), (35, 35), sword_icon, weapons_assets.sword_asset)
+    swordsman_sword = SwordLike('Base sword', (20, 20), (35, 35), sword_icon, weapons_assets.sword_asset)
+
+    shield_icon = Icon(SHIELD_ICON)
+    player_shield = Shield('Base shield', (20, 20), shield_icon, 2)
 
     player_asset = PlayerAssets()
 
-    player_inventory = Inventory((10, 10), (20, 20))
+    player_inventory = Inventory((10, 10), (30, 30))
+    player_inventory.place_items([(0, 0), (1, 0)], [player_sword, player_shield])
 
-    player_windows = {'inventory_base': InGameWindow(Text('Your inventory', WHITE_RGB, 15, FONT_PATH), (200, 200), (200, 200), DARK_GRAY_RGB)}
+    player_windows = {'inventory_base': InGameWindow(Text('Your inventory', WHITE_RGB, 15, FONT_PATH), (300, 315), (200, 100), DARK_GRAY_RGB)}
 
-    swordsman = Swordsman(player_asset, entities_surface, start_pos=(140, 595), current_item=swordsman_sword)
+    swordsman = Swordsman(player_asset, entities_surface, start_pos=(140, 595), current_weapon=swordsman_sword)
     NPCs = [swordsman]
 
     rooms_map = RoomsMap((1, 2))
@@ -50,7 +55,7 @@ if __name__ == '__main__':
     for NPC in NPCs:
         NPC.physic.collision.get_collisions_around(rooms_map.get_current_room().collisions_map.map, TILE_SIZE)
 
-    player = Player(player_asset, entities_surface, player_inventory, player_windows, start_pos=BASE_PLAYER_START_POS, current_item=player_sword)
+    player = Player(player_asset, entities_surface, player_inventory, player_windows, start_pos=BASE_PLAYER_START_POS, current_weapon=player_sword)
     player.physic.collision.get_collisions_around(rooms_map.get_current_room().collisions_map.map, TILE_SIZE)
 
     game = Game(DISPLAY, rooms_map, player)

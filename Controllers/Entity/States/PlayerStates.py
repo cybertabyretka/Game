@@ -202,15 +202,15 @@ class PlayerPunchState(PlayerState):
             self.events = []
             if event.type == pg.MOUSEBUTTONDOWN and pg.mouse.get_pressed(3)[0]:
                 if event.pos[1] < self.entity.physic.collision.rect.y and self.entity.physic.collision.rect.x < event.pos[0] < self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
-                    self.entity.current_item.set_animation(0, self.entity)
+                    self.entity.current_weapon.set_animation(0, self.entity)
                 elif self.entity.physic.collision.rect.y < event.pos[1] < self.entity.physic.collision.rect.y + self.entity.physic.collision.rect.height and event.pos[0] > self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
-                    self.entity.current_item.set_animation(90, self.entity)
+                    self.entity.current_weapon.set_animation(90, self.entity)
                 elif event.pos[1] > self.entity.physic.collision.rect.y and self.entity.physic.collision.rect.x < event.pos[0] < self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
-                    self.entity.current_item.set_animation(180, self.entity)
+                    self.entity.current_weapon.set_animation(180, self.entity)
                 elif self.entity.physic.collision.rect.y < event.pos[1] < self.entity.physic.collision.rect.y + self.entity.physic.collision.rect.height and event.pos[0] < self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
-                    self.entity.current_item.set_animation(270, self.entity)
-                if self.entity.current_item.view.copied_animation is not None:
-                    room.collisions_map.add_damage(self.entity.current_item.physic.attack_physic, id(self.entity.current_item.physic.attack_physic))
+                    self.entity.current_weapon.set_animation(270, self.entity)
+                if self.entity.current_weapon.view.copied_animation is not None:
+                    room.collisions_map.add_damage(self.entity.current_weapon.physic.attack_physic, id(self.entity.current_weapon.physic.attack_physic))
                     self.finished = False
                 else:
                     self.finished = True
@@ -222,22 +222,22 @@ class PlayerPunchState(PlayerState):
             self.events.append(event)
 
     def update(self, room, entities):
-        if self.entity.current_item.view.copied_animation is not None:
-            if self.entity.current_item.view.copied_animation.done:
+        if self.entity.current_weapon.view.copied_animation is not None:
+            if self.entity.current_weapon.view.copied_animation.done:
                 self.finished = True
-                room.collisions_map.remove_damage(id(self.entity.current_item.physic.attack_physic))
+                room.collisions_map.remove_damage(id(self.entity.current_weapon.physic.attack_physic))
                 self.entity.states_stack.pop()
                 self.entity.states_stack.peek().handle_inputs(self.events, room)
         else:
             self.finished = True
-            room.collisions_map.remove_damage(id(self.entity.current_item.physic.attack_physic))
+            room.collisions_map.remove_damage(id(self.entity.current_weapon.physic.attack_physic))
             self.entity.states_stack.pop()
             self.entity.states_stack.peek().handle_inputs(self.events, room)
 
     def draw(self):
         self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
         if not self.finished:
-            self.entity.current_item.view.copied_animation.render(self.entity.view.surface)
+            self.entity.current_weapon.view.copied_animation.render(self.entity.view.surface)
 
 
 class InventoryOpenState(PlayerState):

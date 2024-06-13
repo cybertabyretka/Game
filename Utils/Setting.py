@@ -17,12 +17,14 @@ DISPLAY = Display(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_NAME)
 BASE_PATH = 'C:/Users/333/PycharmProjects/Game/'
 FONT_PATH = BASE_PATH + 'Data/Fonts/ofont.ru_Hero.ttf'
 
-EMPTY_ICON = load_image(BASE_PATH + 'Data/Images/Game/Items/empty_icon.png')
+EMPTY_ICON = load_image(BASE_PATH + 'Data/Images/Game/Items/empty_icon.png', set_colour=True, colour_to_change=(120, 0, 12))
+SWORD_ICON = load_image(BASE_PATH + 'Data/Images/Game/Items/Weapons/SwordLike/Sword/Icon/sword.png', set_colour=True, colour_to_change=(120, 0, 12))
+SHIELD_ICON = load_image(BASE_PATH + 'Data/Images/Game/Items/Shields/BaseShield/Icon/shield.png', set_colour=True, colour_to_change=(120, 0, 12))
+
 EMPTY_NAME = 'empty'
 EMPTY_SIZE = (20, 20)
 
 BACKGROUND_PICTURE = load_image(BASE_PATH + 'Data/Images/MainMenu/background.png')
-SWORD_ICON = load_image(BASE_PATH + 'Data/Images/Game/Items/Weapons/SwordLike/Sword/Icon/sword.png')
 
 TILE_SIZE = (35, 35)
 
