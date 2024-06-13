@@ -329,8 +329,8 @@ class PlayerStealState(PlayerState):
                                 self.selected_index_in_another_inventory = inventory_cell_index
                                 self.inventory_for_steal.change_cell_state(inventory_cell_index)
                         else:
-                            self.inventory_for_steal(self.selected_index_in_another_inventory, inventory_cell_index)
-                            self.inventory_for_steal.change_cell_state(self.first_selected_index)
+                            self.inventory_for_steal.switch_with_another_inventory(self.selected_index_in_another_inventory, inventory_cell_index, self.inventory_for_steal)
+                            self.inventory_for_steal.change_cell_state(self.selected_index_in_another_inventory)
                             self.selected_index_in_another_inventory = None
         elif event.type == pg.KEYUP and len(self.events) < 35:
             self.events.append(event)
