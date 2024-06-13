@@ -4,6 +4,7 @@ from Controllers.Entity.Utils import get_damage_and_movement
 from Controllers.Entity.States.BaseStates import PlayerState
 
 from Utils.Settings.Colours import GRAY_RGB
+from Utils.DistanceCounting import manhattan_distance
 
 
 def check_damage_for_player(entity, damage_map):
@@ -117,9 +118,9 @@ class PlayerIdleState(PlayerState):
             elif event.key == pg.K_e:
                 if not room.live_NPCs_count:
                     mouse_pos = pg.mouse.get_pos()
-                    for robbed_tile in room.collisions_map.loot_tiles:
-                        if robbed_tile.collision.rect.collidepoint(mouse_pos):
-                            self.entity.states_stack.push(PlayerStealState(self.entity, robbed_tile.inventory))
+                    for steal_tile in room.collisions_map.loot_tiles:
+                        if steal_tile.collision.rect.collidepoint(mouse_pos) and manhattan_distance(steal_tile.collision.rect.topleft, self.entity.physic.collision.rect.topleft) <= min(self.entity.physic.collision.rect.width, self.entity.physic.collision.rect.height) * 2:
+                            self.entity.states_stack.push(PlayerStealState(self.entity, steal_tile.inventory))
                             return
                 self.entity.states_stack.push(InventoryOpenState(self.entity))
         elif event.type == pg.MOUSEBUTTONDOWN:
@@ -315,7 +316,7 @@ class PlayerStealState(PlayerState):
                                 self.entity.inventory.change_cell_state(inventory_cell_index)
                         else:
                             self.entity.inventory.switch_items(self.selected_index_in_inventory, inventory_cell_index)
-                            self.entity.inventory.change_cell_state(self.first_selected_index)
+                            self.entity.inventory.change_cell_state(self.selected_index_in_inventory)
                             self.selected_index_in_inventory = None
                 elif self.entity.view.windows['inventory_for_steal'].view.rect.collidepoint(mouse_click_pos):
                     inventory_cell_index = self.entity.inventory.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_for_steal'])

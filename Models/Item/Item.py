@@ -15,4 +15,4 @@ class Item:
 
 class EmptyItem(Item, Singleton):
     def __init__(self):
-        super().__init__(EMPTY_NAME, EMPTY_SIZE, EmptyIcon())
+        super().__init__(EMPTY_NAME, EMPTY_SIZE, EmptyIcon(), [])
