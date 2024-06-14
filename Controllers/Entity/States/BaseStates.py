@@ -2,6 +2,7 @@ class PlayerState:
     def __init__(self, entity):
         self.entity = entity
         self.finished = True
+        self.events = []
 
     def handle_input(self, event, room):
         pass
@@ -11,7 +12,9 @@ class PlayerState:
             self.handle_input(event, room)
 
     def update(self, room, entities):
-        pass
+        if self.finished:
+            self.entity.states_stack.pop()
+            self.entity.states_stack.peek().handle_inputs(self.events, room)
 
     def draw(self):
         self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))

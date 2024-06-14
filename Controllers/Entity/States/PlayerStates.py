@@ -30,7 +30,6 @@ class PlayerShieldState(PlayerState):
     def __init__(self, entity):
         super().__init__(entity)
         self.direction = None
-        self.events = []
 
     def handle_input(self, event, room):
         if self.finished:
@@ -91,7 +90,6 @@ class PlayerAfterPunchState(PlayerState):
         super().__init__(entity)
         self.movement = (0, 0)
         self.damage = {}
-        self.events = []
 
     def handle_input(self, event, room):
         if len(self.events) < 35:
@@ -206,7 +204,6 @@ class PlayerWalkState(PlayerState):
 class PlayerPunchState(PlayerState):
     def __init__(self, entity):
         super().__init__(entity)
-        self.events = []
 
     def handle_input(self, event, room):
         if check_damage_for_player(self.entity, room.collisions_map.damage_map):
@@ -256,19 +253,19 @@ class PlayerPunchState(PlayerState):
 class InventoryOpenState(PlayerState):
     def __init__(self, entity):
         super().__init__(entity)
-        self.events = []
         self.first_selected_index = None
+        self.buttons = []
 
     def handle_input(self, event, room):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_e:
                 self.finished = not self.finished
         elif event.type == pg.MOUSEBUTTONDOWN:
+            mouse_click_pos = event.pos
             if pg.mouse.get_pressed(3)[0]:
-                mouse_click_pos = event.pos
                 if self.entity.view.windows['inventory_base'].view.rect.collidepoint(mouse_click_pos):
                     inventory_cell_index = self.entity.inventory.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
-                    if inventory_cell_index[0] >= 0 and inventory_cell_index[1] >= 0:
+                    if self.entity.inventory.size[0] > inventory_cell_index[0] >= 0 and self.entity.inventory.size[1] > inventory_cell_index[1] >= 0:
                         if self.first_selected_index is None:
                             self.first_selected_index = inventory_cell_index
                             self.entity.inventory.change_cell_state(inventory_cell_index)
@@ -276,33 +273,37 @@ class InventoryOpenState(PlayerState):
                             self.entity.inventory.switch_items(self.first_selected_index, inventory_cell_index)
                             self.entity.inventory.change_cell_state(self.first_selected_index)
                             self.first_selected_index = None
+            elif pg.mouse.get_pressed(3)[2]:
+                if self.entity.view.windows['inventory_base'].view.rect.collidepoint(mouse_click_pos):
+                    inventory_cell_index = self.entity.inventory.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
+                    if self.entity.inventory.size[0] > inventory_cell_index[0] >= 0 and self.entity.inventory.size[1] > inventory_cell_index[1] >= 0:
+                        selected_item = self.entity.inventory.get_item(inventory_cell_index).item
+                        selected_item.set_buttons_start_pos(mouse_click_pos)
+                        self.buttons = selected_item.buttons
         elif event.type == pg.KEYUP and len(self.events) < 35:
             self.events.append(event)
 
-    def update(self, room, entities):
-        if self.finished:
-            self.entity.states_stack.pop()
-            self.entity.states_stack.peek().handle_inputs(self.events, room)
-
     def draw(self):
         self.entity.view.windows['inventory_base'].view.draw(self.entity.view.surface, self.entity.inventory.view, self.entity.inventory.cells)
+        for button in self.buttons:
+            button.view.render(self.entity.view.surface)
 
 
 class PlayerStealState(PlayerState):
     def __init__(self, entity, inventory_for_steal):
         super().__init__(entity)
         self.inventory_for_steal = inventory_for_steal
-        self.events = []
         self.selected_index_in_inventory = None
         self.selected_index_in_another_inventory = None
+        self.buttons = []
 
     def handle_input(self, event, room):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_e:
                 self.finished = not self.finished
         elif event.type == pg.MOUSEBUTTONDOWN:
+            mouse_click_pos = event.pos
             if pg.mouse.get_pressed(3)[0]:
-                mouse_click_pos = event.pos
                 if self.entity.view.windows['inventory_base'].view.rect.collidepoint(mouse_click_pos):
                     inventory_cell_index = self.entity.inventory.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
                     if inventory_cell_index[0] >= 0 and inventory_cell_index[1] >= 0:
@@ -333,13 +334,15 @@ class PlayerStealState(PlayerState):
                             self.inventory_for_steal.switch_with_another_inventory(self.selected_index_in_another_inventory, inventory_cell_index, self.inventory_for_steal)
                             self.inventory_for_steal.change_cell_state(self.selected_index_in_another_inventory)
                             self.selected_index_in_another_inventory = None
+            elif pg.mouse.get_pressed(3)[2]:
+                if self.entity.view.windows['inventory_base'].view.rect.collidepoint(mouse_click_pos):
+                    inventory_cell_index = self.entity.inventory.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
+                    if self.entity.inventory.size[0] > inventory_cell_index[0] >= 0 and self.entity.inventory.size[1] > inventory_cell_index[1] >= 0:
+                        selected_item = self.entity.inventory.get_item(inventory_cell_index).item
+                        selected_item.set_buttons_start_pos(mouse_click_pos)
+                        self.buttons = selected_item.buttons
         elif event.type == pg.KEYUP and len(self.events) < 35:
             self.events.append(event)
-
-    def update(self, room, entities):
-        if self.finished:
-            self.entity.states_stack.pop()
-            self.entity.states_stack.peek().handle_inputs(self.events, room)
 
     def draw(self):
         self.entity.view.windows['inventory_base'].view.draw(self.entity.view.surface, self.entity.inventory.view, self.entity.inventory.cells)
