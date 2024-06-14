@@ -5,7 +5,7 @@ import pygame.locals as loc
 
 from Controllers.Game.BaseStates import MainMenuState
 
-from Utils.Setting import START, EXIT
+from Utils.Settings.Buttons.ButtonsTexts import START, EXIT
 
 
 class StartState(MainMenuState):

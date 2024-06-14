@@ -12,21 +12,21 @@ class Inventory:
         self.view = InventoryV(tile_size)
         self.cells = [[InventoryCell(EmptyItem(), GREEN_RGB, GRAY_RGB) for _ in range(size[0])] for _ in range(size[1])]
 
-    def get_item(self, index):
+    def get_cell(self, index):
         return self.cells[index[0]][index[1]]
 
     def change_cell_state(self, index):
-        self.get_item(index).is_selected = not self.get_item(index).is_selected
+        self.get_cell(index).is_selected = not self.get_cell(index).is_selected
 
     def place_item(self, index, item):
-        self.get_item(index).item = item
+        self.get_cell(index).item = item
 
     def place_items(self, index, items):
         for i in range(len(index)):
             self.place_item(index[i], items[i])
 
     def switch_items(self, index1, index2):
-        temp = self.get_item(index1).item
+        temp = self.get_cell(index1).item
         self.place_item(index1, self.cells[index2[0]][index2[1]].item)
         self.place_item(index2, temp)
 
@@ -36,6 +36,6 @@ class Inventory:
         return inventory_cell_index
 
     def switch_with_another_inventory(self, index1, index2, inventory):
-        temp = self.get_item(index1).item
-        self.get_item(index1).item = inventory.get_item(index2).item
-        inventory.get_item(index2).item = temp
+        temp = self.get_cell(index1).item
+        self.get_cell(index1).item = inventory.get_cell(index2).item
+        inventory.get_cell(index2).item = temp

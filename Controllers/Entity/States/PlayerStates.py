@@ -4,7 +4,9 @@ from Controllers.Entity.Utils import get_damage_and_movement
 from Controllers.Entity.States.BaseStates import PlayerState
 
 from Utils.Settings.Colours import GRAY_RGB
+from Utils.Settings.Buttons.Buttons import get_pressed_button
 from Utils.DistanceCounting import manhattan_distance
+from Utils.Settings.Buttons.ButtonsTexts import SWITCH_SHIELDS, SWITCH_WEAPONS
 
 
 def check_damage_for_player(entity, damage_map):
@@ -253,33 +255,51 @@ class PlayerPunchState(PlayerState):
 class InventoryOpenState(PlayerState):
     def __init__(self, entity):
         super().__init__(entity)
-        self.first_selected_index = None
+        self.selected_index_in_inventory = None
+        self.selected_inventory = None
         self.buttons = []
 
     def handle_input(self, event, room):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_e:
                 self.finished = not self.finished
+                if self.selected_index_in_inventory is not None:
+                    self.entity.inventory.change_cell_state(self.selected_index_in_inventory)
         elif event.type == pg.MOUSEBUTTONDOWN:
             mouse_click_pos = event.pos
             if pg.mouse.get_pressed(3)[0]:
+                pressed_button = get_pressed_button(self.buttons, mouse_click_pos)
+                if pressed_button is not None:
+                    if pressed_button.view.text.view.text == SWITCH_WEAPONS:
+                        self.entity.current_weapon = self.entity.change_current_special_item(self.entity.current_weapon,
+                                                                                             self.selected_index_in_inventory,
+                                                                                             self.selected_inventory)
+                    elif pressed_button.view.text.view.text == SWITCH_SHIELDS:
+                        self.entity.current_shield = self.entity.change_current_special_item(self.entity.current_shield,
+                                                                                             self.selected_index_in_inventory,
+                                                                                             self.selected_inventory)
+                    self.selected_inventory = self.selected_index_in_inventory = None
+                    self.buttons = []
+                    return
                 if self.entity.view.windows['inventory_base'].view.rect.collidepoint(mouse_click_pos):
                     inventory_cell_index = self.entity.inventory.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
                     if self.entity.inventory.size[0] > inventory_cell_index[0] >= 0 and self.entity.inventory.size[1] > inventory_cell_index[1] >= 0:
-                        if self.first_selected_index is None:
-                            self.first_selected_index = inventory_cell_index
+                        if self.selected_index_in_inventory is None:
+                            self.selected_index_in_inventory = inventory_cell_index
                             self.entity.inventory.change_cell_state(inventory_cell_index)
                         else:
-                            self.entity.inventory.switch_items(self.first_selected_index, inventory_cell_index)
-                            self.entity.inventory.change_cell_state(self.first_selected_index)
-                            self.first_selected_index = None
+                            self.entity.inventory.switch_items(self.selected_index_in_inventory, inventory_cell_index)
+                            self.entity.inventory.change_cell_state(self.selected_index_in_inventory)
+                            self.selected_index_in_inventory = None
             elif pg.mouse.get_pressed(3)[2]:
                 if self.entity.view.windows['inventory_base'].view.rect.collidepoint(mouse_click_pos):
                     inventory_cell_index = self.entity.inventory.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
                     if self.entity.inventory.size[0] > inventory_cell_index[0] >= 0 and self.entity.inventory.size[1] > inventory_cell_index[1] >= 0:
-                        selected_item = self.entity.inventory.get_item(inventory_cell_index).item
+                        selected_item = self.entity.inventory.get_cell(inventory_cell_index).item
                         selected_item.set_buttons_start_pos(mouse_click_pos)
                         self.buttons = selected_item.buttons
+                        self.selected_index_in_inventory = inventory_cell_index
+                        self.selected_inventory = self.entity.inventory
         elif event.type == pg.KEYUP and len(self.events) < 35:
             self.events.append(event)
 
@@ -296,17 +316,36 @@ class PlayerStealState(PlayerState):
         self.selected_index_in_inventory = None
         self.selected_index_in_another_inventory = None
         self.buttons = []
+        self.selected_inventory = None
 
     def handle_input(self, event, room):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_e:
                 self.finished = not self.finished
+                if self.selected_index_in_inventory is not None:
+                    self.entity.inventory.change_cell_state(self.selected_index_in_inventory)
+                if self.selected_index_in_another_inventory is not None:
+                    self.inventory_for_steal.change_cell_state(self.selected_index_in_another_inventory)
         elif event.type == pg.MOUSEBUTTONDOWN:
             mouse_click_pos = event.pos
             if pg.mouse.get_pressed(3)[0]:
+                pressed_button = get_pressed_button(self.buttons, mouse_click_pos)
+                if pressed_button is not None:
+                    if pressed_button.view.text.view.text == SWITCH_WEAPONS:
+                        self.entity.current_weapon = self.entity.change_current_special_item(self.entity.current_weapon,
+                                                                                             self.selected_index_in_inventory,
+                                                                                             self.selected_inventory)
+                    elif pressed_button.view.text.view.text == SWITCH_SHIELDS:
+                        self.entity.current_shield = self.entity.change_current_special_item(self.entity.current_shield,
+                                                                                             self.selected_index_in_inventory,
+                                                                                             self.selected_inventory)
+                    self.selected_inventory = self.selected_index_in_inventory = None
+                    self.buttons = []
+                    return
                 if self.entity.view.windows['inventory_base'].view.rect.collidepoint(mouse_click_pos):
                     inventory_cell_index = self.entity.inventory.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
                     if inventory_cell_index[0] >= 0 and inventory_cell_index[1] >= 0:
+                        self.buttons = []
                         if self.selected_index_in_inventory is None:
                             if self.selected_index_in_another_inventory is not None:
                                 self.inventory_for_steal.switch_with_another_inventory(self.selected_index_in_another_inventory, inventory_cell_index, self.entity.inventory)
@@ -322,6 +361,7 @@ class PlayerStealState(PlayerState):
                 elif self.entity.view.windows['inventory_for_steal'].view.rect.collidepoint(mouse_click_pos):
                     inventory_cell_index = self.entity.inventory.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_for_steal'])
                     if inventory_cell_index[0] >= 0 and inventory_cell_index[1] >= 0:
+                        self.buttons = []
                         if self.selected_index_in_another_inventory is None:
                             if self.selected_index_in_inventory is not None:
                                 self.entity.inventory.switch_with_another_inventory(self.selected_index_in_inventory, inventory_cell_index, self.inventory_for_steal)
@@ -338,12 +378,24 @@ class PlayerStealState(PlayerState):
                 if self.entity.view.windows['inventory_base'].view.rect.collidepoint(mouse_click_pos):
                     inventory_cell_index = self.entity.inventory.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
                     if self.entity.inventory.size[0] > inventory_cell_index[0] >= 0 and self.entity.inventory.size[1] > inventory_cell_index[1] >= 0:
-                        selected_item = self.entity.inventory.get_item(inventory_cell_index).item
+                        selected_item = self.entity.inventory.get_cell(inventory_cell_index).item
                         selected_item.set_buttons_start_pos(mouse_click_pos)
                         self.buttons = selected_item.buttons
+                    self.selected_index_in_inventory = inventory_cell_index
+                    self.selected_inventory = self.entity.inventory
+                elif self.entity.view.windows['inventory_for_steal'].view.rect.collidepoint(mouse_click_pos):
+                    inventory_cell_index = self.inventory_for_steal.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_for_steal'])
+                    if self.inventory_for_steal.size[0] > inventory_cell_index[0] >= 0 and self.inventory_for_steal.size[1] > inventory_cell_index[1] >= 0:
+                        selected_item = self.inventory_for_steal.get_cell(inventory_cell_index).item
+                        selected_item.set_buttons_start_pos(mouse_click_pos)
+                        self.buttons = selected_item.buttons
+                    self.selected_index_in_inventory = inventory_cell_index
+                    self.selected_inventory = self.inventory_for_steal
         elif event.type == pg.KEYUP and len(self.events) < 35:
             self.events.append(event)
 
     def draw(self):
         self.entity.view.windows['inventory_base'].view.draw(self.entity.view.surface, self.entity.inventory.view, self.entity.inventory.cells)
         self.entity.view.windows['inventory_for_steal'].view.draw(self.entity.view.surface, self.inventory_for_steal.view, self.inventory_for_steal.cells)
+        for button in self.buttons:
+            button.view.render(self.entity.view.surface)

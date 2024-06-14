@@ -19,7 +19,7 @@ from Models.Item.Shield import Shield
 
 from Views.Item.ItemIcon import Icon
 
-from Utils.Settings.Buttons import SWORD_CHANGE_BUTTON, SHIELD_CHANGE_BUTTON
+from Utils.Settings.Buttons.Buttons import SWORD_CHANGE_BUTTON, SHIELD_CHANGE_BUTTON
 from Utils.Settings.Icons import SWORD_ICON, SHIELD_ICON
 from Utils.Settings.Colours import DARK_GRAY_RGB, WHITE_RGB
 from Utils.Settings.Paths import FONT_PATH

@@ -35,6 +35,13 @@ class Player(Entity):
         self.view = PlayerV(images_paths, surface, windows)
         self.physic = PlayerPhysics(width, height, start_pos, max_velocity)
 
+    @staticmethod
+    def change_current_special_item(special_item, selected_inventory_cell_index, selected_inventory):
+        temp = special_item
+        special_item = selected_inventory.get_cell(selected_inventory_cell_index).item
+        selected_inventory.place_item(selected_inventory_cell_index, temp)
+        return special_item
+
 
 class Swordsman(NPC):
     def __init__(self, images_paths, surface, inventory, width=35., height=35., start_pos=(0, 0), max_velocity=1, current_weapon=None, current_shield=None, max_health=2):

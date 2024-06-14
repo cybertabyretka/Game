@@ -4,7 +4,7 @@ from Controllers.Game.MainMenuStates import StartState
 from Controllers.Processes.MainMenuProcess import MainMenuProcess
 
 from Utils.Settings.DataStructures.Stack import Stack
-from Utils.Settings.Buttons import MAIN_MENU_START_BUTTON, MAIN_MENU_EXIT_BUTTON
+from Utils.Settings.Buttons.Buttons import MAIN_MENU_START_BUTTON, MAIN_MENU_EXIT_BUTTON
 
 
 class MainMenu:
