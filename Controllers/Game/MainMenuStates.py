@@ -4,8 +4,14 @@ import pygame as pg
 import pygame.locals as loc
 
 from Controllers.Game.BaseStates import MainMenuState
+from Controllers.Save import get_game
 
 from Utils.Settings.Buttons.ButtonsTexts import START, EXIT, SELECT_1, SELECT_2, SELECT_3, SELECT_4, SELECT_5, SELECT_1_AUTO, SELECT_2_AUTO, SELECT_3_AUTO, SELECT_4_AUTO, SELECT_5_AUTO
+from Utils.Draw.Text import print_text
+from Utils.Settings.Colours import WHITE_RGB
+from Utils.Settings.Paths import FONT_PATH
+from Utils.Setting import DISPLAY_WIDTH
+from Utils.Settings.Saves.SaveFilesPaths import *
 
 
 class StartState(MainMenuState):
@@ -87,28 +93,47 @@ class SaveSelectionState(MainMenuState):
                     mouse_click_pos = event.pos
                     if self.selected_button.view.rect.collidepoint(mouse_click_pos):
                         if self.selected_button.view.text.view.text == SELECT_1:
-                            pass
+                            self.game = get_game(FIRST_SAVE_FILE_PATH)
                         elif self.selected_button.view.text.view.text == SELECT_2:
-                            pass
+                            self.game = get_game(SECOND_SAVE_FILE_PATH)
                         elif self.selected_button.view.text.view.text == SELECT_3:
-                            pass
+                            self.game = get_game(THIRD_SAVE_FILE_PATH)
                         elif self.selected_button.view.text.view.text == SELECT_4:
-                            pass
+                            self.game = get_game(FOURTH_SAVE_FILE_PATH)
                         elif self.selected_button.view.text.view.text == SELECT_5:
-                            pass
+                            self.game = get_game(FIFTH_SAVE_FILE_PATH)
                         elif self.selected_button.view.text.view.text == SELECT_1_AUTO:
-                            pass
+                            self.game = get_game(FIRST_AUTO_SAVE_FILE_PATH)
                         elif self.selected_button.view.text.view.text == SELECT_2_AUTO:
-                            pass
+                            self.game = get_game(SECOND_AUTO_SAVE_FILE_PATH)
                         elif self.selected_button.view.text.view.text == SELECT_3_AUTO:
-                            pass
+                            self.game = get_game(THIRD_AUTO_SAVE_FILE_PATH)
                         elif self.selected_button.view.text.view.text == SELECT_4_AUTO:
-                            pass
+                            self.game = get_game(FOURTH_AUTO_SAVE_FILE_PATH)
                         elif self.selected_button.view.text.view.text == SELECT_5_AUTO:
-                            pass
-
-
+                            self.game = get_game(FIFTH_AUTO_SAVE_FILE_PATH)
+                        processes_stack.push(self.game)
 
     def draw(self):
+        line_start_pos = [135, 20]
+        line_end_pos = [135, 200]
+        date_start_pos = [20, 50]
         self.main_menu.view.render(self.buttons)
+        print_text(self.main_menu.view.display.surface, self.main_menu.auto_saves[0].date, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+        for auto_save in self.main_menu.auto_saves[1:]:
+            pg.draw.line(self.main_menu.view.display.surface, WHITE_RGB, line_start_pos, line_end_pos, 1)
+            date_start_pos[0] += 140
+            print_text(self.main_menu.view.display.surface, auto_save.date, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+            line_start_pos[0] += 140
+            line_end_pos[0] += 140
+        line_start_pos = [135, 210]
+        line_end_pos = [135, 390]
+        date_start_pos = [20, 250]
+        print_text(self.main_menu.view.display.surface, self.main_menu.auto_saves[0].date, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+        for save in self.main_menu.saves[1:]:
+            pg.draw.line(self.main_menu.view.display.surface, WHITE_RGB, line_start_pos, line_end_pos, 1)
+            date_start_pos[0] += 140
+            print_text(self.main_menu.view.display.surface, save.date, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+            line_start_pos[0] += 140
+            line_end_pos[0] += 140
         self.main_menu.view.display.update()
