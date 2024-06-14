@@ -14,7 +14,8 @@ class GameState:
 
 
 class MainMenuState:
-    def __init__(self, main_menu, game):
+    def __init__(self, main_menu, game, buttons):
+        self.buttons = buttons
         self.main_menu = main_menu
         self.game = game
         self.finished = True
