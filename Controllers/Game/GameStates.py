@@ -47,11 +47,11 @@ class Running(GameState):
             NPC.states_stack.peek().update(self.game.room, self.game.player, [*self.game.room.NPCs, self.game.player])
 
     def draw(self):
-        self.game.room.view.render_tile_map(self.game.room.view.surface)
-        self.game.room.view.surface.blit(self.game.player.view.surface, (0., 0.))
-        self.game.view.display.surface.blit(self.game.room.view.surface, (self.game.room.view.surface.get_rect().x, self.game.room.view.surface.get_rect().y))
-        render_entities(self.game.room.NPCs, self.game.player, self.game.player.view.surface)
-        render_health_bars(self.game.room.NPCs, self.game.player, self.game.player.view.surface)
+        self.game.room.view.render_tile_map(self.game.rooms_surface)
+        self.game.rooms_surface.blit(self.game.entities_surface, (0., 0.))
+        self.game.view.display.surface.blit(self.game.rooms_surface, (self.game.rooms_surface.get_rect().x, self.game.rooms_surface.get_rect().y))
+        render_entities(self.game.room.NPCs, self.game.player, self.game.entities_surface)
+        render_health_bars(self.game.room.NPCs, self.game.player, self.game.entities_surface)
         self.game.view.display.update()
 
 
@@ -78,8 +78,8 @@ class OnPause(GameState):
             self.game.player.states_stack.peek().update(self.game.room, self.game.room.NPCs)
 
     def draw(self):
-        self.game.room.view.render_tile_map(self.game.room.view.surface)
-        self.game.room.view.surface.blit(self.game.player.view.surface, (0., 0.))
-        self.game.view.display.surface.blit(self.game.room.view.surface, (self.game.room.view.surface.get_rect().x, self.game.room.view.surface.get_rect().y))
-        self.game.player.states_stack.peek().draw()
+        self.game.room.view.render_tile_map(self.game.rooms_surface)
+        self.game.rooms_surface.blit(self.game.entities_surface, (0., 0.))
+        self.game.view.display.surface.blit(self.game.rooms_surface, (self.game.rooms_surface.get_rect().x, self.game.rooms_surface.get_rect().y))
+        self.game.player.states_stack.peek().draw(self.game.entities_surface)
         self.game.view.display.update()

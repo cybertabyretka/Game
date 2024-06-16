@@ -8,17 +8,19 @@ class EntityV:
         self.image_down = None
         self.image_right = None
         self.image_left = None
-        self.current_image = self.image_up
+        self.current_image = None
 
     def download_images(self, current_weapon, current_shield, inventory):
         self.image_up = load_image(self.paths_asset['up'])
         self.image_down = load_image(self.paths_asset['down'])
         self.image_right = load_image(self.paths_asset['right'])
         self.image_left = load_image(self.paths_asset['left'])
+        self.current_image = self.image_up
         current_weapon.view.download_images()
         current_shield.view.download_images()
-        for cell in inventory.cells:
-            cell.item.view.icon.download_images()
+        for i in range(inventory.size[0]):
+            for j in range(inventory.size[1]):
+                inventory.cells[i][j].item.view.icon.download_images()
 
     def rotate(self, rotation):
         if rotation == 0:
@@ -35,14 +37,11 @@ class EntityV:
 
 
 def render_entities(NPCs, player, surface, base_colour=(0, 0, 0)):
+    surface.set_colorkey((0, 0, 0))
     surface.fill(base_colour)
     for NPC in NPCs:
-        NPC.states_stack.peek().draw()
-    player.states_stack.peek().draw()
-
-
-def clear_surface(surface, base_colour=(0, 0, 0)):
-    surface.fill(base_colour)
+        NPC.states_stack.peek().draw(surface)
+    player.states_stack.peek().draw(surface)
 
 
 class PlayerV(EntityV):

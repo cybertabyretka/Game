@@ -16,8 +16,8 @@ class PlayerState:
             self.entity.states_stack.pop()
             self.entity.states_stack.peek().handle_inputs(self.events, room)
 
-    def draw(self):
-        self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+    def draw(self, surface):
+        self.entity.view.render(surface, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
 
 
 class NPCState:
@@ -32,5 +32,5 @@ class NPCState:
     def update(self, room, player, entities):
         pass
 
-    def draw(self):
-        self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+    def draw(self, surface):
+        self.entity.view.render(surface, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))

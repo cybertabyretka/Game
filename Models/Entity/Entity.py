@@ -21,12 +21,12 @@ class Entity:
         self.inventory = inventory
 
     def copy_for_save(self):
-        return Entity(self.physic.collision.rect.width, self.physic.collision.rect.height, self.physic.collision.rect.topleft, self.physic.max_velocity, self.current_weapon.copy_for_save(), self.current_shield.copy_for_save(), self.health.max_health, self.health.health, self.inventory.copy_for_save(), self.view.paths_asset)
+        return self.__class__(self.physic.collision.rect.width, self.physic.collision.rect.height, self.physic.collision.rect.topleft, self.physic.max_velocity, self.current_weapon.copy_for_save(), self.current_shield.copy_for_save(), self.health.max_health, self.health.health, self.inventory.copy_for_save(), self.view.paths_asset)
 
 
 class NPC(Entity):
     def __init__(self, width: float, height: float, start_pos, max_velocity, current_weapon, current_shield, max_health, current_health, inventory, paths_asset):
-        super().__init__(width, height, start_pos, max_velocity, current_weapon, current_shield, max_health, inventory, current_health, paths_asset)
+        super().__init__(width, height, start_pos, max_velocity, current_weapon, current_shield, max_health, current_health, inventory, paths_asset)
         self.physic = NPCPhysics(width, height, start_pos, max_velocity)
         self.states_stack = Stack(NPCIdleState(self))
         self.mind = Mind()

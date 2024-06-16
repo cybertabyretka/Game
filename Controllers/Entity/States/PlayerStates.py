@@ -75,16 +75,16 @@ class PlayerShieldState(PlayerState):
                             damage_rect.damage = max(0, damage_rect.damage - self.entity.current_shield.strength)
             check_damage_for_player_with_ready_damage_and_movement(self.entity, damage, movement)
 
-    def draw(self):
+    def draw(self, surface):
         if self.direction == 0:
-            pg.draw.rect(self.entity.view.surface, GRAY_RGB, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y-2, self.entity.physic.collision.rect.width, 2))
+            pg.draw.rect(surface, GRAY_RGB, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y-2, self.entity.physic.collision.rect.width, 2))
         elif self.direction == 90:
-            pg.draw.rect(self.entity.view.surface, GRAY_RGB, (self.entity.physic.collision.rect.x+self.entity.physic.collision.rect.width, self.entity.physic.collision.rect.y, 2, self.entity.physic.collision.rect.height))
+            pg.draw.rect(surface, GRAY_RGB, (self.entity.physic.collision.rect.x+self.entity.physic.collision.rect.width, self.entity.physic.collision.rect.y, 2, self.entity.physic.collision.rect.height))
         elif self.direction == 180:
-            pg.draw.rect(self.entity.view.surface, GRAY_RGB, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y+self.entity.physic.collision.rect.height, self.entity.physic.collision.rect.width, 2))
+            pg.draw.rect(surface, GRAY_RGB, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y+self.entity.physic.collision.rect.height, self.entity.physic.collision.rect.width, 2))
         else:
-            pg.draw.rect(self.entity.view.surface, GRAY_RGB, (self.entity.physic.collision.rect.x-2, self.entity.physic.collision.rect.y, 2, self.entity.physic.collision.rect.height))
-        self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+            pg.draw.rect(surface, GRAY_RGB, (self.entity.physic.collision.rect.x-2, self.entity.physic.collision.rect.y, 2, self.entity.physic.collision.rect.height))
+        self.entity.view.render(surface, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
 
 
 class PlayerAfterPunchState(PlayerState):
@@ -246,10 +246,10 @@ class PlayerPunchState(PlayerState):
             self.entity.states_stack.pop()
             self.entity.states_stack.peek().handle_inputs(self.events, room)
 
-    def draw(self):
-        self.entity.view.render((self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+    def draw(self, surface):
+        self.entity.view.render(surface, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
         if not self.finished:
-            self.entity.current_weapon.view.copied_animation.render(self.entity.view.surface)
+            self.entity.current_weapon.view.copied_animation.render(surface)
 
 
 class InventoryOpenState(PlayerState):
@@ -303,10 +303,10 @@ class InventoryOpenState(PlayerState):
         elif event.type == pg.KEYUP and len(self.events) < 35:
             self.events.append(event)
 
-    def draw(self):
-        self.entity.view.windows['inventory_base'].view.draw(self.entity.view.surface, self.entity.inventory.view, self.entity.inventory.cells)
+    def draw(self, surface):
+        self.entity.view.windows['inventory_base'].view.draw(surface, self.entity.inventory.view, self.entity.inventory.cells)
         for button in self.buttons:
-            button.view.render(self.entity.view.surface)
+            button.view.render(surface)
 
 
 class PlayerStealState(PlayerState):
@@ -344,7 +344,7 @@ class PlayerStealState(PlayerState):
                     return
                 if self.entity.view.windows['inventory_base'].view.rect.collidepoint(mouse_click_pos):
                     inventory_cell_index = self.entity.inventory.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
-                    if inventory_cell_index[0] >= 0 and inventory_cell_index[1] >= 0:
+                    if self.entity.inventory.size[0] > inventory_cell_index[0] >= 0 and self.entity.inventory.size[1] > inventory_cell_index[1] >= 0:
                         self.buttons = []
                         if self.selected_index_in_inventory is None:
                             if self.selected_index_in_another_inventory is not None:
@@ -359,8 +359,8 @@ class PlayerStealState(PlayerState):
                             self.entity.inventory.change_cell_state(self.selected_index_in_inventory)
                             self.selected_index_in_inventory = None
                 elif self.entity.view.windows['inventory_for_steal'].view.rect.collidepoint(mouse_click_pos):
-                    inventory_cell_index = self.entity.inventory.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_for_steal'])
-                    if inventory_cell_index[0] >= 0 and inventory_cell_index[1] >= 0:
+                    inventory_cell_index = self.inventory_for_steal.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_for_steal'])
+                    if self.inventory_for_steal.size[0] > inventory_cell_index[0] >= 0 and self.inventory_for_steal.size[1] > inventory_cell_index[1] >= 0:
                         self.buttons = []
                         if self.selected_index_in_another_inventory is None:
                             if self.selected_index_in_inventory is not None:
@@ -394,8 +394,8 @@ class PlayerStealState(PlayerState):
         elif event.type == pg.KEYUP and len(self.events) < 35:
             self.events.append(event)
 
-    def draw(self):
-        self.entity.view.windows['inventory_base'].view.draw(self.entity.view.surface, self.entity.inventory.view, self.entity.inventory.cells)
-        self.entity.view.windows['inventory_for_steal'].view.draw(self.entity.view.surface, self.inventory_for_steal.view, self.inventory_for_steal.cells)
+    def draw(self, surface):
+        self.entity.view.windows['inventory_base'].view.draw(surface, self.entity.inventory.view, self.entity.inventory.cells)
+        self.entity.view.windows['inventory_for_steal'].view.draw(surface, self.inventory_for_steal.view, self.inventory_for_steal.cells)
         for button in self.buttons:
-            button.view.render(self.entity.view.surface)
+            button.view.render(surface)

@@ -57,7 +57,3 @@ for NPC in NPCs:
 
 BASE_PLAYER = Player(player_inventory, player_windows, PLAYER, start_pos=BASE_PLAYER_START_POS, current_weapon=player_sword, current_shield=player_shield)
 BASE_PLAYER.physic.collision.get_collisions_around(BASE_ROOMS_MAP.get_current_room().collisions_map.map, TILE_SIZE)
-
-
-def get_base_game(display, entities_surface):
-    return Game(display, BASE_ROOMS_MAP, BASE_PLAYER, entities_surface)

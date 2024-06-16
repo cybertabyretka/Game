@@ -10,6 +10,13 @@ class Room:
         self.view = RoomV(tile_map, tile_size)
         self.NPCs = NPCs
 
+    def download_images(self):
+        for loot_tile in self.loot_tiles:
+            loot_tile.view.download_images()
+        for NPC in self.NPCs:
+            NPC.view.download_images(NPC.current_weapon, NPC.current_shield, NPC.inventory)
+        self.view.tile_map.download_images()
+
     def copy_for_save(self):
         copied_NPCs = []
         for NPC in self.NPCs:
