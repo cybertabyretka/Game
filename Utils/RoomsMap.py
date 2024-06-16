@@ -2,16 +2,13 @@ from Utils.TileMap import create_base_tile_map
 from Utils.Setting import DISPLAY_WIDTH, DISPLAY_HEIGHT, TILE_SIZE
 from Utils.CoordinatesConverter import convert_to_string
 
-from Models.Asset import TilesAssets
 from Models.Room.Room import Room
 
 
-def make_room(rooms_map, pos, surface, NPCs, width=DISPLAY_WIDTH, height=DISPLAY_HEIGHT, tile_size=TILE_SIZE, assets=None, tile_map=None):
-    if assets is None:
-        assets = TilesAssets()
+def make_room(rooms_map, pos, NPCs, width=DISPLAY_WIDTH, height=DISPLAY_HEIGHT, tile_size=TILE_SIZE, tile_map=None):
     if tile_map is None:
-        tile_map = create_base_tile_map(width, height, tile_size, assets)
-    room = Room(tile_map, surface, tile_size, NPCs)
+        tile_map = create_base_tile_map(width, height, tile_size)
+    room = Room(tile_map, tile_size, NPCs)
     room.view.tile_map = tile_map
     room.collisions_map.get_map_from_object(room.view.tile_map.tile_map)
     room.collisions_map.get_graph()

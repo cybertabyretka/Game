@@ -1,4 +1,3 @@
 class TileMap:
-    def __init__(self, assets):
+    def __init__(self):
         self.tile_map = {}
-        self.assets = assets

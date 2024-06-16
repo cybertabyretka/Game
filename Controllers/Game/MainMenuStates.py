@@ -11,7 +11,7 @@ from Utils.Draw.Text import print_text
 from Utils.Settings.Colours import WHITE_RGB
 from Utils.Settings.Paths import FONT_PATH
 from Utils.Setting import DISPLAY_WIDTH
-from Utils.Settings.Saves.SaveFilesPaths import *
+from Utils.Settings.Saves.Saves import *
 
 
 class StartState(MainMenuState):
@@ -93,25 +93,25 @@ class SaveSelectionState(MainMenuState):
                     mouse_click_pos = event.pos
                     if self.selected_button.view.rect.collidepoint(mouse_click_pos):
                         if self.selected_button.view.text.view.text == SELECT_1:
-                            self.game = get_game(FIRST_SAVE_FILE_PATH)
+                            self.game = get_game(FIRST_SAVE)
                         elif self.selected_button.view.text.view.text == SELECT_2:
-                            self.game = get_game(SECOND_SAVE_FILE_PATH)
+                            self.game = get_game(SECOND_SAVE)
                         elif self.selected_button.view.text.view.text == SELECT_3:
-                            self.game = get_game(THIRD_SAVE_FILE_PATH)
+                            self.game = get_game(THIRD_SAVE)
                         elif self.selected_button.view.text.view.text == SELECT_4:
-                            self.game = get_game(FOURTH_SAVE_FILE_PATH)
+                            self.game = get_game(FOURTH_SAVE)
                         elif self.selected_button.view.text.view.text == SELECT_5:
-                            self.game = get_game(FIFTH_SAVE_FILE_PATH)
+                            self.game = get_game(FIFTH_SAVE)
                         elif self.selected_button.view.text.view.text == SELECT_1_AUTO:
-                            self.game = get_game(FIRST_AUTO_SAVE_FILE_PATH)
+                            self.game = get_game(FIRST_AUTO_SAVE)
                         elif self.selected_button.view.text.view.text == SELECT_2_AUTO:
-                            self.game = get_game(SECOND_AUTO_SAVE_FILE_PATH)
+                            self.game = get_game(SECOND_AUTO_SAVE)
                         elif self.selected_button.view.text.view.text == SELECT_3_AUTO:
-                            self.game = get_game(THIRD_AUTO_SAVE_FILE_PATH)
+                            self.game = get_game(THIRD_AUTO_SAVE)
                         elif self.selected_button.view.text.view.text == SELECT_4_AUTO:
-                            self.game = get_game(FOURTH_AUTO_SAVE_FILE_PATH)
+                            self.game = get_game(FOURTH_AUTO_SAVE)
                         elif self.selected_button.view.text.view.text == SELECT_5_AUTO:
-                            self.game = get_game(FIFTH_AUTO_SAVE_FILE_PATH)
+                            self.game = get_game(FIFTH_AUTO_SAVE)
                         processes_stack.push(self.game)
 
     def draw(self):
@@ -119,21 +119,21 @@ class SaveSelectionState(MainMenuState):
         line_end_pos = [135, 200]
         date_start_pos = [20, 50]
         self.main_menu.view.render(self.buttons)
-        print_text(self.main_menu.view.display.surface, self.main_menu.auto_saves[0].date, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+        print_text(self.main_menu.view.display.surface, self.main_menu.auto_saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
         for auto_save in self.main_menu.auto_saves[1:]:
             pg.draw.line(self.main_menu.view.display.surface, WHITE_RGB, line_start_pos, line_end_pos, 1)
             date_start_pos[0] += 140
-            print_text(self.main_menu.view.display.surface, auto_save.date, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+            print_text(self.main_menu.view.display.surface, auto_save.save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
             line_start_pos[0] += 140
             line_end_pos[0] += 140
         line_start_pos = [135, 210]
         line_end_pos = [135, 390]
         date_start_pos = [20, 250]
-        print_text(self.main_menu.view.display.surface, self.main_menu.auto_saves[0].date, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+        print_text(self.main_menu.view.display.surface, self.main_menu.auto_saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
         for save in self.main_menu.saves[1:]:
             pg.draw.line(self.main_menu.view.display.surface, WHITE_RGB, line_start_pos, line_end_pos, 1)
             date_start_pos[0] += 140
-            print_text(self.main_menu.view.display.surface, save.date, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+            print_text(self.main_menu.view.display.surface, save.save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
             line_start_pos[0] += 140
             line_end_pos[0] += 140
         self.main_menu.view.display.update()

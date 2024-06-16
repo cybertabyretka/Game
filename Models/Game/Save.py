@@ -1,13 +1,22 @@
-from shelve import open as open_sh
+import pickle
+import os
+
+from Utils.BaseGame import BASE_ROOMS_MAP, BASE_PLAYER
+
+from Models.Game.Game import Game
 
 
 class Save:
     def __init__(self, file_path):
-        with open_sh(file_path) as save_file:
-            if 'game' not in save_file.keys():
-                save_file['game'] = None
-            if 'date' not in save_file.keys():
-                save_file['date'] = '--.--.---- --;--;--'
-                self.date = '--.--.---- --;--;--'
-            else:
-                self.date = save_file['date']
+        self.path = file_path
+        if not os.listdir(file_path):
+            with open(f'{file_path}room_map.pkl', 'wb') as save_file:
+                pickle.dump(BASE_ROOMS_MAP, save_file, pickle.HIGHEST_PROTOCOL)
+            with open(f'{file_path}player.pkl', 'wb') as save_file:
+                pickle.dump(BASE_PLAYER, save_file, pickle.HIGHEST_PROTOCOL)
+            with open(f'{file_path}date.txt', 'w') as date_file:
+                date_file.writelines(['--.--.---- --:--:--'])
+                self.save_time = '--.--.---- --:--:--'
+        else:
+            with open(f'{file_path}date.txt', 'r') as date_file:
+                self.save_time = date_file.readline().rstrip()

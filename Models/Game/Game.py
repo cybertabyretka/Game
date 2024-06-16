@@ -7,9 +7,10 @@ from Controllers.Game.GameStates import Running
 
 
 class Game:
-    def __init__(self, display, rooms_map, player):
+    def __init__(self, display, rooms_map, player, entities_surface):
         self.view = GameV(display, rooms_map)
         self.states_stack = Stack(Running(self))
         self.room = rooms_map.get_current_room()
         self.player = player
         self.process = GameProcess(self)
+        self.entities_surface = entities_surface
