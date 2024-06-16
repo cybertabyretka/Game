@@ -118,7 +118,7 @@ class PlayerIdleState(PlayerState):
             elif event.key == pg.K_e:
                 if not room.live_NPCs_count:
                     mouse_pos = pg.mouse.get_pos()
-                    for steal_tile in room.collisions_map.loot_tiles:
+                    for steal_tile in room.loot_tiles:
                         if steal_tile.collision.rect.collidepoint(mouse_pos) and manhattan_distance(steal_tile.collision.rect.topleft, self.entity.physic.collision.rect.topleft) <= min(self.entity.physic.collision.rect.width, self.entity.physic.collision.rect.height) * 2:
                             self.entity.states_stack.push(PlayerStealState(self.entity, steal_tile.inventory))
                             return
@@ -152,9 +152,9 @@ class PlayerWalkState(PlayerState):
             elif event.key == pg.K_e:
                 if not room.live_NPCs_count:
                     mouse_pos = pg.mouse.get_pos()
-                    for robbed_tile in room.collisions_map.loot_tiles:
-                        if robbed_tile.collision.rect.collidepoint(mouse_pos):
-                            self.entity.states_stack.push(PlayerStealState(self.entity, robbed_tile.inventory))
+                    for steal_tile in room.loot_tiles:
+                        if steal_tile.collision.rect.collidepoint(mouse_pos):
+                            self.entity.states_stack.push(PlayerStealState(self.entity, steal_tile.inventory))
                             return
                 self.entity.states_stack.push(InventoryOpenState(self.entity))
         elif event.type == pg.KEYUP:

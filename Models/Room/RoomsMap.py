@@ -13,3 +13,9 @@ class RoomsMap:
             for j in range(self.size[1]):
                 if self.map[i][j] is not None:
                     copied_map.map[i][j] = self.map[i][j].copy_for_save()
+
+    def download_images(self):
+        for i in range(self.size[0]):
+            for j in range(self.size[1]):
+                if self.map[i][j] is not None:
+                    self.map[i][j].view.map.download_images()

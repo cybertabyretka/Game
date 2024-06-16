@@ -3,7 +3,8 @@ from Controllers.MapPhysic import CollisionsMap
 
 
 class Room:
-    def __init__(self, tile_map, tile_size, NPCs):
+    def __init__(self, tile_map, tile_size, NPCs, loot_tiles):
+        self.loot_tiles = loot_tiles
         self.live_NPCs_count = len(NPCs)
         self.collisions_map = CollisionsMap()
         self.view = RoomV(tile_map, tile_size)
@@ -13,6 +14,9 @@ class Room:
         copied_NPCs = []
         for NPC in self.NPCs:
             copied_NPCs.append(NPC.copy_for_save())
-        copied_room = Room(self.view.tile_map.copy_for_save(), self.view.tile_size, copied_NPCs)
+        copied_steal_tiles = []
+        for tile in self.loot_tiles:
+            copied_steal_tiles.append(tile.copy_for_save())
+        copied_room = Room(self.view.tile_map.copy_for_save(), self.view.tile_size, copied_NPCs, copied_steal_tiles)
         copied_room.live_NPCs_count = self.live_NPCs_count
         return copied_room

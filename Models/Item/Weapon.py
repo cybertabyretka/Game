@@ -1,14 +1,16 @@
 from Views.Item.Weapon import WeaponV
+from Views.Item.ItemIcon import Icon
 
 from Controllers.Weapon.WeaponPhysic import SwordLikePhysic
 
 from Models.Item.Item import Item
+from Models.Button import Button
 
 
 class Weapon(Item):
-    def __init__(self, name, size, attack_size, icon, paths_asset, buttons):
+    def __init__(self, name: str, size: tuple[int, int], attack_size: tuple[int, int], icon: Icon, paths_asset: dict[str, str], buttons: list[Button]):
         super().__init__(name, size, icon, buttons)
-        self.view = WeaponV(icon, paths_asset)
+        self.view: WeaponV = WeaponV(icon, paths_asset)
         self.physic = SwordLikePhysic(attack_size)
 
     def copy_for_save(self):

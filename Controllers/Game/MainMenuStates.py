@@ -10,13 +10,12 @@ from Utils.Settings.Buttons.ButtonsTexts import START, EXIT, SELECT_1, SELECT_2,
 from Utils.Draw.Text import print_text
 from Utils.Settings.Colours import WHITE_RGB
 from Utils.Settings.Paths import FONT_PATH
-from Utils.Setting import DISPLAY_WIDTH
 from Utils.Settings.Saves.Saves import *
 
 
 class StartState(MainMenuState):
-    def __init__(self, main_menu, game, buttons):
-        super().__init__(main_menu, game, buttons)
+    def __init__(self, main_menu, buttons):
+        super().__init__(main_menu, buttons)
         self.selected_button = None
 
     def handle_input(self, event, processes_stack, main_process):
@@ -35,7 +34,7 @@ class StartState(MainMenuState):
             click_pos = event.pos
             if self.selected_button is not None and self.selected_button.view.rect.collidepoint(click_pos):
                 if self.selected_button.view.text.view.text == START:
-                    self.main_menu.states_stack.push(SaveSelectionState(self.main_menu, self.game, self.main_menu.buttons['save_selection_state_buttons']))
+                    self.main_menu.states_stack.push(SaveSelectionState(self.main_menu, self.main_menu.buttons['save_selection_state_buttons']))
                 elif self.selected_button.view.text.view.text == EXIT:
                     main_process.is_running = False
         elif event.type == pg.KEYDOWN:
@@ -58,7 +57,7 @@ class StartState(MainMenuState):
             elif event.key == loc.K_RETURN:
                 if self.selected_button is not None:
                     if self.selected_button.view.text.view.text == START:
-                        self.main_menu.states_stack.push(SaveSelectionState(self.main_menu, self.game, self.main_menu.buttons['save_selection_state_buttons']))
+                        self.main_menu.states_stack.push(SaveSelectionState(self.main_menu, self.main_menu.buttons['save_selection_state_buttons']))
                     elif self.selected_button.view.text.view.text == EXIT:
                         main_process.is_running = False
 
@@ -68,8 +67,8 @@ class StartState(MainMenuState):
 
 
 class SaveSelectionState(MainMenuState):
-    def __init__(self, main_menu, game, buttons):
-        super().__init__(main_menu, game, buttons)
+    def __init__(self, main_menu, buttons):
+        super().__init__(main_menu, buttons)
         self.selected_button = None
 
     def handle_input(self, event, processes_stack, main_process):
@@ -92,27 +91,28 @@ class SaveSelectionState(MainMenuState):
                 if self.selected_button is not None:
                     mouse_click_pos = event.pos
                     if self.selected_button.view.rect.collidepoint(mouse_click_pos):
+                        game = None
                         if self.selected_button.view.text.view.text == SELECT_1:
-                            self.game = get_game(FIRST_SAVE)
+                            game = get_game(FIRST_SAVE, self.main_menu.view.display, self.main_menu.entities_surface)
                         elif self.selected_button.view.text.view.text == SELECT_2:
-                            self.game = get_game(SECOND_SAVE)
+                            game = get_game(SECOND_SAVE, self.main_menu.view.display, self.main_menu.entities_surface)
                         elif self.selected_button.view.text.view.text == SELECT_3:
-                            self.game = get_game(THIRD_SAVE)
+                            game = get_game(THIRD_SAVE, self.main_menu.view.display, self.main_menu.entities_surface)
                         elif self.selected_button.view.text.view.text == SELECT_4:
-                            self.game = get_game(FOURTH_SAVE)
+                            game = get_game(FOURTH_SAVE, self.main_menu.view.display, self.main_menu.entities_surface)
                         elif self.selected_button.view.text.view.text == SELECT_5:
-                            self.game = get_game(FIFTH_SAVE)
+                            game = get_game(FIFTH_SAVE, self.main_menu.view.display, self.main_menu.entities_surface)
                         elif self.selected_button.view.text.view.text == SELECT_1_AUTO:
-                            self.game = get_game(FIRST_AUTO_SAVE)
+                            game = get_game(FIRST_AUTO_SAVE, self.main_menu.view.display, self.main_menu.entities_surface)
                         elif self.selected_button.view.text.view.text == SELECT_2_AUTO:
-                            self.game = get_game(SECOND_AUTO_SAVE)
+                            game = get_game(SECOND_AUTO_SAVE, self.main_menu.view.display, self.main_menu.entities_surface)
                         elif self.selected_button.view.text.view.text == SELECT_3_AUTO:
-                            self.game = get_game(THIRD_AUTO_SAVE)
+                            game = get_game(THIRD_AUTO_SAVE, self.main_menu.view.display, self.main_menu.entities_surface)
                         elif self.selected_button.view.text.view.text == SELECT_4_AUTO:
-                            self.game = get_game(FOURTH_AUTO_SAVE)
+                            game = get_game(FOURTH_AUTO_SAVE, self.main_menu.view.display, self.main_menu.entities_surface)
                         elif self.selected_button.view.text.view.text == SELECT_5_AUTO:
-                            self.game = get_game(FIFTH_AUTO_SAVE)
-                        processes_stack.push(self.game)
+                            game = get_game(FIFTH_AUTO_SAVE, self.main_menu.view.display, self.main_menu.entities_surface)
+                        processes_stack.push(game)
 
     def draw(self):
         line_start_pos = [135, 20]
