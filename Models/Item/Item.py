@@ -1,8 +1,8 @@
 from Views.Item.Item import ItemV
-from Views.Item.ItemIcon import EmptyIcon
 
 from Utils.Singleton import Singleton
 from Utils.Setting import EMPTY_NAME, EMPTY_SIZE
+from Utils.Settings.Icons.Icons import EMPTY_ICON
 
 
 class Item:
@@ -20,7 +20,13 @@ class Item:
             previous_button_y = button.view.rect.topleft[1]
             previous_button_height = button.view.rect.height
 
+    def copy_for_save(self):
+        return Item(self.name, self.size, self.view.icon.copy_for_save(), self.buttons)
+
 
 class EmptyItem(Item, Singleton):
     def __init__(self):
-        super().__init__(EMPTY_NAME, EMPTY_SIZE, EmptyIcon(), [])
+        super().__init__(EMPTY_NAME, EMPTY_SIZE, EMPTY_ICON, [])
+
+    def copy_for_save(self):
+        return EmptyItem()

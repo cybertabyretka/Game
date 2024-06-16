@@ -6,10 +6,13 @@ from Models.Item.Item import Item
 
 
 class Weapon(Item):
-    def __init__(self, name, size, attack_size, icon, animation_asset_dict, buttons):
+    def __init__(self, name, size, attack_size, icon, paths_asset, buttons):
         super().__init__(name, size, icon, buttons)
-        self.view = WeaponV(icon, animation_asset_dict)
+        self.view = WeaponV(icon, paths_asset)
         self.physic = SwordLikePhysic(attack_size)
+
+    def copy_for_save(self):
+        return Weapon(self.name, self.size, self.physic.attack_physic.attack_size, self.view.icon.copy_for_save(), self.view.paths_asset, self.buttons)
 
     def set_animation(self, rotation, entity):
         pos = (0, 0)

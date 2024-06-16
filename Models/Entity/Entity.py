@@ -11,27 +11,30 @@ from Utils.Settings.DataStructures.Stack import Stack
 
 
 class Entity:
-    def __init__(self, width: float, height: float, start_pos, max_velocity, current_weapon, current_shield, max_health, inventory, paths_asset):
+    def __init__(self, width: float, height: float, start_pos, max_velocity, current_weapon, current_shield, max_health, current_health, inventory, paths_asset):
         self.view = EntityV(paths_asset)
         self.physic = EntityPhysics(width, height, start_pos, max_velocity)
         self.states_stack = Stack(PlayerIdleState(self))
         self.current_weapon = current_weapon
         self.current_shield = current_shield
-        self.health = HealthBar(max_health)
+        self.health = HealthBar(max_health, current_health)
         self.inventory = inventory
+
+    def copy_for_save(self):
+        return Entity(self.physic.collision.rect.width, self.physic.collision.rect.height, self.physic.collision.rect.topleft, self.physic.max_velocity, self.current_weapon.copy_for_save(), self.current_shield.copy_for_save(), self.health.max_health, self.health.health, self.inventory.copy_for_save(), self.view.paths_asset)
 
 
 class NPC(Entity):
-    def __init__(self, width: float, height: float, start_pos, max_velocity, current_weapon, current_shield, max_health, inventory, paths_asset):
-        super().__init__(width, height, start_pos, max_velocity, current_weapon, current_shield, max_health, inventory, paths_asset)
+    def __init__(self, width: float, height: float, start_pos, max_velocity, current_weapon, current_shield, max_health, current_health, inventory, paths_asset):
+        super().__init__(width, height, start_pos, max_velocity, current_weapon, current_shield, max_health, inventory, current_health, paths_asset)
         self.physic = NPCPhysics(width, height, start_pos, max_velocity)
         self.states_stack = Stack(NPCIdleState(self))
         self.mind = Mind()
 
 
 class Player(Entity):
-    def __init__(self, inventory, windows, paths_asset, width=35., height=35., start_pos=(0, 0), max_velocity=2, current_weapon=None, current_shield=None, max_health=20):
-        super().__init__(width, height, start_pos, max_velocity, current_weapon, current_shield, max_health, inventory, paths_asset)
+    def __init__(self, inventory, windows, paths_asset, width=35., height=35., start_pos=(0, 0), max_velocity=2, current_weapon=None, current_shield=None, max_health=20, current_health=20):
+        super().__init__(width, height, start_pos, max_velocity, current_weapon, current_shield, max_health, current_health, inventory, paths_asset)
         self.view = PlayerV(windows, paths_asset)
         self.physic = PlayerPhysics(width, height, start_pos, max_velocity)
 
@@ -44,5 +47,5 @@ class Player(Entity):
 
 
 class Swordsman(NPC):
-    def __init__(self, inventory, paths_asset, width=35., height=35., start_pos=(0, 0), max_velocity=1, current_weapon=None, current_shield=None, max_health=2):
-        super().__init__(width, height, start_pos, max_velocity, current_weapon, current_shield, max_health, inventory, paths_asset)
+    def __init__(self, inventory, paths_asset, width=35., height=35., start_pos=(0, 0), max_velocity=1, current_weapon=None, current_shield=None, max_health=2, current_health=2):
+        super().__init__(width, height, start_pos, max_velocity, current_weapon, current_shield, max_health, current_health, inventory, paths_asset)

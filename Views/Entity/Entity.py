@@ -10,11 +10,15 @@ class EntityV:
         self.image_left = None
         self.current_image = self.image_up
 
-    def download_images(self):
+    def download_images(self, current_weapon, current_shield, inventory):
         self.image_up = load_image(self.paths_asset['up'])
         self.image_down = load_image(self.paths_asset['down'])
         self.image_right = load_image(self.paths_asset['right'])
         self.image_left = load_image(self.paths_asset['left'])
+        current_weapon.view.download_images()
+        current_shield.view.download_images()
+        for cell in inventory.cells:
+            cell.item.view.icon.download_images()
 
     def rotate(self, rotation):
         if rotation == 0:

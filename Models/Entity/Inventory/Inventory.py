@@ -15,6 +15,14 @@ class Inventory:
     def get_cell(self, index):
         return self.cells[index[0]][index[1]]
 
+    def copy_for_save(self):
+        copied_cells = [[]]
+        for i in range(self.size[0]):
+            for j in range(self.size[1]):
+                copied_cells[i][j] = InventoryCell(self.cells[i][j].item, self.cells[i][j].view.colour_if_selected, self.cells[i][j].view.colour_if_unselected)
+                copied_cells[i][j].item = copied_cells[i][j].item.copy_for_save()
+        return copied_cells
+
     def change_cell_state(self, index):
         self.get_cell(index).is_selected = not self.get_cell(index).is_selected
 
