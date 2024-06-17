@@ -9,4 +9,5 @@ def get_game(save, display, entities_surface, rooms_surface, auto_saves, saves):
     with open(f'{save.path}player.pkl', 'rb') as player_file:
         player = pickle.load(player_file)
     game = Game(display, rooms_map, player, entities_surface, rooms_surface, auto_saves, saves)
+    game.after_load_preprocess()
     return game

@@ -112,6 +112,7 @@ class SaveSelectionState(MainMenuState):
                             game = get_game(self.main_menu.auto_saves[4], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface, self.main_menu.auto_saves, self.main_menu.saves)
                         elif self.selected_button.view.text.view.text == NEW_GAME:
                             game = Game(self.main_menu.view.display, BASE_ROOMS_MAP, BASE_PLAYER, self.main_menu.entities_surface, self.main_menu.rooms_surface, self.main_menu.auto_saves, self.main_menu.saves)
+                            game.after_load_preprocess()
                         elif self.selected_button.view.text.view.text == CANSEL:
                             if self.selected_button is not None:
                                 self.selected_button.view.selected = False
@@ -120,8 +121,6 @@ class SaveSelectionState(MainMenuState):
                             if self.selected_button is not None:
                                 self.selected_button.view.selected = False
                                 self.selected_button = None
-                            game.download_images()
-                            game.download_entities()
                             processes_stack.push(game)
 
     def draw(self):
@@ -139,7 +138,7 @@ class SaveSelectionState(MainMenuState):
         line_start_pos = [135, 210]
         line_end_pos = [135, 390]
         date_start_pos = [20, 250]
-        print_text(self.main_menu.view.display.surface, self.main_menu.auto_saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+        print_text(self.main_menu.view.display.surface, self.main_menu.saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
         for save in self.main_menu.saves[1:]:
             pg.draw.line(self.main_menu.view.display.surface, WHITE_RGB, line_start_pos, line_end_pos, 1)
             date_start_pos[0] += 140

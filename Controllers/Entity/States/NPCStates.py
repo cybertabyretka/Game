@@ -35,7 +35,7 @@ class NPCAfterPunchState(NPCState):
         self.entity.health.health -= damage
         if self.entity.health.health <= 0:
             room.live_NPCs_count -= 1
-            room.loot_tiles.append(LootTile(self.entity.view.current_image, 1, self.entity.physic.collision.rect.topleft, self.entity.inventory))
+            room.loot_tiles.append(LootTile(self.entity.physic.collision.rect.topleft, self.entity.inventory))
             self.entity.states_stack.push(NPCDeathState(self.entity))
             return
         self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.view.tile_size)
@@ -46,6 +46,9 @@ class NPCAfterPunchState(NPCState):
 
 class NPCIdleState(NPCState):
     def update(self, room, player, entities):
+        if self.entity.health.health <= 0:
+            self.entity.states_stack.push(NPCDeathState(self.entity))
+            return
         if check_damage_for_NPC(self.entity, room.collisions_map.damage_map):
             return
         self.entity.mind.search_way_in_graph((self.entity.physic.collision.collisions_around["center"].rect.x, self.entity.physic.collision.collisions_around["center"].rect.y), (player.physic.collision.collisions_around["center"].rect.x, player.physic.collision.collisions_around["center"].rect.y), room.collisions_map.graph)

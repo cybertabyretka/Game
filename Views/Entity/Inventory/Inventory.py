@@ -2,6 +2,12 @@ class InventoryV:
     def __init__(self, tile_size):
         self.tile_size = tile_size
 
+    @staticmethod
+    def download_images(cells):
+        for i in range(len(cells[0])):
+            for j in range(len(cells)):
+                cells[i][j].item.view.icon.download_images()
+
     def draw(self, surface, cells, start_pos):
         for i in range(len(cells[0])):
             for j in range(len(cells)):

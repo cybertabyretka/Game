@@ -12,7 +12,7 @@ class Room:
 
     def download_images(self):
         for loot_tile in self.loot_tiles:
-            loot_tile.view.download_images()
+            loot_tile.download_images()
         for NPC in self.NPCs:
             NPC.view.download_images(NPC.current_weapon, NPC.current_shield, NPC.inventory)
         self.view.tile_map.download_images()
@@ -21,10 +21,10 @@ class Room:
         copied_NPCs = []
         for NPC in self.NPCs:
             copied_NPCs.append(NPC.copy_for_save())
-        copied_steal_tiles = []
-        for tile in self.loot_tiles:
-            copied_steal_tiles.append(tile.copy_for_save())
-        copied_room = Room(self.view.tile_map.copy_for_save(), self.view.tile_size, copied_NPCs, copied_steal_tiles)
+        copied_loot_tiles = []
+        for loot_tile in self.loot_tiles:
+            copied_loot_tiles.append(loot_tile.copy_for_save())
+        copied_room = Room(self.view.tile_map.copy_for_save(), self.view.tile_size, copied_NPCs, copied_loot_tiles)
         copied_room.live_NPCs_count = self.live_NPCs_count
         return copied_room
 

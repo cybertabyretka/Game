@@ -15,12 +15,13 @@ def make_room(rooms_map, pos, NPCs, loot_tiles, width=DISPLAY_WIDTH, height=DISP
     rooms_map[pos[0]][pos[1]] = room
 
 
-def connect_rooms(door):
-    add_doors(door)
-    door.current_room.collisions_map.get_map_from_object(door.current_room.view.tile_map.map)
-    door.current_room.collisions_map.get_graph()
-    door.next_room.collisions_map.get_map_from_object(door.next_room.view.tile_map.map)
-    door.next_room.collisions_map.get_graph()
+def connect_rooms(doors):
+    for door in doors:
+        add_doors(door)
+        door.current_room.collisions_map.get_map_from_object(door.current_room.view.tile_map.map)
+        door.current_room.collisions_map.get_graph()
+        door.next_room.collisions_map.get_map_from_object(door.next_room.view.tile_map.map)
+        door.next_room.collisions_map.get_graph()
 
 
 def add_doors(door):

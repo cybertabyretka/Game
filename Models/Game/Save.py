@@ -15,8 +15,8 @@ class Save:
             with open(f'{file_path}player.pkl', 'wb') as save_file:
                 pickle.dump(BASE_PLAYER, save_file, pickle.HIGHEST_PROTOCOL)
             with open(f'{file_path}date.txt', 'w') as date_file:
-                date_file.write('--.--.---- --:--:--')
-                self.save_time = '--.--.---- --:--:--'
+                date_file.write('---------- --:--:--')
+                self.save_time = '---------- --:--:--'
         else:
             with open(f'{file_path}date.txt', 'r') as date_file:
                 self.save_time = date_file.readline().rstrip()

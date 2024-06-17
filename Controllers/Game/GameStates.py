@@ -29,9 +29,14 @@ class Running(GameState):
             if event.key == pg.K_f:
                 if not self.game.room.live_NPCs_count:
                     for door in self.game.room.collisions_map.doors:
-                        if door.current_tile.collision.rect.collidepoint(pg.mouse.get_pos()):
-                            if manhattan_distance(door.current_tile.collision.rect.center, self.game.player.physic.collision.rect.center) <= min(self.game.player.physic.collision.rect.width, self.game.player.physic.collision.rect.height) * 2:
-                                self.game.room, self.game.player.physic.collision.rect.topleft = door.get_next_room(self.game.room)
+                        if door.get_next_room(self.game.room)[-1]:
+                            if door.current_tile.collision.rect.collidepoint(pg.mouse.get_pos()):
+                                if manhattan_distance(door.current_tile.collision.rect.center, self.game.player.physic.collision.rect.center) <= min(self.game.player.physic.collision.rect.w, self.game.player.physic.collision.rect.h) * 2:
+                                    self.game.room, self.game.player.physic.collision.rect.topleft = door.get_next_room(self.game.room)[:2]
+                        else:
+                            if door.next_tile.collision.rect.collidepoint(pg.mouse.get_pos()):
+                                if manhattan_distance(door.next_tile.collision.rect.center, self.game.player.physic.collision.rect.center) <= min(self.game.player.physic.collision.rect.w, self.game.player.physic.collision.rect.h) * 2:
+                                    self.game.room, self.game.player.physic.collision.rect.topleft = door.get_next_room(self.game.room)[:2]
             elif event.key == pg.K_p:
                 self.game.states_stack.push(OnPause(self.game))
                 self.game.states_stack.peek().handle_input(event, processes_stack, main_process)
@@ -68,6 +73,7 @@ class Running(GameState):
 class OnPause(GameState):
     def __init__(self, game):
         super().__init__(game)
+        self.finished = True
 
     def handle_input(self, event, processes_stack, main_process):
         if event.type == pg.QUIT:
@@ -192,7 +198,7 @@ class SaveSelectionState(GameState):
         line_start_pos = [135, 210]
         line_end_pos = [135, 390]
         date_start_pos = [20, 250]
-        print_text(self.game.view.display.surface, self.game.auto_saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+        print_text(self.game.view.display.surface, self.game.saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
         for save in self.game.saves[1:]:
             pg.draw.line(self.game.view.display.surface, WHITE_RGB, line_start_pos, line_end_pos, 1)
             date_start_pos[0] += 140

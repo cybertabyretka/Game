@@ -1,10 +1,9 @@
 import pickle
 import datetime
-import time
 
 
 def save_game(save, copied_rooms_map, copied_player):
-    save.save_time = f'{datetime.date.today()} {time.time()}'
+    save.save_time = f'{datetime.datetime.now()}'
     with open(f'{save.path}rooms_map.pkl', 'wb') as rooms_map_file:
         pickle.dump(copied_rooms_map, rooms_map_file, pickle.HIGHEST_PROTOCOL)
     with open(f'{save.path}player.pkl', 'wb') as player_file:

@@ -7,7 +7,9 @@ class TileV:
         self.image = None
 
     def download_images(self):
-        self.image = load_image(self.path)
+        if self.path is not None:
+            self.image = load_image(self.path)
 
     def render(self, surface, pos):
-        surface.blit(self.image, pos)
+        if self.image is not None:
+            surface.blit(self.image, pos)

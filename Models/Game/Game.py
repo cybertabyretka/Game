@@ -23,9 +23,13 @@ class Game:
         self.auto_saves = auto_saves
         self.saves = saves
 
-    def download_images(self):
-        self.view.rooms_map.download_images()
-        self.player.view.download_images(self.player.current_weapon, self.player.current_shield, self.player.inventory)
+    def new_object_preprocess(self, doors_connections):
+        self.view.rooms_map.new_object_preprocess(doors_connections)
+        self.download_entities()
+
+    def after_load_preprocess(self):
+        self.view.rooms_map.after_load_preprocess()
+        self.download_entities()
 
     def copy_for_save(self):
         return self.player.copy_for_save(), self.view.rooms_map.copy_for_save()
@@ -36,5 +40,7 @@ class Game:
                 if self.view.rooms_map.map[i][j] is not None:
                     self.view.rooms_map.map[i][j].download_map()
                     for NPC in self.view.rooms_map.map[i][j].NPCs:
+                        NPC.view.download_images(NPC.current_weapon, NPC.current_shield, NPC.inventory)
                         NPC.physic.collision.get_collisions_around(self.view.rooms_map.map[i][j].collisions_map.map, TILE_SIZE)
+        self.player.view.download_images(self.player.current_weapon, self.player.current_shield, self.player.inventory)
         self.player.physic.collision.get_collisions_around(self.room.collisions_map.map, TILE_SIZE)

@@ -341,12 +341,11 @@ class PlayerStealState(PlayerState):
                                                                                                  self.selected_index_in_inventory,
                                                                                                  self.selected_inventory)
                         self.selected_index_in_inventory = self.selected_index_in_another_inventory = None
-                self.selected_inventory = self.selected_index_in_inventory = None
+                self.selected_inventory = None
                 self.buttons = []
                 if self.entity.view.windows['inventory_base'].view.rect.collidepoint(mouse_click_pos):
                     inventory_cell_index = self.entity.inventory.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
                     if self.entity.inventory.size[0] > inventory_cell_index[0] >= 0 and self.entity.inventory.size[1] > inventory_cell_index[1] >= 0:
-                        self.buttons = []
                         if self.selected_index_in_inventory is None:
                             if self.selected_index_in_another_inventory is not None:
                                 self.inventory_for_steal.switch_with_another_inventory(self.selected_index_in_another_inventory, inventory_cell_index, self.entity.inventory)
@@ -362,7 +361,6 @@ class PlayerStealState(PlayerState):
                 elif self.entity.view.windows['inventory_for_steal'].view.rect.collidepoint(mouse_click_pos):
                     inventory_cell_index = self.inventory_for_steal.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_for_steal'])
                     if self.inventory_for_steal.size[0] > inventory_cell_index[0] >= 0 and self.inventory_for_steal.size[1] > inventory_cell_index[1] >= 0:
-                        self.buttons = []
                         if self.selected_index_in_another_inventory is None:
                             if self.selected_index_in_inventory is not None:
                                 self.entity.inventory.switch_with_another_inventory(self.selected_index_in_inventory, inventory_cell_index, self.inventory_for_steal)

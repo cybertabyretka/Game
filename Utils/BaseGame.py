@@ -44,11 +44,12 @@ NPCs = [swordsman]
 BASE_ROOMS_MAP = RoomsMap((1, 2))
 make_room(BASE_ROOMS_MAP.map, (0, 0), NPCs, [])
 make_room(BASE_ROOMS_MAP.map, (1, 0), [], [])
-doors = [Door(Tile(f'{TILES["front_door"]}/{0}.png', 0, (350, 0)),
-              Tile(f'{TILES["front_door"]}/{0}.png', 0, (350, 665)),
-              BASE_ROOMS_MAP.map[0][0], BASE_ROOMS_MAP.map[1][0],
-              (350, 35), (350, 630))]
-connect_rooms(doors[0])
+doors = [Door(Tile(f'{TILES["front_door"]}/{0}.png', 0, (350, 665)),
+              Tile(f'{TILES["front_door"]}/{0}.png', 0, (350, 0)),
+              (350, 630), (350, 35))]
+doors_connections = {doors[0]: [BASE_ROOMS_MAP.map[0][0], BASE_ROOMS_MAP.map[1][0]]}
+BASE_ROOMS_MAP.add_doors_connections(doors_connections)
+BASE_ROOMS_MAP.add_doors()
 
 BASE_PLAYER_START_POS = (120, 120)
 
