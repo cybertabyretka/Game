@@ -120,7 +120,8 @@ class EscState(GameState):
             if selected_button.view.text.view.text == CONTINUE:
                 self.finished = True
             elif selected_button.view.text.view.text == SAVE_GAME:
-                self.game.states_stack.push(SaveSelectionState(self.game, self.game.buttons['save_selection_buttons']))
+                if not self.game.room.live_NPCs_count:
+                    self.game.states_stack.push(SaveSelectionState(self.game, self.game.buttons['save_selection_buttons']))
             elif selected_button.view.text.view.text == EXIT_TO_MAIN_MENU:
                 self.selected_button.view.selected = False
                 self.selected_button = None
