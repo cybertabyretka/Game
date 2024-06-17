@@ -6,7 +6,7 @@ import pygame.locals as loc
 from Controllers.Game.BaseStates import MainMenuState
 from Controllers.Save import get_game
 
-from Utils.Settings.Buttons.ButtonsTexts import START, EXIT, SELECT_1, SELECT_2, SELECT_3, SELECT_4, SELECT_5, SELECT_1_AUTO, SELECT_2_AUTO, SELECT_3_AUTO, SELECT_4_AUTO, SELECT_5_AUTO
+from Utils.Settings.Buttons.ButtonsTexts import *
 from Utils.Draw.Text import print_text
 from Utils.Settings.Colours import WHITE_RGB
 from Utils.Settings.Paths import FONT_PATH
@@ -34,6 +34,8 @@ class StartState(MainMenuState):
             click_pos = event.pos
             if self.selected_button is not None and self.selected_button.view.rect.collidepoint(click_pos):
                 if self.selected_button.view.text.view.text == START:
+                    if self.selected_button is not None:
+                        self.selected_button.view.selected = False
                     self.main_menu.states_stack.push(SaveSelectionState(self.main_menu, self.main_menu.buttons['save_selection_state_buttons']))
                 elif self.selected_button.view.text.view.text == EXIT:
                     main_process.is_running = False
@@ -57,6 +59,8 @@ class StartState(MainMenuState):
             elif event.key == loc.K_RETURN:
                 if self.selected_button is not None:
                     if self.selected_button.view.text.view.text == START:
+                        if self.selected_button is not None:
+                            self.selected_button.view.selected = False
                         self.main_menu.states_stack.push(SaveSelectionState(self.main_menu, self.main_menu.buttons['save_selection_state_buttons']))
                     elif self.selected_button.view.text.view.text == EXIT:
                         main_process.is_running = False
@@ -112,8 +116,13 @@ class SaveSelectionState(MainMenuState):
                             game = get_game(self.main_menu.auto_saves[3], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface)
                         elif self.selected_button.view.text.view.text == SELECT_5_AUTO:
                             game = get_game(self.main_menu.auto_saves[4], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface)
-                        game.download_images()
-                        processes_stack.push(game)
+                        elif self.selected_button.view.text.view.text == CANSEL:
+                            if self.selected_button is not None:
+                                self.selected_button.view.selected = False
+                            self.main_menu.states_stack.pop()
+                        if game is not None:
+                            game.download_images()
+                            processes_stack.push(game)
 
     def draw(self):
         line_start_pos = [135, 20]

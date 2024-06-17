@@ -17,6 +17,7 @@ class WeaponV(ItemV):
         self.animation_asset['animation_down'] = Animation(load_images(self.paths_asset['animation_down'], set_colour=True), 1, False)
         self.animation_asset['animation_left'] = Animation(load_images(self.paths_asset['animation_left'], set_colour=True), 1, False)
         self.animation_asset['animation_right'] = Animation(load_images(self.paths_asset['animation_right'], set_colour=True), 1, False)
+        self.icon.download_images()
 
     def set_animation(self, rotation, pos):
         if rotation == 0:

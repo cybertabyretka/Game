@@ -13,5 +13,7 @@ SELECT_3 = 'Select 3'
 SELECT_4 = 'Select 4'
 SELECT_5 = 'Select 5'
 
+CANSEL = 'Cansel'
+
 SWITCH_WEAPONS = 'Make it a current weapon'
 SWITCH_SHIELDS = 'Make it a current shield'
