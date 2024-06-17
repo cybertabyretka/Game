@@ -15,5 +15,7 @@ SELECT_5 = 'Select 5'
 
 CANSEL = 'Cansel'
 
+NEW_GAME = 'New game'
+
 SWITCH_WEAPONS = 'Make it a current weapon'
 SWITCH_SHIELDS = 'Make it a current shield'

@@ -25,6 +25,8 @@ SHIELD_CHANGE_BUTTON = make_button(0, 0, 200, 15, 0, GRAY_RGB, WHITE_RGB, SWITCH
 
 CANSEL_BUTTON = make_button(550, 600, 100, 50, 1, GRAY_RGB, BLACK_RGB, CANSEL, BLACK_RGB, 15, FONT_PATH)
 
+NEW_GAME_BUTTON = make_button(50, 600, 100, 50, 1, GRAY_RGB, BLACK_RGB, NEW_GAME, BLACK_RGB, 15, FONT_PATH)
+
 
 def get_pressed_button(buttons, mouse_clck_pos):
     for button in buttons:

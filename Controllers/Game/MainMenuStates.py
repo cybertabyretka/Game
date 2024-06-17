@@ -6,11 +6,14 @@ import pygame.locals as loc
 from Controllers.Game.BaseStates import MainMenuState
 from Controllers.Save import get_game
 
+from Models.Game.Game import Game
+
 from Utils.Settings.Buttons.ButtonsTexts import *
 from Utils.Draw.Text import print_text
 from Utils.Settings.Colours import WHITE_RGB
 from Utils.Settings.Paths import FONT_PATH
 from Utils.Settings.Saves.Saves import *
+from Utils.BaseGame import BASE_ROOMS_MAP, BASE_PLAYER
 
 
 class StartState(MainMenuState):
@@ -116,11 +119,16 @@ class SaveSelectionState(MainMenuState):
                             game = get_game(self.main_menu.auto_saves[3], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface)
                         elif self.selected_button.view.text.view.text == SELECT_5_AUTO:
                             game = get_game(self.main_menu.auto_saves[4], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface)
+                        elif self.selected_button.view.text.view.text == NEW_GAME:
+                            game = Game(self.main_menu.view.display, BASE_ROOMS_MAP, BASE_PLAYER, self.main_menu.entities_surface, self.main_menu.rooms_surface)
                         elif self.selected_button.view.text.view.text == CANSEL:
                             if self.selected_button is not None:
                                 self.selected_button.view.selected = False
                             self.main_menu.states_stack.pop()
                         if game is not None:
+                            if self.selected_button is not None:
+                                self.selected_button.view.selected = False
+                                self.selected_button = None
                             game.download_images()
                             processes_stack.push(game)
 
