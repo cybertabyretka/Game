@@ -4,7 +4,7 @@ import pygame as pg
 import pygame.locals as loc
 
 from Controllers.Game.BaseStates import MainMenuState
-from Controllers.Save import get_game
+from Controllers.GetGame import get_game
 from Controllers.Game.Utils import check_buttons_collisions
 
 from Models.Game.Game import Game
@@ -91,27 +91,27 @@ class SaveSelectionState(MainMenuState):
                     if self.selected_button.view.rect.collidepoint(mouse_click_pos):
                         game = None
                         if self.selected_button.view.text.view.text == SELECT_1:
-                            game = get_game(self.main_menu.saves[0], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface)
+                            game = get_game(self.main_menu.saves[0], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface, self.main_menu.auto_saves, self.main_menu.saves)
                         elif self.selected_button.view.text.view.text == SELECT_2:
-                            game = get_game(self.main_menu.saves[1], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface)
+                            game = get_game(self.main_menu.saves[1], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface, self.main_menu.auto_saves, self.main_menu.saves)
                         elif self.selected_button.view.text.view.text == SELECT_3:
-                            game = get_game(self.main_menu.saves[2], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface)
+                            game = get_game(self.main_menu.saves[2], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface, self.main_menu.auto_saves, self.main_menu.saves)
                         elif self.selected_button.view.text.view.text == SELECT_4:
-                            game = get_game(self.main_menu.saves[3], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface)
+                            game = get_game(self.main_menu.saves[3], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface, self.main_menu.auto_saves, self.main_menu.saves)
                         elif self.selected_button.view.text.view.text == SELECT_5:
-                            game = get_game(self.main_menu.saves[5], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface)
+                            game = get_game(self.main_menu.saves[5], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface, self.main_menu.auto_saves, self.main_menu.saves)
                         elif self.selected_button.view.text.view.text == SELECT_1_AUTO:
-                            game = get_game(self.main_menu.auto_saves[0], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface)
+                            game = get_game(self.main_menu.auto_saves[0], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface, self.main_menu.auto_saves, self.main_menu.saves)
                         elif self.selected_button.view.text.view.text == SELECT_2_AUTO:
-                            game = get_game(self.main_menu.auto_saves[1], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface)
+                            game = get_game(self.main_menu.auto_saves[1], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface, self.main_menu.auto_saves, self.main_menu.saves)
                         elif self.selected_button.view.text.view.text == SELECT_3_AUTO:
-                            game = get_game(self.main_menu.auto_saves[2], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface)
+                            game = get_game(self.main_menu.auto_saves[2], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface, self.main_menu.auto_saves, self.main_menu.saves)
                         elif self.selected_button.view.text.view.text == SELECT_4_AUTO:
-                            game = get_game(self.main_menu.auto_saves[3], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface)
+                            game = get_game(self.main_menu.auto_saves[3], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface, self.main_menu.auto_saves, self.main_menu.saves)
                         elif self.selected_button.view.text.view.text == SELECT_5_AUTO:
-                            game = get_game(self.main_menu.auto_saves[4], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface)
+                            game = get_game(self.main_menu.auto_saves[4], self.main_menu.view.display, self.main_menu.entities_surface, self.main_menu.rooms_surface, self.main_menu.auto_saves, self.main_menu.saves)
                         elif self.selected_button.view.text.view.text == NEW_GAME:
-                            game = Game(self.main_menu.view.display, BASE_ROOMS_MAP, BASE_PLAYER, self.main_menu.entities_surface, self.main_menu.rooms_surface)
+                            game = Game(self.main_menu.view.display, BASE_ROOMS_MAP, BASE_PLAYER, self.main_menu.entities_surface, self.main_menu.rooms_surface, self.main_menu.auto_saves, self.main_menu.saves)
                         elif self.selected_button.view.text.view.text == CANSEL:
                             if self.selected_button is not None:
                                 self.selected_button.view.selected = False
@@ -121,6 +121,7 @@ class SaveSelectionState(MainMenuState):
                                 self.selected_button.view.selected = False
                                 self.selected_button = None
                             game.download_images()
+                            game.download_entities()
                             processes_stack.push(game)
 
     def draw(self):

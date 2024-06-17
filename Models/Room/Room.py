@@ -27,3 +27,7 @@ class Room:
         copied_room = Room(self.view.tile_map.copy_for_save(), self.view.tile_size, copied_NPCs, copied_steal_tiles)
         copied_room.live_NPCs_count = self.live_NPCs_count
         return copied_room
+
+    def download_map(self):
+        self.collisions_map.get_map_from_object(self.view.tile_map.map)
+        self.collisions_map.get_graph()

@@ -13,7 +13,7 @@ class Icon:
         self.image = load_image(self.path, set_colour=True, colour_to_change=(120, 0, 12))
 
     def copy_for_save(self):
-        return Icon(self.paths_assets)
+        return Icon(self.path)
 
     def draw(self, surface, start_pos):
         surface.blit(self.image, start_pos)

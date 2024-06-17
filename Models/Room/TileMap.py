@@ -3,9 +3,9 @@ class TileMap:
         self.map = {}
 
     def copy_for_save(self):
-        copied_tile_map = {}
+        copied_tile_map = TileMap()
         for coord in self.map:
-            copied_tile_map[coord] = self.map[coord].copy_for_save()
+            copied_tile_map.map[coord] = self.map[coord].copy_for_save()
         return copied_tile_map
 
     def download_images(self):

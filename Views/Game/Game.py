@@ -3,5 +3,8 @@ class GameV:
         self.display = display
         self.rooms_map = rooms_map
 
-    def render(self):
-        self.rooms_map.get_current_room().render(self.display.surface)
+    def render(self, room, buttons=None):
+        room.view.render_tile_map(self.display.surface)
+        if buttons is not None:
+            for button in buttons:
+                button.view.render(self.display.surface)

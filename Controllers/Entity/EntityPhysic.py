@@ -6,8 +6,8 @@ from Utils.DistanceCounting import manhattan_distance
 class EntityPhysics:
     def __init__(self, width, height, start_pos, max_velocity):
         self.collision = EntityCollision(start_pos, (width, height))
-        self.max_velocity: float = max_velocity
-        self.velocity: list[float] = [0., 0.]
+        self.max_velocity: int = max_velocity
+        self.velocity: list[int] = [0, 0]
 
 
 class EntityCollision:
@@ -18,8 +18,11 @@ class EntityCollision:
     def get_collisions_around(self, collisions_map, tile_size):
         tile_loc = ((self.rect.x + (self.rect.width // 2)) // tile_size[0], (self.rect.y + (self.rect.height // 2)) // tile_size[1])
         for offset_name in NEIGHBOUR_OFFSETS:
+            print(offset_name)
             check_lock = str((tile_loc[0] + NEIGHBOUR_OFFSETS[offset_name][0]) * tile_size[0]) + ';' + str((tile_loc[1] + NEIGHBOUR_OFFSETS[offset_name][1]) * tile_size[1])
+            print(check_lock)
             if check_lock in collisions_map:
+                print(True)
                 self.collisions_around[offset_name] = collisions_map[check_lock]
 
     def update(self, velocity, entities, movement=(0, 0)):
