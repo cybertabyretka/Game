@@ -4,11 +4,14 @@ import pygame as pg
 
 from Controllers.Game.BaseStates import GameState
 from Controllers.Entity.States.PlayerStates import InventoryOpenState, PlayerStealState
+from Controllers.Game.Utils import check_buttons_collisions
 
 from Views.Entity.Entity import render_entities
 from Views.Entity.HealthBar import render_health_bars
 
 from Utils.DistanceCounting import manhattan_distance
+from Utils.Settings.Buttons.Buttons import get_pressed_button
+from Utils.Settings.Buttons.ButtonsTexts import *
 
 
 class Running(GameState):
@@ -36,6 +39,9 @@ class Running(GameState):
                     self.game.states_stack.push(OnPause(self.game))
                     self.game.states_stack.peek().handle_input(event, processes_stack, main_process)
                     return
+            elif event.key == pg.K_ESCAPE:
+                self.game.states_stack.push(EscState(self.game, self.game.buttons['esc_state_buttons']))
+                return
         old_len = self.game.player.states_stack.size()
         self.game.player.states_stack.peek().handle_input(event, self.game.room)
         if self.game.player.states_stack.size() != old_len:
@@ -82,4 +88,43 @@ class OnPause(GameState):
         self.game.rooms_surface.blit(self.game.entities_surface, (0., 0.))
         self.game.view.display.surface.blit(self.game.rooms_surface, (self.game.rooms_surface.get_rect().x, self.game.rooms_surface.get_rect().y))
         self.game.player.states_stack.peek().draw(self.game.entities_surface)
+        self.game.view.display.update()
+
+
+class EscState(GameState):
+    def __init__(self, game, buttons):
+        super().__init__(game)
+        self.buttons = buttons
+        self.finished = False
+        self.selected_button = None
+
+    def handle_input(self, event, processes_stack, main_process):
+        if event.type == pg.QUIT:
+            main_process.is_running = False
+        elif event.type == pg.KEYDOWN:
+            if event.key == pg.K_ESCAPE:
+                self.finished = True
+        elif event.type == pg.MOUSEMOTION:
+            check_buttons_collisions(pg.mouse.get_pos(), self)
+        elif event.type == pg.MOUSEBUTTONDOWN:
+            selected_button = get_pressed_button(self.buttons, event.pos)
+            if selected_button.view.text.view.text == CONTINUE:
+                self.finished = True
+            elif selected_button.view.text.view.text == SAVE_GAME:
+                pass
+            elif selected_button.view.text.view.text == EXIT_TO_MAIN_MENU:
+                self.selected_button.view.selected = False
+                self.selected_button = None
+                processes_stack.pop()
+
+    def update(self):
+        if self.finished:
+            if self.selected_button is not None:
+                self.selected_button.view.selected = False
+                self.selected_button = None
+            self.game.states_stack.pop()
+
+    def draw(self):
+        for button in self.game.buttons['esc_state_buttons']:
+            button.view.render(self.game.view.display.surface)
         self.game.view.display.update()

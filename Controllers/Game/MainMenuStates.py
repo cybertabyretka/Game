@@ -5,6 +5,7 @@ import pygame.locals as loc
 
 from Controllers.Game.BaseStates import MainMenuState
 from Controllers.Save import get_game
+from Controllers.Game.Utils import check_buttons_collisions
 
 from Models.Game.Game import Game
 
@@ -82,17 +83,7 @@ class SaveSelectionState(MainMenuState):
         if event.type == pg.QUIT:
             main_process.is_running = False
         elif event.type == pg.MOUSEMOTION:
-            mouse_pos = event.pos
-            for button in self.buttons:
-                if button.view.rect.collidepoint(mouse_pos):
-                    if self.selected_button is not None and self.selected_button != button:
-                        self.selected_button.view.selected = False
-                    button.view.selected = True
-                    self.selected_button = button
-                    return
-            if self.selected_button is not None:
-                self.selected_button.view.selected = False
-                self.selected_button = None
+            check_buttons_collisions(pg.mouse.get_pos(), self)
         elif event.type == pg.MOUSEBUTTONDOWN:
             if pg.mouse.get_pressed(3)[0]:
                 if self.selected_button is not None:

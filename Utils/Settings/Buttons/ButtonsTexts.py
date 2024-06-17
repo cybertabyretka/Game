@@ -17,5 +17,9 @@ CANSEL = 'Cansel'
 
 NEW_GAME = 'New game'
 
+CONTINUE = 'Continue'
+SAVE_GAME = 'Save game'
+EXIT_TO_MAIN_MENU = 'Exit to main menu'
+
 SWITCH_WEAPONS = 'Make it a current weapon'
 SWITCH_SHIELDS = 'Make it a current shield'

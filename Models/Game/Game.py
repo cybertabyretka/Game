@@ -1,6 +1,7 @@
 from Views.Game.Game import GameV
 
 from Utils.Settings.DataStructures.Stack import Stack
+from Utils.Settings.Buttons.Buttons import *
 
 from Controllers.Processes.GameProcess import GameProcess
 from Controllers.Game.GameStates import Running
@@ -15,6 +16,7 @@ class Game:
         self.process = GameProcess(self)
         self.entities_surface = entities_surface
         self.rooms_surface = rooms_surface
+        self.buttons = {'esc_state_buttons': [CONTINUE_BUTTON, SAVE_GAME_BUTTON, EXIT_TO_MAIN_MENU_BUTTON]}
 
     def download_images(self):
         self.view.rooms_map.download_images()
