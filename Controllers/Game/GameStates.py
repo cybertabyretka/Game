@@ -135,6 +135,10 @@ class EscState(GameState):
             self.game.states_stack.pop()
 
     def draw(self):
+        self.game.room.view.render_tile_map(self.game.rooms_surface)
+        self.game.rooms_surface.blit(self.game.entities_surface, (0., 0.))
+        self.game.view.display.surface.blit(self.game.rooms_surface, (self.game.rooms_surface.get_rect().x, self.game.rooms_surface.get_rect().y))
+        self.game.player.states_stack.peek().draw(self.game.entities_surface)
         for button in self.game.buttons['esc_state_buttons']:
             button.view.render(self.game.view.display.surface)
         self.game.view.display.update()
@@ -156,14 +160,19 @@ class SaveSelectionState(GameState):
                 if self.selected_button is not None:
                     if self.selected_button.view.text.view.text == SELECT_1_AUTO:
                         save_game(self.game.auto_saves[0], self.game.view.rooms_map.copy_for_save(self.game.room), self.game.player.copy_for_save())
+                        self.game.sort_auto_saves()
                     elif self.selected_button.view.text.view.text == SELECT_2_AUTO:
                         save_game(self.game.auto_saves[1], self.game.view.rooms_map.copy_for_save(self.game.room), self.game.player.copy_for_save())
+                        self.game.sort_auto_saves()
                     elif self.selected_button.view.text.view.text == SELECT_3_AUTO:
                         save_game(self.game.auto_saves[2], self.game.view.rooms_map.copy_for_save(self.game.room), self.game.player.copy_for_save())
+                        self.game.sort_auto_saves()
                     elif self.selected_button.view.text.view.text == SELECT_4_AUTO:
                         save_game(self.game.auto_saves[3], self.game.view.rooms_map.copy_for_save(self.game.room), self.game.player.copy_for_save())
+                        self.game.sort_auto_saves()
                     elif self.selected_button.view.text.view.text == SELECT_5_AUTO:
                         save_game(self.game.auto_saves[4], self.game.view.rooms_map.copy_for_save(self.game.room), self.game.player.copy_for_save())
+                        self.game.sort_auto_saves()
                     elif self.selected_button.view.text.view.text == SELECT_1:
                         save_game(self.game.saves[0], self.game.view.rooms_map.copy_for_save(self.game.room), self.game.player.copy_for_save())
                     elif self.selected_button.view.text.view.text == SELECT_2:
@@ -174,6 +183,8 @@ class SaveSelectionState(GameState):
                         save_game(self.game.saves[3], self.game.view.rooms_map.copy_for_save(self.game.room), self.game.player.copy_for_save())
                     elif self.selected_button.view.text.view.text == SELECT_5:
                         save_game(self.game.saves[4], self.game.view.rooms_map.copy_for_save(self.game.room), self.game.player.copy_for_save())
+                    elif self.selected_button.view.text.view.text == CANSEL:
+                        self.game.states_stack.pop()
 
     def update(self):
         if self.finished:

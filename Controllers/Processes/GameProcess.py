@@ -6,6 +6,7 @@ class GameProcess:
         self.game = game
 
     def do(self, processes_stack, main_process):
+        self.game.auto_save()
         for event in pg.event.get():
             self.game.states_stack.peek().handle_input(event, processes_stack, main_process)
         self.game.states_stack.peek().update()

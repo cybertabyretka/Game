@@ -1,11 +1,15 @@
+import time
+
 from Views.Game.Game import GameV
 
 from Utils.Settings.DataStructures.Stack import Stack
 from Utils.Settings.Buttons.Buttons import *
 from Utils.Setting import TILE_SIZE
+from Utils.Settings.Saves.Utils import *
 
 from Controllers.Processes.GameProcess import GameProcess
 from Controllers.Game.GameStates import Running
+from Controllers.SaveGame import save_game
 
 
 class Game:
@@ -17,11 +21,52 @@ class Game:
         self.process = GameProcess(self)
         self.entities_surface = entities_surface
         self.rooms_surface = rooms_surface
+        self.previous_time_save = time.time()
+        self.time_between_saves = 1 * 60
         self.buttons = {'esc_state_buttons': [CONTINUE_BUTTON, SAVE_GAME_BUTTON, EXIT_TO_MAIN_MENU_BUTTON],
                         'save_selection_buttons': [FIRST_SAVE_BUTTON, SECOND_SAVE_BUTTON, THIRD_SAVE_BUTTON, FOURTH_SAVE_BUTTON, FIFTH_SAVE_BUTTON,
-                                                   FIRST_AUTO_SAVE_BUTTON, SECOND_AUTO_SAVE_BUTTON, THIRD_AUTO_SAVE_BUTTON, FOURTH_AUTO_SAVE_BUTTON, FIFTH_AUTO_SAVE_BUTTON]}
+                                                   FIRST_AUTO_SAVE_BUTTON, SECOND_AUTO_SAVE_BUTTON, THIRD_AUTO_SAVE_BUTTON, FOURTH_AUTO_SAVE_BUTTON, FIFTH_AUTO_SAVE_BUTTON,
+                                                   CANSEL_BUTTON]}
         self.auto_saves = auto_saves
+        self.current_auto_save_index = 0
+        self.sort_auto_saves()
         self.saves = saves
+
+    def auto_save(self):
+        current_time = time.time()
+        if current_time - self.previous_time_save >= self.time_between_saves:
+            self.previous_time_save = current_time
+            save_game(self.auto_saves[self.current_auto_save_index], self.view.rooms_map.copy_for_save(self.room), self.player.copy_for_save())
+            self.current_auto_save_index = (self.current_auto_save_index + 1) % len(self.auto_saves)
+
+    def sort_auto_saves(self):
+        saves_with_no_date = []
+        saves_with_date = []
+        for save in self.auto_saves:
+            current_date, current_time = save.get_date().split()
+            if current_date == BASE_DATE or current_time == BASE_TIME:
+                saves_with_no_date.append(save)
+            else:
+                saves_with_date.append(save)
+        for i in range(len(saves_with_date) - 1):
+            index_to_switch = i
+            min_date, min_time = saves_with_date[i].get_date().split()
+            min_date = tuple(map(int, min_date.split('-')))
+            min_time = tuple(map(int, min_time.split(':')))
+            for j in range(i + 1, len(saves_with_date)):
+                current_date, current_time = saves_with_date[j].get_date().split()
+                current_date = tuple(map(int, current_date.split('-')))
+                current_time = tuple(map(int, current_time.split(':')))
+                if current_date < min_date:
+                    min_date = current_date.copy()
+                    index_to_switch = j
+                elif current_date == min_date:
+                    if current_time < min_time:
+                        min_time = current_time.copy()
+                        index_to_switch = j
+            if index_to_switch != i:
+                saves_with_date[i] = saves_with_date[index_to_switch]
+        self.auto_saves = [*saves_with_no_date, *saves_with_date]
 
     def new_object_preprocess(self, doors_connections):
         self.view.rooms_map.new_object_preprocess(doors_connections)
