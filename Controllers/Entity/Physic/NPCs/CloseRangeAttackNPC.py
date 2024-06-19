@@ -1,5 +1,7 @@
 from Controllers.Entity.Physic.EntityPhysic import EntityPhysics, EntityCollision
 
+from Utils.DistanceCounting import manhattan_distance
+
 
 class CloseRangeAttackNPCCollision(EntityCollision):
     def __init__(self, pos, size):
