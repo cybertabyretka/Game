@@ -47,5 +47,5 @@ class CloseRangeAttackNPCCollision(EntityCollision):
 
 class CloseRangeAttackNPCPhysics(EntityPhysics):
     def __init__(self, width, height, start_pos, max_velocity):
-        super().__init__(width, height, start_pos, max_velocity)
+        super().__init__(max_velocity)
         self.collision = CloseRangeAttackNPCCollision(start_pos, (width, height))

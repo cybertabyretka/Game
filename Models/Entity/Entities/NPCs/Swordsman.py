@@ -1,7 +1,7 @@
 from Models.Entity.Entities.NPCs.NPC import NPC
 
 from Controllers.Entity.States.NPCs.SwordsmanStates import SwordsmanIdleState
-from Controllers.Entity.Physic.NPCs.CloseRangeAttackNPC import CloseRangeAttackNPCPhysics
+from Controllers.Entity.Physic.NPCs.CloseRangeAttackNPCPhysic import CloseRangeAttackNPCPhysics
 
 
 class Swordsman(NPC):

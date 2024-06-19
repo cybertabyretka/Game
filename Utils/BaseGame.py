@@ -11,7 +11,7 @@ from Models.Room.RoomsMap import RoomsMap
 from Models.Room.Door import Door
 from Models.Entity.Entities.Player import Player
 from Models.Entity.Entities.NPCs.Swordsman import Swordsman
-from Models.Item.Weapon import SwordLike
+from Models.Item.Weapons.Sword import Sword
 from Models.Room.Tile import Tile
 from Models.Entity.Inventory.Inventory import Inventory
 from Models.InGameWindow import InGameWindow
@@ -24,12 +24,12 @@ from Views.Item.ItemIcon import Icon
 entities_surface = pg.Surface((DISPLAY_WIDTH, DISPLAY_HEIGHT))
 
 sword_icon = Icon(SWORD['icon'])
-player_sword = SwordLike('Base sword', (20, 20), (35, 35), sword_icon, SWORD, [SWORD_CHANGE_BUTTON])
-swordsman_sword = SwordLike('Base sword', (20, 20), (35, 35), sword_icon, SWORD, [SWORD_CHANGE_BUTTON])
+player_sword = Sword('Base sword', (20, 20), sword_icon, SWORD, [SWORD_CHANGE_BUTTON], (35, 35), {'cut': 1})
+swordsman_sword = Sword('Base sword', (20, 20), sword_icon, SWORD, [SWORD_CHANGE_BUTTON], (35, 35), {'cut': 1})
 
 shield_icon = Icon(SHIELD['icon'])
-player_shield = Shield('Base shield', (20, 20), shield_icon, 2, ['sword'], [SHIELD_CHANGE_BUTTON])
-swordsman_shield = Shield('Base shield', (20, 20), shield_icon, 2, ['sword'], [SHIELD_CHANGE_BUTTON])
+player_shield = Shield('Base shield', (20, 20), shield_icon, [SHIELD_CHANGE_BUTTON], {'cut': 2})
+swordsman_shield = Shield('Base shield', (20, 20), shield_icon, [SHIELD_CHANGE_BUTTON], {'cut': 2})
 
 swordsman_inventory = Inventory((5, 5), (30, 30))
 swordsman_inventory.place_items([(0, 0), (1, 0)], [swordsman_sword, swordsman_shield])

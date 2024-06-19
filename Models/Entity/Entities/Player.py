@@ -16,10 +16,8 @@ class Player(Entity):
         self.states_stack = Stack(PlayerIdleState(self))
 
     @staticmethod
-    def change_current_special_item(special_item, selected_inventory_cell_index, selected_inventory):
-        temp = special_item
-        special_item = selected_inventory.get_cell(selected_inventory_cell_index).item
-        selected_inventory.place_item(selected_inventory_cell_index, temp)
+    def change_current_special_item(special_item, selected_cell):
+        special_item, selected_cell.item = selected_cell.item, special_item
         return special_item
 
     def copy_for_save(self):

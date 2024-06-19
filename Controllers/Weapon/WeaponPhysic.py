@@ -1,6 +1,15 @@
-from Controllers.Weapon.AttackPhysic import SwordLikeAttackPhysics
+from Controllers.Weapon.AttackPhysic import SwordAttackPhysics, AttackPhysic
 
 
-class SwordLikePhysic:
-    def __init__(self, attack_size):
-        self.attack_physic = SwordLikeAttackPhysics(attack_size)
+class WeaponPhysic:
+    def __init__(self):
+        self.attack_physic: AttackPhysic
+
+
+class SwordPhysic(WeaponPhysic):
+    def __init__(self, attack_size, damage_types):
+        super().__init__()
+        self.attack_physic = SwordAttackPhysics(attack_size, damage_types)
+
+    def copy_for_save(self):
+        return SwordPhysic(self.attack_physic.attack_size, self.attack_physic.damage_types)

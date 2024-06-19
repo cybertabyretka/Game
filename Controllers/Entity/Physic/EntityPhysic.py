@@ -4,8 +4,8 @@ from Utils.DistanceCounting import manhattan_distance
 
 
 class EntityPhysics:
-    def __init__(self, width, height, start_pos, max_velocity):
-        self.collision = EntityCollision(start_pos, (width, height))
+    def __init__(self, max_velocity):
+        self.collision: EntityCollision
         self.max_velocity: int = max_velocity
         self.velocity: list[int] = [0, 0]
 
