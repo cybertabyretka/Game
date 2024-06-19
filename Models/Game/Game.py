@@ -9,7 +9,8 @@ from Utils.Settings.Saves.Utils import *
 
 from Controllers.Processes.GameProcess import GameProcess
 from Controllers.Game.GameStates import Running
-from Controllers.SaveGame import save_game
+from Controllers.Saves.SaveGame import save_game
+from Controllers.Saves.Sort import saves_quick_sort
 
 
 class Game:
@@ -48,24 +49,7 @@ class Game:
                 saves_with_no_date.append(save)
             else:
                 saves_with_date.append(save)
-        for i in range(len(saves_with_date) - 1):
-            index_to_switch = i
-            min_date, min_time = saves_with_date[i].get_date().split()
-            min_date = tuple(map(int, min_date.split('-')))
-            min_time = tuple(map(int, min_time.split(':')))
-            for j in range(i + 1, len(saves_with_date)):
-                current_date, current_time = saves_with_date[j].get_date().split()
-                current_date = tuple(map(int, current_date.split('-')))
-                current_time = tuple(map(int, current_time.split(':')))
-                if current_date < min_date:
-                    min_date = current_date.copy()
-                    index_to_switch = j
-                elif current_date == min_date:
-                    if current_time < min_time:
-                        min_time = current_time.copy()
-                        index_to_switch = j
-            if index_to_switch != i:
-                saves_with_date[i] = saves_with_date[index_to_switch]
+        saves_quick_sort(saves_with_date)
         self.auto_saves = [*saves_with_no_date, *saves_with_date]
 
     def new_object_preprocess(self, doors_connections):

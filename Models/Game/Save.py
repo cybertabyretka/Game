@@ -17,6 +17,12 @@ class Save:
         else:
             self.save_time = self.get_date()
 
+    def get_date_and_time_as_tuples(self):
+        if self.save_time.split()[0] != BASE_DATE and self.save_time.split()[1] != BASE_TIME:
+            date, time = self.get_date().split()
+            date, time = tuple(reversed(list(map(int, date.split('-'))))), tuple(reversed(list(map(int, time.split(';')))))
+            return date, time
+
     def set_rooms_map(self, copied_rooms_map):
         with open(f'{self.path}rooms_map.pkl', 'wb') as room_map_file:
             pickle.dump(copied_rooms_map, room_map_file, pickle.HIGHEST_PROTOCOL)

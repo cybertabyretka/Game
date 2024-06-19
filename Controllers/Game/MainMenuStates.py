@@ -1,10 +1,8 @@
-import sys
-
 import pygame as pg
 import pygame.locals as loc
 
 from Controllers.Game.BaseStates import MainMenuState
-from Controllers.GetGame import get_game
+from Controllers.Saves.GetGame import get_game
 from Controllers.Game.Utils import check_buttons_collisions
 
 from Models.Game.Game import Game
@@ -13,7 +11,6 @@ from Utils.Settings.Buttons.ButtonsTexts import *
 from Utils.Draw.Text import print_text
 from Utils.Settings.Colours import WHITE_RGB
 from Utils.Settings.Paths import FONT_PATH
-from Utils.Settings.Saves.Saves import *
 from Utils.BaseGame import BASE_ROOMS_MAP, BASE_PLAYER
 
 
@@ -126,7 +123,7 @@ class SaveSelectionState(MainMenuState):
     def draw(self):
         line_start_pos = [135, 20]
         line_end_pos = [135, 200]
-        date_start_pos = [20, 50]
+        date_start_pos = [0, 50]
         self.main_menu.view.render(self.buttons)
         print_text(self.main_menu.view.display.surface, self.main_menu.auto_saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
         for auto_save in self.main_menu.auto_saves[1:]:
@@ -137,7 +134,7 @@ class SaveSelectionState(MainMenuState):
             line_end_pos[0] += 140
         line_start_pos = [135, 210]
         line_end_pos = [135, 390]
-        date_start_pos = [20, 250]
+        date_start_pos = [0, 250]
         print_text(self.main_menu.view.display.surface, self.main_menu.saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
         for save in self.main_menu.saves[1:]:
             pg.draw.line(self.main_menu.view.display.surface, WHITE_RGB, line_start_pos, line_end_pos, 1)

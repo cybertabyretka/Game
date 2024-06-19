@@ -1,11 +1,9 @@
-import sys
-
 import pygame as pg
 
 from Controllers.Game.BaseStates import GameState
 from Controllers.Entity.States.PlayerStates import InventoryOpenState, PlayerStealState
 from Controllers.Game.Utils import check_buttons_collisions
-from Controllers.SaveGame import save_game
+from Controllers.Saves.SaveGame import save_game
 
 from Views.Entity.Entity import render_entities
 from Views.Entity.HealthBar import render_health_bars
@@ -197,7 +195,7 @@ class SaveSelectionState(GameState):
         self.game.view.display.surface.fill(DARK_GRAY_RGB)
         line_start_pos = [135, 20]
         line_end_pos = [135, 200]
-        date_start_pos = [20, 50]
+        date_start_pos = [0, 50]
         for button in self.buttons:
             button.view.render(self.game.view.display.surface)
         print_text(self.game.view.display.surface, self.game.auto_saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
@@ -209,7 +207,7 @@ class SaveSelectionState(GameState):
             line_end_pos[0] += 140
         line_start_pos = [135, 210]
         line_end_pos = [135, 390]
-        date_start_pos = [20, 250]
+        date_start_pos = [0, 250]
         print_text(self.game.view.display.surface, self.game.saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
         for save in self.game.saves[1:]:
             pg.draw.line(self.game.view.display.surface, WHITE_RGB, line_start_pos, line_end_pos, 1)
