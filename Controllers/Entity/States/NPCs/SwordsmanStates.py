@@ -9,19 +9,19 @@ from Utils.DistanceCounting import manhattan_distance
 def check_damage_for_NPC(entity, damage_map):
     damage, movement = get_damage_and_movement(damage_map, entity.physic.collision.rect)
     if damage:
-        entity.states_stack.push(NPCAfterPunchState(entity))
+        entity.states_stack.push(SwordsmanAfterPunchState(entity))
         entity.states_stack.peek().movement = movement
         entity.states_stack.peek().damage = damage
         return True
     return False
 
 
-class NPCDeathState(NPCState):
+class SwordsmanDeathState(NPCState):
     def __init__(self, entity):
         super().__init__(entity)
 
 
-class NPCAfterPunchState(NPCState):
+class SwordsmanAfterPunchState(NPCState):
     def __init__(self, entity):
         super().__init__(entity)
         self.movement = (0, 0)
@@ -36,7 +36,7 @@ class NPCAfterPunchState(NPCState):
         if self.entity.health.health <= 0:
             room.live_NPCs_count -= 1
             room.loot_tiles.append(LootTile(self.entity.physic.collision.rect.topleft, self.entity.inventory))
-            self.entity.states_stack.push(NPCDeathState(self.entity))
+            self.entity.states_stack.push(SwordsmanDeathState(self.entity))
             return
         self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.view.tile_size)
         self.entity.physic.collision.update(self.entity.physic.velocity, entities, movement=self.movement)
@@ -44,19 +44,19 @@ class NPCAfterPunchState(NPCState):
         self.entity.states_stack.pop()
 
 
-class NPCIdleState(NPCState):
+class SwordsmanIdleState(NPCState):
     def update(self, room, player, entities):
         if self.entity.health.health <= 0:
-            self.entity.states_stack.push(NPCDeathState(self.entity))
+            self.entity.states_stack.push(SwordsmanDeathState(self.entity))
             return
         if check_damage_for_NPC(self.entity, room.collisions_map.damage_map):
             return
         self.entity.mind.search_way_in_graph((self.entity.physic.collision.collisions_around["center"].rect.x, self.entity.physic.collision.collisions_around["center"].rect.y), (player.physic.collision.collisions_around["center"].rect.x, player.physic.collision.collisions_around["center"].rect.y), room.collisions_map.graph)
         self.old_player_center_pos = (player.physic.collision.collisions_around["center"].rect.x, player.physic.collision.collisions_around["center"].rect.y)
-        self.entity.states_stack.push(NPCWalkState(self.entity))
+        self.entity.states_stack.push(SwordsmanWalkState(self.entity))
 
 
-class NPCWalkState(NPCState):
+class SwordsmanWalkState(NPCState):
     def __init__(self, entity):
         super().__init__(entity)
 
@@ -90,13 +90,13 @@ class NPCWalkState(NPCState):
         entities_around = self.entity.physic.collision.update(self.entity.physic.velocity, entities)
         for direction in entities_around:
             if entities_around[direction] is not None:
-                new_state = NPCPunchState(self.entity)
+                new_state = SwordsmanPunchState(self.entity)
                 new_state.direction_for_punch = direction
                 self.entity.states_stack.push(new_state)
                 return
 
 
-class NPCPunchState(NPCState):
+class SwordsmanPunchState(NPCState):
     def __init__(self, entity):
         super().__init__(entity)
         self.direction_for_punch = None

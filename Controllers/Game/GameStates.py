@@ -5,7 +5,7 @@ from Controllers.Entity.States.PlayerStates import InventoryOpenState, PlayerSte
 from Controllers.Game.Utils import check_buttons_collisions
 from Controllers.Saves.SaveGame import save_game
 
-from Views.Entity.Entity import render_entities
+from Views.Entity.Entities.Utils import render_entities
 from Views.Entity.HealthBar import render_health_bars
 
 from Utils.DistanceCounting import manhattan_distance

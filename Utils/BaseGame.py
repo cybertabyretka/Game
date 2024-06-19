@@ -1,6 +1,6 @@
 import pygame as pg
 
-from Utils.RoomsMap import connect_rooms, make_room
+from Utils.RoomsMap import make_room
 from Utils.Setting import DISPLAY_WIDTH, DISPLAY_HEIGHT, TILE_SIZE
 from Utils.Settings.Buttons.Buttons import SWORD_CHANGE_BUTTON, SHIELD_CHANGE_BUTTON
 from Utils.Settings.Paths import FONT_PATH
@@ -9,8 +9,8 @@ from Utils.Settings.Colours import WHITE_RGB, DARK_GRAY_RGB
 from Models.Assets.PathsAsset import SWORDSMAN, PLAYER, SWORD, SHIELD, TILES
 from Models.Room.RoomsMap import RoomsMap
 from Models.Room.Door import Door
-from Models.Game.Game import Game
-from Models.Entity.Entity import Swordsman, Player
+from Models.Entity.Entities.Player import Player
+from Models.Entity.Entities.NPCs.Swordsman import Swordsman
 from Models.Item.Weapon import SwordLike
 from Models.Room.Tile import Tile
 from Models.Entity.Inventory.Inventory import Inventory
