@@ -14,6 +14,7 @@ from Utils.Settings.Buttons.ButtonsTexts import *
 from Utils.Draw.Text import print_text
 from Utils.Settings.Colours import *
 from Utils.Settings.Paths import *
+from Utils.Draw.Projectiles import render_projectiles
 
 
 class Running(GameState):
@@ -58,6 +59,12 @@ class Running(GameState):
         self.game.player.states_stack.peek().update(self.game.room, self.game.room.NPCs)
         for NPC in self.game.room.NPCs:
             NPC.states_stack.peek().update(self.game.room, self.game.player, [*self.game.room.NPCs, self.game.player])
+        i = 0
+        while i < len(self.game.room.collisions_map.movable_damage_map):
+            current_projectile = self.game.room.collisions_map.movable_damage_map[i]
+            current_projectile.physic.collision.get_collisions_around(self.game.room.collisions_map.map, self.game.room.view.tile_size)
+            current_projectile.physic.collision.update(current_projectile.physic.velocity, self.game.room, i)
+            i += 1
 
     def draw(self):
         self.game.room.view.render_tile_map(self.game.rooms_surface)
@@ -65,6 +72,7 @@ class Running(GameState):
         self.game.view.display.surface.blit(self.game.rooms_surface, (self.game.rooms_surface.get_rect().x, self.game.rooms_surface.get_rect().y))
         render_entities(self.game.room.NPCs, self.game.player, self.game.entities_surface)
         render_health_bars(self.game.room.NPCs, self.game.player, self.game.entities_surface)
+        render_projectiles(self.game.room.collisions_map.movable_damage_map, self.game.entities_surface)
         self.game.view.display.update()
 
 

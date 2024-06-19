@@ -26,5 +26,5 @@ class Weapon(Item):
             pos = (entity.physic.collision.rect.x, entity.physic.collision.rect.y + entity.physic.collision.rect.height)
         elif rotation == 270:
             pos = (entity.physic.collision.rect.x - entity.physic.collision.rect.width, entity.physic.collision.rect.y)
-        self.physic.attack_physic.set_attack_rect(pos, rotation)
         self.view.set_animation(rotation, pos)
+        return pos

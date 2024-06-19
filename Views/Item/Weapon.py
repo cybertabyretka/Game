@@ -28,7 +28,8 @@ class WeaponV(ItemV):
             self.copied_animation = self.animation_asset['animation_down'].copy()
         elif rotation == 270:
             self.copied_animation = self.animation_asset['animation_left'].copy()
-        self.copied_animation.pos = pos
+        if self.copied_animation is not None:
+            self.copied_animation.pos = pos
 
     def render_animation(self, surface):
         self.copied_animation.render(surface)

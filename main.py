@@ -6,7 +6,6 @@ pg.font.init()
 from Models.Main import Main
 from Models.Game.MainMenu import MainMenu
 
-
 from Utils.Setting import BACKGROUND_PICTURE, DISPLAY, ENTITIES_SURFACE, ROOMS_SURFACE
 
 if __name__ == '__main__':

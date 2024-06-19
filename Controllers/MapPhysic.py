@@ -7,6 +7,7 @@ class CollisionsMap:
         self.map = {}
         self.graph = {}
         self.damage_map = {}
+        self.movable_damage_map = []
 
     def get_map_from_object(self, tile_map):
         for loc in tile_map:
@@ -49,6 +50,13 @@ class CollisionsMap:
 
     def add_damage(self, damage, identifier):
         self.damage_map[identifier] = damage
+
+    def add_movable_damage(self, damage, identifier):
+        self.movable_damage_map[identifier] = damage
+
+    def remove_movable_damage(self, identifier):
+        if identifier in self.movable_damage_map:
+            del self.movable_damage_map[identifier]
 
     def remove_damage(self, identifier):
         if identifier in self.damage_map:

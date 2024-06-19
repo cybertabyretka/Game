@@ -6,7 +6,7 @@ from Utils.Settings.Buttons.Buttons import SWORD_CHANGE_BUTTON, SHIELD_CHANGE_BU
 from Utils.Settings.Paths import FONT_PATH
 from Utils.Settings.Colours import WHITE_RGB, DARK_GRAY_RGB
 
-from Models.Assets.PathsAsset import SWORDSMAN, PLAYER, SWORD, SHIELD, TILES
+from Models.Assets.PathsAsset import *
 from Models.Room.RoomsMap import RoomsMap
 from Models.Room.Door import Door
 from Models.Entity.Entities.Player import Player
@@ -17,6 +17,9 @@ from Models.Entity.Inventory.Inventory import Inventory
 from Models.InGameWindow import InGameWindow
 from Models.Text import Text
 from Models.Item.Shield import Shield
+from Models.Entity.Entities.NPCs.Wizard import Wizard
+from Models.Item.Weapons.Staff import Staff
+from Models.Item.Weapons.Projectiles.FireBall import FireBall
 
 from Views.Item.ItemIcon import Icon
 
@@ -24,13 +27,19 @@ from Views.Item.ItemIcon import Icon
 entities_surface = pg.Surface((DISPLAY_WIDTH, DISPLAY_HEIGHT))
 
 sword_icon = Icon(SWORD['icon'])
-player_sword = Sword('Base sword', (20, 20), sword_icon, SWORD, [SWORD_CHANGE_BUTTON], (35, 35), {'cut': 1})
-swordsman_sword = Sword('Base sword', (20, 20), sword_icon, SWORD, [SWORD_CHANGE_BUTTON], (35, 35), {'cut': 1})
+player_sword = Sword('Base sword', (30, 30), sword_icon, SWORD, [SWORD_CHANGE_BUTTON], (35, 35), {'cut': 1})
+swordsman_sword = Sword('Base sword', (30, 30), sword_icon, SWORD, [SWORD_CHANGE_BUTTON], (35, 35), {'cut': 1})
 
 shield_icon = Icon(SHIELD['icon'])
-player_shield = Shield('Base shield', (20, 20), shield_icon, [SHIELD_CHANGE_BUTTON], {'cut': 2})
-swordsman_shield = Shield('Base shield', (20, 20), shield_icon, [SHIELD_CHANGE_BUTTON], {'cut': 2})
+player_shield = Shield('Base shield', (30, 30), shield_icon, [SHIELD_CHANGE_BUTTON], {'cut': 2})
+swordsman_shield = Shield('Base shield', (30, 30), shield_icon, [SHIELD_CHANGE_BUTTON], {'cut': 2})
 
+staff_icon = Icon(STAFF['icon'])
+fire_ball = FireBall(FIRE_BALL['image'], {'fire': 2}, (30, 30), 1)
+wizard_staff = Staff('Base staff', (30, 30), staff_icon, STAFF, [], fire_ball)
+
+wizard_inventory = Inventory((5, 5), (30, 30))
+wizard_inventory.place_item((0, 0), wizard_staff)
 swordsman_inventory = Inventory((5, 5), (30, 30))
 swordsman_inventory.place_items([(0, 0), (1, 0)], [swordsman_sword, swordsman_shield])
 player_inventory = Inventory((10, 10), (30, 30))
@@ -38,8 +47,9 @@ player_inventory = Inventory((10, 10), (30, 30))
 player_windows = {'inventory_base': InGameWindow(Text('Your inventory', WHITE_RGB, 15, FONT_PATH), (300, 315), (200, 100), DARK_GRAY_RGB),
                   'inventory_for_steal': InGameWindow(Text('Loot', WHITE_RGB, 15, FONT_PATH), (300, 315), (200, 400), DARK_GRAY_RGB)}
 
+wizard = Wizard(wizard_inventory, WIZARD, start_pos=(140, 560), current_weapon=wizard_staff)
 swordsman = Swordsman(swordsman_inventory, SWORDSMAN, start_pos=(140, 595), current_weapon=swordsman_sword, current_shield=swordsman_shield)
-NPCs = [swordsman]
+NPCs = [swordsman, wizard]
 
 BASE_ROOMS_MAP = RoomsMap((1, 2))
 make_room(BASE_ROOMS_MAP.map, (0, 0), NPCs, [])

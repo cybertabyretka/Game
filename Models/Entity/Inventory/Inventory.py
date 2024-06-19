@@ -32,7 +32,7 @@ class Inventory:
         for i in range(len(index)):
             self.place_item(index[i], items[i])
 
-    def get_cell_from_pos(self, pos, window):
+    def get_cell_index_from_pos(self, pos, window):
         inventory_start_pos = (window.view.rect.topleft[0], window.view.rect.topleft[1] + window.view.name.view.font_size)
         inventory_cell_index = list(map(lambda x: x // self.view.tile_size[0], (pos[0] - inventory_start_pos[0], pos[1] - inventory_start_pos[1])))
         return inventory_cell_index

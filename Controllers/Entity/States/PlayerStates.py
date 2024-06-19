@@ -45,7 +45,7 @@ class PlayerShieldState(PlayerState):
             self.entity.states_stack.pop()
             self.entity.states_stack.peek().handle_inputs(self.events, room)
         else:
-            damage, movement = get_damage_and_movement(room.collisions_map.damage_map, self.entity.physic.collision.rect)
+            damage, movement = get_damage_and_movement(room.collisions_map.damage_map, room.collisions_map.movable_damage_map, self.entity.physic.collision.rect)
             for damage_type in damage:
                 if damage_type in self.entity.current_shield.damage_types:
                     for damage_rect in damage[damage_type]:
@@ -103,10 +103,10 @@ class PlayerIdleState(PlayerState):
                 if not room.live_NPCs_count:
                     mouse_pos = pg.mouse.get_pos()
                     for steal_tile in room.loot_tiles:
-                        if steal_tile.collision.rect.collidepoint(mouse_pos) and manhattan_distance(steal_tile.collision.rect.topleft, self.entity.physic.collision.rect.topleft) <= min(self.entity.physic.collision.rect.width, self.entity.physic.collision.rect.height) * 2:
+                        if steal_tile.collision.rect.collidepoint(mouse_pos) and manhattan_distance(steal_tile.collision.rect.topleft, self.entity.physic.collision.rect.topleft) <= min(self.entity.physic.collision.rect.w, self.entity.physic.collision.rect.h) * 2:
                             self.entity.states_stack.push(PlayerStealState(self.entity, steal_tile.inventory))
                             return
-                self.entity.states_stack.push(InventoryOpenState(self.entity))
+                    self.entity.states_stack.push(InventoryOpenState(self.entity))
         elif event.type == pg.MOUSEBUTTONDOWN:
             if pg.mouse.get_pressed(3)[0]:
                 self.entity.states_stack.push(PlayerPunchState(self.entity))
@@ -114,7 +114,7 @@ class PlayerIdleState(PlayerState):
                 self.entity.states_stack.push(PlayerShieldState(self.entity))
 
     def update(self, room, entities):
-        if check_damage_for_entity(self.entity, room.collisions_map.damage_map, PlayerAfterPunchState):
+        if check_damage_for_entity(self.entity, room.collisions_map.damage_map, room.collisions_map.movable_damage_map, PlayerAfterPunchState):
             return
 
 
@@ -165,7 +165,7 @@ class PlayerWalkState(PlayerState):
                 self.entity.states_stack.push(PlayerShieldState(self.entity))
 
     def update(self, room, entities):
-        if check_damage_for_entity(self.entity, room.collisions_map.damage_map, PlayerAfterPunchState):
+        if check_damage_for_entity(self.entity, room.collisions_map.damage_map, room.collisions_map.movable_damage_map, PlayerAfterPunchState):
             return
         if len(self.directions) == 0:
             self.entity.states_stack.pop()
@@ -190,23 +190,24 @@ class PlayerWalkState(PlayerState):
 class PlayerPunchState(PlayerState):
     def __init__(self, entity):
         super().__init__(entity)
+        self.copied_damage_rect = None
 
     def handle_input(self, event, room):
-        if check_damage_for_entity(self.entity, room.collisions_map.damage_map, PlayerAfterPunchState):
+        if check_damage_for_entity(self.entity, room.collisions_map.damage_map, room.collisions_map.movable_damage_map, PlayerAfterPunchState):
             return
         if self.finished:
             self.events = []
             if event.type == pg.MOUSEBUTTONDOWN and pg.mouse.get_pressed(3)[0]:
+                direction = -1
                 if event.pos[1] < self.entity.physic.collision.rect.y and self.entity.physic.collision.rect.x < event.pos[0] < self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
-                    self.entity.current_weapon.set_animation(0, self.entity)
+                    direction = 0
                 elif self.entity.physic.collision.rect.y < event.pos[1] < self.entity.physic.collision.rect.y + self.entity.physic.collision.rect.height and event.pos[0] > self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
-                    self.entity.current_weapon.set_animation(90, self.entity)
+                    direction = 90
                 elif event.pos[1] > self.entity.physic.collision.rect.y and self.entity.physic.collision.rect.x < event.pos[0] < self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
-                    self.entity.current_weapon.set_animation(180, self.entity)
+                    direction = 180
                 elif self.entity.physic.collision.rect.y < event.pos[1] < self.entity.physic.collision.rect.y + self.entity.physic.collision.rect.height and event.pos[0] < self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
-                    self.entity.current_weapon.set_animation(270, self.entity)
-                if self.entity.current_weapon.view.copied_animation is not None:
-                    room.collisions_map.add_damage(self.entity.current_weapon.physic.attack_physic, id(self.entity.current_weapon.physic.attack_physic))
+                    direction = 270
+                if self.entity.current_weapon.attack(room, direction, self.entity, self):
                     self.finished = False
                 else:
                     self.finished = True
@@ -221,12 +222,12 @@ class PlayerPunchState(PlayerState):
         if self.entity.current_weapon.view.copied_animation is not None:
             if self.entity.current_weapon.view.copied_animation.done:
                 self.finished = True
-                room.collisions_map.remove_damage(id(self.entity.current_weapon.physic.attack_physic))
+                room.collisions_map.remove_damage(id(self.copied_damage_rect))
                 self.entity.states_stack.pop()
                 self.entity.states_stack.peek().handle_inputs(self.events, room)
         else:
             self.finished = True
-            room.collisions_map.remove_damage(id(self.entity.current_weapon.physic.attack_physic))
+            room.collisions_map.remove_damage(id(self.copied_damage_rect))
             self.entity.states_stack.pop()
             self.entity.states_stack.peek().handle_inputs(self.events, room)
 
@@ -263,7 +264,7 @@ class InventoryOpenState(PlayerState):
                     self.buttons = []
                     return
                 if self.entity.view.windows['inventory_base'].view.rect.collidepoint(mouse_click_pos):
-                    inventory_cell_index = self.entity.inventory.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
+                    inventory_cell_index = self.entity.inventory.get_cell_index_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
                     if self.entity.inventory.size[0] > inventory_cell_index[0] >= 0 and self.entity.inventory.size[1] > inventory_cell_index[1] >= 0:
                         if self.selected_cell is None:
                             self.selected_cell = self.entity.inventory.get_cell(inventory_cell_index)
@@ -274,7 +275,7 @@ class InventoryOpenState(PlayerState):
                             self.selected_cell = None
             elif pg.mouse.get_pressed(3)[2]:
                 if self.entity.view.windows['inventory_base'].view.rect.collidepoint(mouse_click_pos):
-                    inventory_cell_index = self.entity.inventory.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
+                    inventory_cell_index = self.entity.inventory.get_cell_index_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
                     if self.entity.inventory.size[0] > inventory_cell_index[0] >= 0 and self.entity.inventory.size[1] > inventory_cell_index[1] >= 0:
                         if self.selected_cell is not None:
                             self.selected_cell.change_state()
@@ -321,7 +322,7 @@ class PlayerStealState(PlayerState):
                     self.buttons = []
                     return
                 if self.entity.view.windows['inventory_base'].view.rect.collidepoint(mouse_click_pos):
-                    inventory_cell_index = self.entity.inventory.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
+                    inventory_cell_index = self.entity.inventory.get_cell_index_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
                     if self.entity.inventory.size[0] > inventory_cell_index[0] >= 0 and self.entity.inventory.size[1] > inventory_cell_index[1] >= 0:
                         if self.selected_cell is None:
                             self.selected_cell = self.entity.inventory.get_cell(inventory_cell_index)
@@ -331,7 +332,7 @@ class PlayerStealState(PlayerState):
                             self.selected_cell.change_state()
                             self.selected_cell = None
                 elif self.entity.view.windows['inventory_for_steal'].view.rect.collidepoint(mouse_click_pos):
-                    inventory_cell_index = self.inventory_for_steal.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_for_steal'])
+                    inventory_cell_index = self.inventory_for_steal.get_cell_index_from_pos(mouse_click_pos, self.entity.view.windows['inventory_for_steal'])
                     if self.inventory_for_steal.size[0] > inventory_cell_index[0] >= 0 and self.inventory_for_steal.size[1] > inventory_cell_index[1] >= 0:
                         if self.selected_cell is None:
                             self.selected_cell = self.inventory_for_steal.get_cell(inventory_cell_index)
@@ -345,7 +346,7 @@ class PlayerStealState(PlayerState):
                     self.selected_cell.change_state()
                     self.selected_cell = None
                 if self.entity.view.windows['inventory_base'].view.rect.collidepoint(mouse_click_pos):
-                    inventory_cell_index = self.entity.inventory.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
+                    inventory_cell_index = self.entity.inventory.get_cell_index_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
                     if self.entity.inventory.size[0] > inventory_cell_index[0] >= 0 and self.entity.inventory.size[1] > inventory_cell_index[1] >= 0:
                         selected_item = self.entity.inventory.get_cell(inventory_cell_index).item
                         selected_item.set_buttons_start_pos(mouse_click_pos)
@@ -353,7 +354,7 @@ class PlayerStealState(PlayerState):
                         self.selected_cell = self.entity.inventory.get_cell(inventory_cell_index)
                         self.selected_cell.change_state()
                 elif self.entity.view.windows['inventory_for_steal'].view.rect.collidepoint(mouse_click_pos):
-                    inventory_cell_index = self.inventory_for_steal.get_cell_from_pos(mouse_click_pos, self.entity.view.windows['inventory_for_steal'])
+                    inventory_cell_index = self.inventory_for_steal.get_cell_index_from_pos(mouse_click_pos, self.entity.view.windows['inventory_for_steal'])
                     if self.inventory_for_steal.size[0] > inventory_cell_index[0] >= 0 and self.inventory_for_steal.size[1] > inventory_cell_index[1] >= 0:
                         selected_item = self.inventory_for_steal.get_cell(inventory_cell_index).item
                         selected_item.set_buttons_start_pos(mouse_click_pos)

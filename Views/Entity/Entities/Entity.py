@@ -16,8 +16,10 @@ class EntityV:
         self.image_right = load_image(self.paths_asset['right'])
         self.image_left = load_image(self.paths_asset['left'])
         self.current_image = self.image_up
-        current_weapon.view.download_images()
-        current_shield.view.download_images()
+        if current_weapon is not None:
+            current_weapon.view.download_images()
+        if current_shield is not None:
+            current_shield.view.download_images()
         for i in range(inventory.size[0]):
             for j in range(inventory.size[1]):
                 inventory.cells[i][j].item.view.icon.download_images()

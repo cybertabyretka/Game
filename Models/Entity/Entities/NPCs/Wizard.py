@@ -1,3 +1,5 @@
+import time
+
 from Models.Entity.Entities.NPCs.NPC import NPC
 
 from Controllers.Entity.States.NPCs.WizardStates import WizardIdleState
@@ -9,6 +11,8 @@ class Wizard(NPC):
         super().__init__(current_weapon, current_shield, max_health, current_health, inventory, paths_asset)
         self.physic = LongRangeAttackNPCPhysic(width, height, start_pos, max_velocity)
         self.states_stack.push(WizardIdleState(self))
+        self.time_since_previous_attack = time.time()
+        self.break_time = 1
 
     def copy_for_save(self):
         return Wizard(self.inventory.copy_for_save(), self.view.paths_asset,
