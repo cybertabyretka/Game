@@ -23,7 +23,7 @@ class WizardAfterPunchState(NPCState):
         if self.entity.health.health <= 0:
             room.live_NPCs_count -= 1
             room.loot_tiles.append(LootTile(self.entity.physic.collision.rect.topleft, self.entity.inventory))
-            self.entity.states_stack.push(SwordsmanDeathState(self.entity))
+            self.entity.states_stack.push(WizardDeathState(self.entity))
             return
         self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.view.tile_size)
         self.entity.physic.collision.update(self.entity.physic.velocity, entities, movement=self.movement)

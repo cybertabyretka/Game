@@ -10,7 +10,7 @@ class LongRangeAttackNPCCollision(EntityCollision):
     def entities_contacts_process(self, movement, entities):
         entities_around = {'right': None, 'left': None, 'down': None, 'up': None}
         for entity in entities:
-            if entity.health.health > 0:
+            if entity.health.health >= 0:
                 self.find_entities_intersections(entity, entities_around)
                 if movement[0] > 0 and (entity.physic.collision.rect.x - self.rect.topright[0]) >= 0 and abs(self.rect.y - entity.physic.collision.rect.y) < self.rect.height:
                     movement[0] = min(movement[0], entity.physic.collision.rect.x - self.rect.topright[0])

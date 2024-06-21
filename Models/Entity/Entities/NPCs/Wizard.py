@@ -12,7 +12,7 @@ class Wizard(NPC):
         self.physic = LongRangeAttackNPCPhysic(width, height, start_pos, max_velocity)
         self.states_stack.push(WizardIdleState(self))
         self.time_since_previous_attack = time.time()
-        self.break_time = 1
+        self.break_time = 5
 
     def copy_for_save(self):
         return Wizard(self.inventory.copy_for_save(), self.view.paths_asset,

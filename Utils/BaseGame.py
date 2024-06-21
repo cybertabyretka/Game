@@ -2,7 +2,7 @@ import pygame as pg
 
 from Utils.RoomsMap import make_room
 from Utils.Setting import DISPLAY_WIDTH, DISPLAY_HEIGHT, TILE_SIZE
-from Utils.Settings.Buttons.Buttons import SWORD_CHANGE_BUTTON, SHIELD_CHANGE_BUTTON
+from Utils.Settings.Buttons.Buttons import WEAPONS_CHANGE_BUTTON, SHIELD_CHANGE_BUTTON
 from Utils.Settings.Paths import FONT_PATH
 from Utils.Settings.Colours import WHITE_RGB, DARK_GRAY_RGB
 
@@ -27,8 +27,8 @@ from Views.Item.ItemIcon import Icon
 entities_surface = pg.Surface((DISPLAY_WIDTH, DISPLAY_HEIGHT))
 
 sword_icon = Icon(SWORD['icon'])
-player_sword = Sword('Base sword', (30, 30), sword_icon, SWORD, [SWORD_CHANGE_BUTTON], (35, 35), {'cut': 1})
-swordsman_sword = Sword('Base sword', (30, 30), sword_icon, SWORD, [SWORD_CHANGE_BUTTON], (35, 35), {'cut': 1})
+player_sword = Sword('Base sword', (30, 30), sword_icon, SWORD, [WEAPONS_CHANGE_BUTTON], (35, 35), {'cut': 1})
+swordsman_sword = Sword('Base sword', (30, 30), sword_icon, SWORD, [WEAPONS_CHANGE_BUTTON], (35, 35), {'cut': 1})
 
 shield_icon = Icon(SHIELD['icon'])
 player_shield = Shield('Base shield', (30, 30), shield_icon, [SHIELD_CHANGE_BUTTON], {'cut': 2})
@@ -36,7 +36,7 @@ swordsman_shield = Shield('Base shield', (30, 30), shield_icon, [SHIELD_CHANGE_B
 
 staff_icon = Icon(STAFF['icon'])
 fire_ball = FireBall(FIRE_BALL['image'], {'fire': 2}, (30, 30), 1)
-wizard_staff = Staff('Base staff', (30, 30), staff_icon, STAFF, [], fire_ball)
+wizard_staff = Staff('Base staff', (30, 30), staff_icon, STAFF, [WEAPONS_CHANGE_BUTTON], fire_ball)
 
 wizard_inventory = Inventory((5, 5), (30, 30))
 wizard_inventory.place_item((0, 0), wizard_staff)

@@ -22,4 +22,4 @@ class Sword(Weapon):
         return False
 
     def copy_for_save(self):
-        return Sword(self.name, self.size, self.view.icon.copy_for_save(), self.view.paths_asset, self.buttons, self.physic.attack_size, self.physic.damage_types)
+        return Sword(self.name, self.size, self.view.icon.copy_for_save(), self.view.paths_asset, self.buttons, self.physic.attack_physic.attack_size, self.physic.attack_physic.damage_types)

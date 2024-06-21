@@ -9,10 +9,7 @@ class FireBall:
         self.view = FireBallV(image_path)
 
     def copy(self):
-        copied_fire_ball = FireBall(self.view.path, self.physic.damage_types, (self.physic.collision.rect.w, self.physic.collision.rect.h), self.physic.max_velocity)
-        copied_fire_ball.physic = self.physic
-        copied_fire_ball.view = self.view
-        return copied_fire_ball
+        return FireBall(self.view.path, self.physic.damage_types, (self.physic.collision.rect.w, self.physic.collision.rect.h), self.physic.max_velocity)
 
     def set_attack_rect(self, start_pos, direction):
         self.physic.set_attack_rect(start_pos, direction)

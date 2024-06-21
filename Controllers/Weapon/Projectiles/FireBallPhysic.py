@@ -25,7 +25,7 @@ class FireBallPhysic:
             self.velocity = (self.max_velocity, 0)
         elif direction == 180:
             self.velocity = (0, self.max_velocity)
-        elif direction == 90:
+        elif direction == 270:
             self.velocity = (-self.max_velocity, 0)
 
 
