@@ -1,6 +1,4 @@
-import pickle
-
-from Models.Game.Game import Game
+from Models.AppStates.Game import Game
 
 
 def get_game(save, display, entities_surface, rooms_surface, auto_saves, saves):

@@ -1,4 +1,4 @@
-from Utils.Image import load_image
+from Views.Image import load_image
 
 
 class TileV:

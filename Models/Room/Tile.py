@@ -1,4 +1,4 @@
-from Controllers.TilePhysic import TileCollision
+from Controllers.RoomMap.TilePhysic import TileCollision
 
 from Views.Room.Tile import TileV
 

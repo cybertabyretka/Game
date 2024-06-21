@@ -4,7 +4,7 @@ pg.init()
 pg.font.init()
 
 from Models.Main import Main
-from Models.Game.MainMenu import MainMenu
+from Models.AppStates.MainMenu import MainMenu
 
 from Utils.Setting import BACKGROUND_PICTURE, DISPLAY, ENTITIES_SURFACE, ROOMS_SURFACE
 

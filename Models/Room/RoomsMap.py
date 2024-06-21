@@ -1,7 +1,7 @@
 from Models.Room.Door import Door
 from Models.Room.Room import Room
 
-from Utils.RoomsMap import connect_rooms
+from Controllers.RoomMap.RoomsMapUtils import connect_rooms
 
 
 class RoomsMap:

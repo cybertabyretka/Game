@@ -1,4 +1,4 @@
-from Controllers.MapPhysic import CollisionsMap
+from Controllers.RoomMap.MapPhysic import CollisionsMap
 
 from Views.Room.Room import RoomV
 

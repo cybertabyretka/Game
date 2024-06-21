@@ -1,4 +1,4 @@
-from Controllers.Processes.MainProcess import MainProcess
+from Controllers.Game.Processes.MainProcess import MainProcess
 
 
 class Main:

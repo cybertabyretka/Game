@@ -1,4 +1,4 @@
-from Views.Text import TextV
+from Views.Text.Text import TextV
 
 
 class Text:
