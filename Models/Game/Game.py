@@ -1,16 +1,16 @@
 import time
 
-from Views.Game.Game import GameV
-
-from Utils.Settings.DataStructures.Stack import Stack
-from Utils.Settings.Buttons.Buttons import *
-from Utils.Setting import TILE_SIZE
-from Utils.Settings.Saves.Utils import *
-
-from Controllers.Processes.GameProcess import GameProcess
 from Controllers.Game.GameStates import Running
+from Controllers.Processes.GameProcess import GameProcess
 from Controllers.Saves.SaveGame import save_game
 from Controllers.Saves.Sort import saves_indexes_quick_sort
+
+from Utils.Setting import TILE_SIZE
+from Utils.Settings.Buttons.Buttons import *
+from Utils.Settings.DataStructures.Stack import Stack
+from Utils.Settings.Saves.Utils import *
+
+from Views.Game.Game import GameV
 
 
 class Game:

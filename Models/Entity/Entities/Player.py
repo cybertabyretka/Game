@@ -1,7 +1,7 @@
-from Models.Entity.Entities.Entity import Entity
-
 from Controllers.Entity.Physic.PlayerPhysic import PlayerPhysics
 from Controllers.Entity.States.PlayerStates import PlayerIdleState
+
+from Models.Entity.Entities.Entity import Entity
 
 from Utils.Settings.DataStructures.Stack import Stack
 

@@ -1,9 +1,9 @@
-from Views.Entity.Inventory.Inventory import InventoryV
-
 from Models.Entity.Inventory.InventoryCell import InventoryCell
 from Models.Item.Item import EmptyItem
 
 from Utils.Settings.Colours import GRAY_RGB, GREEN_RGB
+
+from Views.Entity.Inventory.Inventory import InventoryV
 
 
 class Inventory:

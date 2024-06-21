@@ -2,11 +2,9 @@ from Controllers.Entity.Physic.EntityPhysic import EntityPhysics, EntityCollisio
 
 
 class PlayerCollision(EntityCollision):
-    def __init__(self, pos, size):
-        super().__init__(pos, size)
+    pass
 
 
 class PlayerPhysics(EntityPhysics):
     def __init__(self, width, height, start_pos, max_velocity):
-        super().__init__(max_velocity)
-        self.collision = PlayerCollision(start_pos, (width, height))
+        super().__init__(width, height, start_pos, max_velocity, PlayerCollision)

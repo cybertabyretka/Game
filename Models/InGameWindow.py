@@ -1,5 +1,3 @@
-import pygame as pg
-
 from Views.InGameWindow import InGameWindowV
 
 

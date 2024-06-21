@@ -1,10 +1,8 @@
-import pickle
 import os
+import pickle
 
 from Utils.BaseGame import BASE_ROOMS_MAP, BASE_PLAYER
 from Utils.Settings.Saves.Utils import *
-
-from Models.Game.Game import Game
 
 
 class Save:

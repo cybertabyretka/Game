@@ -2,8 +2,6 @@ from Controllers.Entity.Physic.EntityPhysic import EntityPhysics, EntityCollisio
 
 
 class LongRangeAttackNPCCollision(EntityCollision):
-    def __init__(self, pos, size):
-        super().__init__(pos, size)
 
     def entities_contacts_process(self, movement, entities):
         entities_around = {'right': None, 'left': None, 'down': None, 'up': None}
@@ -44,5 +42,4 @@ class LongRangeAttackNPCCollision(EntityCollision):
 
 class LongRangeAttackNPCPhysic(EntityPhysics):
     def __init__(self, width, height, start_pos, max_velocity):
-        super().__init__(max_velocity)
-        self.collision = LongRangeAttackNPCCollision(start_pos, (width, height))
+        super().__init__(width, height, start_pos, max_velocity, LongRangeAttackNPCCollision)

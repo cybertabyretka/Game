@@ -1,11 +1,12 @@
 import pygame as pg
+
 from Utils.Setting import NEIGHBOUR_OFFSETS
 from Utils.DistanceCounting import manhattan_distance
 
 
 class EntityPhysics:
-    def __init__(self, max_velocity):
-        self.collision: EntityCollision
+    def __init__(self, width, height, start_pos, max_velocity, collision_type):
+        self.collision = collision_type(start_pos, (width, height))
         self.max_velocity: int = max_velocity
         self.velocity: list[int] = [0, 0]
 

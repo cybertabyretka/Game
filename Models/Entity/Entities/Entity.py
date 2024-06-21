@@ -1,10 +1,10 @@
-from Views.Entity.Entities.Entity import EntityV
+from Controllers.Entity.Physic.EntityPhysic import EntityPhysics
 
 from Models.Entity.HealthBar import HealthBar
 
-from Controllers.Entity.Physic.EntityPhysic import EntityPhysics
-
 from Utils.Settings.DataStructures.Stack import Stack
+
+from Views.Entity.Entities.Entity import EntityV
 
 
 class Entity:

@@ -1,4 +1,3 @@
-from Utils.Settings.Paths import BASE_PATH
 from Utils.Settings.Icons.IconsPaths import *
 
 

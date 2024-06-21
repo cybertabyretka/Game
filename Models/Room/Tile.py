@@ -1,5 +1,6 @@
-from Views.Room.Tile import TileV
 from Controllers.TilePhysic import TileCollision
+
+from Views.Room.Tile import TileV
 
 
 class Tile:

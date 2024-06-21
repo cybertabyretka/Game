@@ -1,7 +1,7 @@
-from Models.Item.Weapons.Weapon import Weapon
-from Models.Button import Button
-
 from Controllers.Weapon.WeaponPhysic import SwordPhysic
+
+from Models.Button import Button
+from Models.Item.Weapons.Weapon import Weapon
 
 from Views.Item.ItemIcon import Icon
 

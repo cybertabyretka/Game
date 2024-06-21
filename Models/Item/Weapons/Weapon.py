@@ -1,10 +1,10 @@
-from Views.Item.Weapon import WeaponV
-from Views.Item.ItemIcon import Icon
+from Controllers.Weapon.WeaponPhysic import WeaponPhysic
 
-from Controllers.Weapon.WeaponPhysic import SwordPhysic, WeaponPhysic
-
-from Models.Item.Item import Item
 from Models.Button import Button
+from Models.Item.Item import Item
+
+from Views.Item.ItemIcon import Icon
+from Views.Item.Weapon import WeaponV
 
 
 class Weapon(Item):

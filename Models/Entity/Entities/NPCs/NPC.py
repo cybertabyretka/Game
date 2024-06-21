@@ -1,7 +1,6 @@
-from Models.Entity.Entities.Entity import Entity
-
-from Controllers.Entity.Physic.EntityPhysic import EntityPhysics
 from Controllers.Entity.NPCMind import Mind
+
+from Models.Entity.Entities.Entity import Entity
 
 
 class NPC(Entity):

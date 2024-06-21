@@ -1,8 +1,7 @@
-from Utils.Image import load_images, load_image
-from Utils.Setting import BASE_PATH
-from Utils.Animation import Animation
-
 from Models.Assets.PathsAsset import *
+
+from Utils.Animation import Animation
+from Utils.Image import load_images, load_image
 
 
 class TilesAssets:

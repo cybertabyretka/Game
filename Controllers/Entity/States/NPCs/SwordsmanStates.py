@@ -1,7 +1,5 @@
-import time
-
 from Controllers.Entity.States.BaseStates import NPCState
-from Controllers.Entity.Utils import get_damage_and_movement, check_damage_for_entity
+from Controllers.Entity.Utils import check_damage_for_entity
 
 from Models.Room.Tile import LootTile
 

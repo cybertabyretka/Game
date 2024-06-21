@@ -1,6 +1,6 @@
-from Models.Item.Weapons.Weapon import Weapon
-
 from Controllers.Weapon.WeaponPhysic import StaffPhysic
+
+from Models.Item.Weapons.Weapon import Weapon
 
 
 class Staff(Weapon):

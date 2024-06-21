@@ -1,8 +1,7 @@
-from Views.Item.Item import ItemV
-
-from Utils.Singleton import Singleton
 from Utils.Setting import EMPTY_NAME, EMPTY_SIZE
+from Utils.Singleton import Singleton
 
+from Views.Item.Item import ItemV
 from Views.Item.ItemIcon import EmptyIcon
 
 

@@ -2,16 +2,16 @@ import pygame as pg
 import pygame.locals as loc
 
 from Controllers.Game.BaseStates import MainMenuState
-from Controllers.Saves.GetGame import get_game
 from Controllers.Game.Utils import check_buttons_collisions
+from Controllers.Saves.GetGame import get_game
 
 from Models.Game.Game import Game
 
-from Utils.Settings.Buttons.ButtonsTexts import *
+from Utils.BaseGame import BASE_ROOMS_MAP, BASE_PLAYER
 from Utils.Draw.Text import print_text
+from Utils.Settings.Buttons.ButtonsTexts import *
 from Utils.Settings.Colours import WHITE_RGB
 from Utils.Settings.Paths import FONT_PATH
-from Utils.BaseGame import BASE_ROOMS_MAP, BASE_PLAYER
 
 
 class StartState(MainMenuState):

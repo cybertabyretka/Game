@@ -4,9 +4,6 @@ from Utils.DistanceCounting import manhattan_distance
 
 
 class CloseRangeAttackNPCCollision(EntityCollision):
-    def __init__(self, pos, size):
-        super().__init__(pos, size)
-
     def entities_contacts_process(self, movement, entities):
         entities_around = {'right': None, 'left': None, 'down': None, 'up': None}
         for entity in entities:
@@ -46,5 +43,4 @@ class CloseRangeAttackNPCCollision(EntityCollision):
 
 class CloseRangeAttackNPCPhysics(EntityPhysics):
     def __init__(self, width, height, start_pos, max_velocity):
-        super().__init__(max_velocity)
-        self.collision = CloseRangeAttackNPCCollision(start_pos, (width, height))
+        super().__init__(width, height, start_pos, max_velocity, CloseRangeAttackNPCCollision)

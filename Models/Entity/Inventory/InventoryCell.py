@@ -1,7 +1,5 @@
 from Views.Entity.Inventory.InventoryCell import InventoryCellV
 
-from Utils.Singleton import Singleton
-
 
 class InventoryCell:
     def __init__(self, item, colour_if_selected, colour_if_unselected):

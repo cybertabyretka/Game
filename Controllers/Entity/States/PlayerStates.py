@@ -1,15 +1,14 @@
 import pygame as pg
 
-from Controllers.Entity.Utils import get_damage_and_movement
 from Controllers.Entity.States.BaseStates import PlayerState
 from Controllers.Entity.Utils import *
 
 from Models.Entity.Inventory.Utils import switch_items
 
-from Utils.Settings.Colours import GRAY_RGB
-from Utils.Settings.Buttons.Buttons import get_pressed_button
 from Utils.DistanceCounting import manhattan_distance
+from Utils.Settings.Buttons.Buttons import get_pressed_button
 from Utils.Settings.Buttons.ButtonsTexts import SWITCH_SHIELDS, SWITCH_WEAPONS
+from Utils.Settings.Colours import GRAY_RGB
 
 
 class PlayerShieldState(PlayerState):

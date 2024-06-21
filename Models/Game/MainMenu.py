@@ -1,11 +1,11 @@
-from Views.Game.MainMenu import MainMenuV
-
 from Controllers.Game.MainMenuStates import StartState
 from Controllers.Processes.MainMenuProcess import MainMenuProcess
 
-from Utils.Settings.DataStructures.Stack import Stack
 from Utils.Settings.Buttons.Buttons import *
+from Utils.Settings.DataStructures.Stack import Stack
 from Utils.Settings.Saves.Saves import AUTO_SAVES, SAVES
+
+from Views.Game.MainMenu import MainMenuV
 
 
 class MainMenu:

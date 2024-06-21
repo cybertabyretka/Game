@@ -1,9 +1,9 @@
 import time
 
-from Models.Entity.Entities.NPCs.NPC import NPC
-
-from Controllers.Entity.States.NPCs.WizardStates import WizardIdleState
 from Controllers.Entity.Physic.NPCs.LongRangeAttackNPCPhysic import LongRangeAttackNPCPhysic
+from Controllers.Entity.States.NPCs.WizardStates import WizardIdleState
+
+from Models.Entity.Entities.NPCs.NPC import NPC
 
 
 class Wizard(NPC):
