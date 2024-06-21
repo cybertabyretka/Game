@@ -20,9 +20,7 @@ class EntityV:
             current_weapon.view.download_images()
         if current_shield is not None:
             current_shield.view.download_images()
-        for i in range(inventory.size[0]):
-            for j in range(inventory.size[1]):
-                inventory.cells[i][j].item.view.icon.download_images()
+        inventory.download_images()
 
     def rotate(self, rotation):
         if rotation == 0:

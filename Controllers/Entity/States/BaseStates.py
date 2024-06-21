@@ -9,7 +9,10 @@ class PlayerState:
 
     def handle_inputs(self, events, room):
         for event in events:
+            old_len = self.entity.states_stack.size
             self.handle_input(event, room)
+            if self.entity.states_stack.size != old_len:
+                self.handle_input(event, room)
 
     def update(self, room, entities):
         if self.finished:

@@ -5,7 +5,7 @@ from Controllers.Entity.Utils import get_damage_and_movement, check_damage_for_e
 
 from Models.Room.Tile import LootTile
 
-from Utils.DistanceCounting import manhattan_distance
+from Utils.DistanceCounting import *
 
 
 class SwordsmanDeathState(NPCState):

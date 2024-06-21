@@ -1,7 +1,7 @@
 from Utils.Singleton import Singleton
 from Utils.Image import load_image
 
-from Models.Assets.PathsAsset import EMPTY_ITEM
+from Models.Assets.PathsAsset import EMPTY_ICON
 
 
 class Icon:
@@ -21,7 +21,7 @@ class Icon:
 
 class EmptyIcon(Icon, Singleton):
     def __init__(self):
-        super().__init__(EMPTY_ITEM['icon'])
+        super().__init__(EMPTY_ICON['icon'])
 
     def copy_for_save(self):
         return EmptyIcon()

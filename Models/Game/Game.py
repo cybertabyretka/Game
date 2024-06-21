@@ -10,7 +10,7 @@ from Utils.Settings.Saves.Utils import *
 from Controllers.Processes.GameProcess import GameProcess
 from Controllers.Game.GameStates import Running
 from Controllers.Saves.SaveGame import save_game
-from Controllers.Saves.Sort import saves_quick_sort
+from Controllers.Saves.Sort import saves_indexes_quick_sort
 
 
 class Game:
@@ -29,28 +29,31 @@ class Game:
                                                    FIRST_AUTO_SAVE_BUTTON, SECOND_AUTO_SAVE_BUTTON, THIRD_AUTO_SAVE_BUTTON, FOURTH_AUTO_SAVE_BUTTON, FIFTH_AUTO_SAVE_BUTTON,
                                                    CANSEL_BUTTON]}
         self.auto_saves = auto_saves
+        self.auto_saves_indexes = [i for i in range(len(auto_saves))]
         self.current_auto_save_index = 0
-        self.sort_auto_saves()
+        self.sort_auto_saves_indexes()
         self.saves = saves
 
     def auto_save(self):
         current_time = time.time()
         if current_time - self.previous_time_save >= self.time_between_saves:
             self.previous_time_save = current_time
-            save_game(self.auto_saves[self.current_auto_save_index], self.view.rooms_map.copy_for_save(self.room), self.player.copy_for_save())
+            save_game(self.auto_saves[self.auto_saves_indexes[self.current_auto_save_index]], self.view.rooms_map.copy_for_save(self.room), self.player.copy_for_save())
             self.current_auto_save_index = (self.current_auto_save_index + 1) % len(self.auto_saves)
 
-    def sort_auto_saves(self):
-        saves_with_no_date = []
+    def sort_auto_saves_indexes(self):
+        indexes_with_no_data = []
+        indexes_with_data = []
         saves_with_date = []
-        for save in self.auto_saves:
-            current_date, current_time = save.get_date().split()
+        for i in range(len(self.auto_saves)):
+            current_date, current_time = self.auto_saves[i].get_date().split()
             if current_date == BASE_DATE or current_time == BASE_TIME:
-                saves_with_no_date.append(save)
+                indexes_with_no_data.append(i)
             else:
-                saves_with_date.append(save)
-        saves_quick_sort(saves_with_date)
-        self.auto_saves = [*saves_with_no_date, *saves_with_date]
+                saves_with_date.append(self.auto_saves[i])
+                indexes_with_data.append(i)
+        saves_indexes_quick_sort(saves_with_date, indexes_with_data)
+        self.auto_saves_indexes = [*indexes_with_no_data, *indexes_with_data]
 
     def new_object_preprocess(self, doors_connections):
         self.view.rooms_map.new_object_preprocess(doors_connections)

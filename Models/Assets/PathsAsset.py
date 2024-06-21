@@ -39,4 +39,4 @@ STAFF: dict[str, str] = {'animation_up': BASE_PATH + 'Data/Images/Game/Items/Wea
 
 FIRE_BALL: dict[str, str] = {'image': FIRE_BALL_ICON_PATH}
 
-EMPTY_ITEM: dict[str, str] = {'icon': EMPTY_ICON_PATH}
+EMPTY_ICON: dict[str, str] = {'icon': EMPTY_ICON_PATH}

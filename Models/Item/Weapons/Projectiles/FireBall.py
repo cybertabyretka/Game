@@ -15,4 +15,4 @@ class FireBall:
         self.physic.set_attack_rect(start_pos, direction)
 
     def copy_for_save(self):
-        return FireBall(self.view.path, self.physic.damage_types, (self.physic.rect.w, self.physic.rect.h), self.physic.max_velocity)
+        return FireBall(self.view.path, self.physic.damage_types, (self.physic.collision.rect.w, self.physic.collision.rect.h), self.physic.max_velocity)

@@ -20,6 +20,7 @@ class WeaponV(ItemV):
         self.icon.download_images()
 
     def set_animation(self, rotation, pos):
+        print(self.animation_asset)
         if rotation == 0:
             self.copied_animation = self.animation_asset['animation_up'].copy()
         elif rotation == 90:

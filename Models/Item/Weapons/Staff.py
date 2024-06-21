@@ -19,4 +19,4 @@ class Staff(Weapon):
         return False
 
     def copy_for_save(self):
-        return Staff(self.name, self.size, self.view.icon.copy_for_save(), self.view.paths_asset, self.buttons, self.projectile.copy_for_save)
+        return Staff(self.name, self.size, self.view.icon.copy_for_save(), self.view.paths_asset, self.buttons, self.physic.attack_physic.projectile.copy_for_save())

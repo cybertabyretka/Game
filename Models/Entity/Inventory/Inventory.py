@@ -28,6 +28,11 @@ class Inventory:
     def place_item(self, index, item):
         self.get_cell(index).item = item
 
+    def download_images(self):
+        for i in range(self.size[0]):
+            for j in range(self.size[1]):
+                self.get_cell((i, j)).item.view.download_images()
+
     def place_items(self, index, items):
         for i in range(len(index)):
             self.place_item(index[i], items[i])

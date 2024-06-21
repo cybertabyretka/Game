@@ -2,7 +2,8 @@ from Views.Item.Item import ItemV
 
 from Utils.Singleton import Singleton
 from Utils.Setting import EMPTY_NAME, EMPTY_SIZE
-from Utils.Settings.Icons.Icons import EMPTY_ICON
+
+from Views.Item.ItemIcon import EmptyIcon
 
 
 class Item:
@@ -26,7 +27,7 @@ class Item:
 
 class EmptyItem(Item, Singleton):
     def __init__(self):
-        super().__init__(EMPTY_NAME, EMPTY_SIZE, EMPTY_ICON, [])
+        super().__init__(EMPTY_NAME, EMPTY_SIZE, EmptyIcon(), [])
 
     def copy_for_save(self):
         return EmptyItem()

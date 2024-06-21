@@ -35,7 +35,7 @@ def get_damage_and_movement(damage_map, movable_damage_map, entity_rect):
                 else:
                     movement = (-entity_rect.width // 2, 0)
     for i in range(len(indexes_to_del)-1, -1, -1):
-        del movable_damage_map[i]
+        del movable_damage_map[indexes_to_del[i]]
     return types, movement
 
 

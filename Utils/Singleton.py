@@ -4,8 +4,4 @@ class Singleton:
         if it is not None:
             return it
         cls.__it__ = it = object.__new__(cls)
-        it.init(*args, **kwargs)
         return it
-
-    def init(self, *args, **kwargs):
-        pass

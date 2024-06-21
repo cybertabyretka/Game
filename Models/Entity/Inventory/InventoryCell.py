@@ -1,7 +1,5 @@
 from Views.Entity.Inventory.InventoryCell import InventoryCellV
 
-from Models.Item.Item import EmptyItem
-
 from Utils.Singleton import Singleton
 
 

@@ -17,7 +17,7 @@ class LootTile(Tile):
         self.inventory = inventory
 
     def download_images(self):
-        self.inventory.view.download_images(self.inventory.cells)
+        self.inventory.download_images()
 
     def copy_for_save(self):
         return LootTile(self.collision.rect.topleft, self.inventory.copy_for_save(), (self.collision.rect.width, self.collision.rect.height))

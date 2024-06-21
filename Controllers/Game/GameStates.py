@@ -16,6 +16,8 @@ from Utils.Settings.Colours import *
 from Utils.Settings.Paths import *
 from Utils.Draw.Projectiles import render_projectiles
 
+from Models.Item.Item import EmptyItem
+
 
 class Running(GameState):
     def __init__(self, game):
@@ -166,19 +168,19 @@ class SaveSelectionState(GameState):
                 if self.selected_button is not None:
                     if self.selected_button.view.text.view.text == SELECT_1_AUTO:
                         save_game(self.game.auto_saves[0], self.game.view.rooms_map.copy_for_save(self.game.room), self.game.player.copy_for_save())
-                        self.game.sort_auto_saves()
+                        self.game.sort_auto_saves_indexes()
                     elif self.selected_button.view.text.view.text == SELECT_2_AUTO:
                         save_game(self.game.auto_saves[1], self.game.view.rooms_map.copy_for_save(self.game.room), self.game.player.copy_for_save())
-                        self.game.sort_auto_saves()
+                        self.game.sort_auto_saves_indexes()
                     elif self.selected_button.view.text.view.text == SELECT_3_AUTO:
                         save_game(self.game.auto_saves[2], self.game.view.rooms_map.copy_for_save(self.game.room), self.game.player.copy_for_save())
-                        self.game.sort_auto_saves()
+                        self.game.sort_auto_saves_indexes()
                     elif self.selected_button.view.text.view.text == SELECT_4_AUTO:
                         save_game(self.game.auto_saves[3], self.game.view.rooms_map.copy_for_save(self.game.room), self.game.player.copy_for_save())
-                        self.game.sort_auto_saves()
+                        self.game.sort_auto_saves_indexes()
                     elif self.selected_button.view.text.view.text == SELECT_5_AUTO:
                         save_game(self.game.auto_saves[4], self.game.view.rooms_map.copy_for_save(self.game.room), self.game.player.copy_for_save())
-                        self.game.sort_auto_saves()
+                        self.game.sort_auto_saves_indexes()
                     elif self.selected_button.view.text.view.text == SELECT_1:
                         save_game(self.game.saves[0], self.game.view.rooms_map.copy_for_save(self.game.room), self.game.player.copy_for_save())
                     elif self.selected_button.view.text.view.text == SELECT_2:
@@ -191,6 +193,7 @@ class SaveSelectionState(GameState):
                         save_game(self.game.saves[4], self.game.view.rooms_map.copy_for_save(self.game.room), self.game.player.copy_for_save())
                     elif self.selected_button.view.text.view.text == CANSEL:
                         self.game.states_stack.pop()
+                    EmptyItem().view.download_images()
 
     def update(self):
         if self.finished:
