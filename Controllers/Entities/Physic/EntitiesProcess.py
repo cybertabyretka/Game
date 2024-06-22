@@ -1,4 +1,7 @@
-def entities_process(movement, entity_rect, self_rect):
+import pygame as pg
+
+
+def entities_process(movement: list[int], entity_rect: pg.Rect, self_rect: pg.Rect) -> None:
     if movement[0] > 0 and (entity_rect.x - self_rect.topright[0]) >= 0 and abs(self_rect.y - entity_rect.y) <= self_rect.height:
         movement[0] = min(movement[0], entity_rect.x - self_rect.topright[0])
     if movement[0] < 0 and (entity_rect.topright[0] - self_rect.x) <= 0 and abs(self_rect.y - entity_rect.y) <= self_rect.height:

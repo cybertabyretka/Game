@@ -1,4 +1,7 @@
 from Controllers.Entities.Physic.BaseEntityPhysic import *
+from Controllers.RoomMap.TilePhysic import TileCollision
+
+from Models.Entities.BaseEntity import Entity
 
 
 class BaseNPCPhysic(BaseEntityPhysic):
@@ -6,7 +9,7 @@ class BaseNPCPhysic(BaseEntityPhysic):
 
 
 class BaseNPCCollision(BaseEntityCollision):
-    def update(self, velocity, entities, collisions_map, movement=(0, 0)):
+    def update(self, velocity: list[int], entities: list[Entity], collisions_map: dict[str, TileCollision], movement: tuple[int, int] = (0, 0)) -> dict[str, Entity]:
         get_collisions_around(self.rect, TILE_SIZE, collisions_map, self.collisions_around)
         movement = [movement[0] + velocity[0], movement[1] + velocity[1]]
         if (movement[0] != 0 and movement[1] == 0) or (movement[0] == 0 and movement[1] != 0):

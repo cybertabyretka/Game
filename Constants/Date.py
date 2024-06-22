@@ -1,2 +1,2 @@
-BASE_DATE = '----------'
-BASE_TIME = '--:--:--'
+BASE_DATE: str = '----------'
+BASE_TIME: str = '--:--:--'

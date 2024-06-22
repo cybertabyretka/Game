@@ -1,5 +1,3 @@
-from Controllers.Entities.Physic.BaseEntityPhysic import BaseEntityPhysic
-
 from Models.HealthBar import HealthBar
 
 from DataStructures.Stack import Stack

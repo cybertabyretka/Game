@@ -1,0 +1,7 @@
+from Views.Display import Display
+
+DISPLAY_WIDTH: int = 700
+DISPLAY_HEIGHT: int = 700
+DISPLAY_NAME: str = 'DUNGEON'
+
+DISPLAY: Display = Display(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_NAME)

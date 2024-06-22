@@ -78,3 +78,4 @@ class Game:
                         NPC.view.download_images(NPC.current_weapon, NPC.current_shield, NPC.inventory)
                         get_collisions_around(NPC.physic.collision.rect, TILE_SIZE, self.room.collisions_map.map, NPC.physic.collision.collisions_around)
         self.player.view.download_images(self.player.current_weapon, self.player.current_shield, self.player.inventory)
+        get_collisions_around(self.player.physic.collision.rect, TILE_SIZE, self.room.collisions_map.map, self.player.physic.collision.collisions_around)

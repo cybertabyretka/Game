@@ -1,6 +1,14 @@
-def get_damage_and_movement(damage_map, movable_damage_map, entity_rect):
-    types = {}
-    movement = (0, 0)
+import pygame as pg
+
+from Controllers.Weapons.AttackPhysic import AttackPhysic
+
+from Models.Items.Weapons.Projectiles.BaseProjectile import BaseProjectile
+from Models.Entities.BaseEntity import Entity
+
+
+def get_damage_and_movement(damage_map: dict[str, AttackPhysic], movable_damage_map: list[BaseProjectile], entity_rect: pg.Rect) -> tuple[dict[str, list[AttackPhysic | BaseProjectile]], tuple[int, int]]:
+    types: dict[str, list[AttackPhysic | BaseProjectile]] = {}
+    movement: tuple[int, int] = (0, 0)
     for identifier in damage_map:
         damage_rect = damage_map[identifier]
         if entity_rect.colliderect(damage_rect.rect):
@@ -17,7 +25,7 @@ def get_damage_and_movement(damage_map, movable_damage_map, entity_rect):
                     movement = (0, entity_rect.width // 2)
                 else:
                     movement = (-entity_rect.width // 2, 0)
-    indexes_to_del = []
+    indexes_to_del: list[int] = []
     for i in range(len(movable_damage_map)):
         if entity_rect.colliderect(movable_damage_map[i].physic.collision.rect):
             indexes_to_del.append(i)
@@ -39,7 +47,7 @@ def get_damage_and_movement(damage_map, movable_damage_map, entity_rect):
     return types, movement
 
 
-def check_damage_for_entity(entity, damage_map, movable_damage_map, after_punch_state):
+def check_damage_for_entity(entity: Entity, damage_map: dict[str, AttackPhysic], movable_damage_map: list[BaseProjectile], after_punch_state) -> bool:
     damage, movement = get_damage_and_movement(damage_map, movable_damage_map, entity.physic.collision.rect)
     if damage:
         entity.states_stack.push(after_punch_state(entity, movement, damage))
@@ -47,7 +55,7 @@ def check_damage_for_entity(entity, damage_map, movable_damage_map, after_punch_
     return False
 
 
-def check_damage_for_entity_with_ready_damage_and_movement(entity, damage, movement, after_punch_state):
+def check_damage_for_entity_with_ready_damage_and_movement(entity: Entity, damage: int, movement: list[int], after_punch_state) -> bool:
     if damage:
         entity.states_stack.push(after_punch_state(entity, movement, damage))
         return True

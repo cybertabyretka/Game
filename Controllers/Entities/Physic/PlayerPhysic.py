@@ -6,5 +6,5 @@ class PlayerCollision(BaseEntityCollision):
 
 
 class PlayerPhysics(BaseEntityPhysic):
-    def __init__(self, width, height, start_pos, max_velocity):
+    def __init__(self, width: int, height: int, start_pos: tuple[int, int], max_velocity: int):
         super().__init__(width, height, start_pos, max_velocity, PlayerCollision)

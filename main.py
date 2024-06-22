@@ -3,10 +3,12 @@ import pygame as pg
 pg.init()
 pg.font.init()
 
+from Constants.Display import *
+
 from Models.Main import Main
 from Models.AppStates.MainMenu import MainMenu
 
-from BaseVariables.Display import DISPLAY, ENTITIES_SURFACE, ROOMS_SURFACE
+from BaseVariables.Display import ENTITIES_SURFACE, ROOMS_SURFACE
 from BaseVariables.Others import BACKGROUND_PICTURE
 
 if __name__ == '__main__':
