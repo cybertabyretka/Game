@@ -5,7 +5,7 @@ from BaseVariables.Buttons.ButtonsTexts import *
 from BaseVariables.Game import BASE_ROOMS_MAP, BASE_PLAYER
 from BaseVariables.Paths import FONT_PATH
 
-from Constants.Colours import WHITE_RGB
+from Constants.Colours import WHITE_RGB, DARK_GRAY_RGB
 from Controllers.Game.States.BaseStates import MainMenuState
 from Controllers.Game.States.ButtonsCheck import check_buttons_collisions
 from Controllers.Saves.GetGame import get_game
@@ -13,6 +13,7 @@ from Controllers.Saves.GetGame import get_game
 from Models.AppStates.Game import Game
 
 from Views.Text.DrawText import draw_text
+from Views.AppStates.DrawSaveSelectionState import draw_save_selection_state
 
 
 class StartState(MainMenuState):
@@ -122,25 +123,5 @@ class SaveSelectionState(MainMenuState):
                             processes_stack.push(game)
 
     def draw(self):
-        line_start_pos = [135, 20]
-        line_end_pos = [135, 200]
-        date_start_pos = [0, 50]
-        self.main_menu.view.draw(self.buttons)
-        draw_text(self.main_menu.view.display.surface, self.main_menu.auto_saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
-        for auto_save in self.main_menu.auto_saves[1:]:
-            pg.draw.line(self.main_menu.view.display.surface, WHITE_RGB, line_start_pos, line_end_pos, 1)
-            date_start_pos[0] += 140
-            draw_text(self.main_menu.view.display.surface, auto_save.save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
-            line_start_pos[0] += 140
-            line_end_pos[0] += 140
-        line_start_pos = [135, 210]
-        line_end_pos = [135, 390]
-        date_start_pos = [0, 250]
-        draw_text(self.main_menu.view.display.surface, self.main_menu.saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
-        for save in self.main_menu.saves[1:]:
-            pg.draw.line(self.main_menu.view.display.surface, WHITE_RGB, line_start_pos, line_end_pos, 1)
-            date_start_pos[0] += 140
-            draw_text(self.main_menu.view.display.surface, save.save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
-            line_start_pos[0] += 140
-            line_end_pos[0] += 140
+        draw_save_selection_state(self.main_menu.view.display.surface, self.buttons, self.main_menu.auto_saves, self.main_menu.saves, DARK_GRAY_RGB)
         self.main_menu.view.display.update()

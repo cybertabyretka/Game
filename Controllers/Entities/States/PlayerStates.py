@@ -7,6 +7,7 @@ from Models.Inventory.SwitchItems import switch_items
 
 from BaseVariables.Buttons.ButtonsTexts import SWITCH_SHIELDS, SWITCH_WEAPONS
 
+from Controllers.CheckMouseButtons import *
 from Controllers.Entities.States.AbstractStates import PlayerAbstractState
 from Controllers.Entities.Physic.DamageProcess import check_damage_for_entity, check_damage_for_entity_with_ready_damage_and_movement
 
@@ -50,9 +51,9 @@ class PlayerIdleState(PlayerBaseState):
                             return
                     self.entity.states_stack.push(PlayerInventoryOpenState(self.entity))
         elif event.type == pg.MOUSEBUTTONDOWN:
-            if pg.mouse.get_pressed(3)[0]:
+            if check_left_mouse_button():
                 self.entity.states_stack.push(PlayerPunchState(self.entity))
-            elif pg.mouse.get_pressed(3)[2]:
+            elif check_right_mouse_button():
                 self.entity.states_stack.push(PlayerShieldState(self.entity))
 
     def update(self, room, entities):
@@ -101,9 +102,9 @@ class PlayerWalkState(PlayerBaseState):
                 if pg.K_d in self.directions:
                     self.directions.remove(pg.K_d)
         elif event.type == pg.MOUSEBUTTONDOWN:
-            if pg.mouse.get_pressed(3)[0]:
+            if check_left_mouse_button():
                 self.entity.states_stack.push(PlayerPunchState(self.entity))
-            elif pg.mouse.get_pressed(3)[2]:
+            elif check_right_mouse_button():
                 self.entity.states_stack.push(PlayerShieldState(self.entity))
 
     def update(self, room, entities):
@@ -162,7 +163,7 @@ class PlayerPunchState(PlayerBaseState):
             return
         if self.finished:
             self.events = []
-            if event.type == pg.MOUSEBUTTONDOWN and pg.mouse.get_pressed(3)[0]:
+            if event.type == pg.MOUSEBUTTONDOWN and check_left_mouse_button():
                 direction = -1
                 if event.pos[1] < self.entity.physic.collision.rect.y and self.entity.physic.collision.rect.x < event.pos[0] < self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
                     direction = 0
@@ -209,7 +210,7 @@ class PlayerShieldState(PlayerBaseState):
 
     def handle_input(self, event, room):
         if self.finished:
-            if event.type == pg.MOUSEBUTTONDOWN and pg.mouse.get_pressed(3)[2]:
+            if event.type == pg.MOUSEBUTTONDOWN and check_right_mouse_button():
                 if event.pos[1] < self.entity.physic.collision.rect.y and self.entity.physic.collision.rect.x < event.pos[0] < self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
                     self.direction = 0
                     self.finished = False
@@ -223,7 +224,7 @@ class PlayerShieldState(PlayerBaseState):
                     self.direction = 270
                     self.finished = False
         else:
-            if event.type == pg.MOUSEBUTTONUP and not pg.mouse.get_pressed(3)[2]:
+            if event.type == pg.MOUSEBUTTONUP and not check_right_mouse_button():
                 self.finished = True
                 self.entity.states_stack.pop()
                 self.entity.states_stack.peek().handle_inputs(self.events, room)
@@ -275,7 +276,7 @@ class PlayerInventoryOpenState(PlayerBaseState):
                     self.selected_cell.change_state()
         elif event.type == pg.MOUSEBUTTONDOWN:
             mouse_click_pos = event.pos
-            if pg.mouse.get_pressed(3)[0]:
+            if check_left_mouse_button():
                 if self.buttons:
                     pressed_button = get_pressed_button(self.buttons, mouse_click_pos)
                     if pressed_button is not None:
@@ -297,7 +298,7 @@ class PlayerInventoryOpenState(PlayerBaseState):
                             switch_items(self.selected_cell, self.entity.inventory.get_cell(inventory_cell_index))
                             self.selected_cell.change_state()
                             self.selected_cell = None
-            elif pg.mouse.get_pressed(3)[2]:
+            elif check_right_mouse_button():
                 if self.entity.view.windows['inventory_base'].view.rect.collidepoint(mouse_click_pos):
                     inventory_cell_index = self.entity.inventory.get_cell_index_from_pos(mouse_click_pos, self.entity.view.windows['inventory_base'])
                     if self.entity.inventory.size[0] > inventory_cell_index[0] >= 0 and self.entity.inventory.size[1] > inventory_cell_index[1] >= 0:
@@ -333,7 +334,7 @@ class PlayerStealState(PlayerBaseState):
                     self.selected_cell.change_state()
         elif event.type == pg.MOUSEBUTTONDOWN:
             mouse_click_pos = event.pos
-            if pg.mouse.get_pressed(3)[0]:
+            if check_left_mouse_button():
                 if self.buttons:
                     pressed_button = get_pressed_button(self.buttons, mouse_click_pos)
                     if pressed_button is not None:
@@ -365,7 +366,7 @@ class PlayerStealState(PlayerBaseState):
                             switch_items(self.selected_cell, self.inventory_for_steal.get_cell(inventory_cell_index))
                             self.selected_cell.change_state()
                             self.selected_cell = None
-            elif pg.mouse.get_pressed(3)[2]:
+            elif check_right_mouse_button():
                 if self.selected_cell is not None:
                     self.selected_cell.change_state()
                     self.selected_cell = None

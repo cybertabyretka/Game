@@ -19,6 +19,7 @@ from Views.Entities.DrawEntities import draw_entities
 from Views.HealthBars.DrawHealthBars import draw_health_bars
 from Views.Items.Projectiles.DrawProjectiles import draw_projectiles
 from Views.Text.DrawText import draw_text
+from Views.AppStates.DrawSaveSelectionState import draw_save_selection_state
 
 
 class Running(GameState):
@@ -90,7 +91,7 @@ class OnPause(GameState):
             main_process.is_running = False
         elif event.type == pg.KEYDOWN:
             if event.key == pg.K_p:
-                if type(self.game.player.states_stack.peek()) not in [InventoryOpenState, PlayerStealState]:
+                if type(self.game.player.states_stack.peek()) not in [PlayerInventoryOpenState, PlayerStealState]:
                     self.finished = not self.finished
             elif event.key == pg.K_e:
                 if type(self.game.player.states_stack.peek()) in [PlayerInventoryOpenState, PlayerStealState]:
@@ -205,27 +206,5 @@ class SaveSelectionState(GameState):
             self.game.states_stack.pop()
 
     def draw(self):
-        self.game.view.display.surface.fill(DARK_GRAY_RGB)
-        line_start_pos = [135, 20]
-        line_end_pos = [135, 200]
-        date_start_pos = [0, 50]
-        for button in self.buttons:
-            button.view.draw(self.game.view.display.surface)
-        draw_text(self.game.view.display.surface, self.game.auto_saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
-        for auto_save in self.game.auto_saves[1:]:
-            pg.draw.line(self.game.view.display.surface, WHITE_RGB, line_start_pos, line_end_pos, 1)
-            date_start_pos[0] += 140
-            draw_text(self.game.view.display.surface, auto_save.save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
-            line_start_pos[0] += 140
-            line_end_pos[0] += 140
-        line_start_pos = [135, 210]
-        line_end_pos = [135, 390]
-        date_start_pos = [0, 250]
-        draw_text(self.game.view.display.surface, self.game.saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
-        for save in self.game.saves[1:]:
-            pg.draw.line(self.game.view.display.surface, WHITE_RGB, line_start_pos, line_end_pos, 1)
-            date_start_pos[0] += 140
-            draw_text(self.game.view.display.surface, save.save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
-            line_start_pos[0] += 140
-            line_end_pos[0] += 140
+        draw_save_selection_state(self.game.view.display.surface, self.buttons, self.game.auto_saves, self.game.saves, DARK_GRAY_RGB)
         self.game.view.display.update()
