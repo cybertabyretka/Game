@@ -1,13 +1,15 @@
 import pygame as pg
 
-from BaseVariables.Assets.PathsAsset import *
+from BaseVariables.PathsAsset import *
 from BaseVariables.Buttons.Buttons import WEAPONS_CHANGE_BUTTON, SHIELD_CHANGE_BUTTON
 from BaseVariables.Display import DISPLAY_WIDTH, DISPLAY_HEIGHT
 from BaseVariables.Paths import FONT_PATH
 from BaseVariables.Others import TILE_SIZE
 
 from Constants.Colours import WHITE_RGB, DARK_GRAY_RGB
+
 from Controllers.RoomMap.RoomsMapUtils import make_room
+from Controllers.Entities.Physic.GetCollisionsAround import get_collisions_around
 
 from Models.Entities.NPCs.Swordsman import Swordsman
 from Models.Entities.NPCs.Wizard import Wizard
@@ -53,18 +55,20 @@ NPCs = [swordsman, wizard]
 
 BASE_ROOMS_MAP = RoomsMap((1, 2))
 make_room(BASE_ROOMS_MAP.map, (0, 0), NPCs, [])
-make_room(BASE_ROOMS_MAP.map, (1, 0), [], [])
-doors = [Door(Tile(f'{TILES["front_door"]}/{0}.png', 0, (350, 665)),
-              Tile(f'{TILES["front_door"]}/{0}.png', 0, (350, 0)),
-              (350, 630), (350, 35))]
-doors_connections = {doors[0]: [BASE_ROOMS_MAP.map[0][0], BASE_ROOMS_MAP.map[1][0]]}
+make_room(BASE_ROOMS_MAP.map, (0, 1), [], [])
+doors = [Door(Tile(f'{TILES["side_door"]}/{0}.png', 0, (665, 350)),
+              Tile(f'{TILES["side_door"]}/{0}.png', 0, (0, 350)),
+              (630, 350), (35, 350))]
+doors_connections = {doors[0]: [BASE_ROOMS_MAP.map[0][0], BASE_ROOMS_MAP.map[0][1]]}
 BASE_ROOMS_MAP.add_doors_connections(doors_connections)
 BASE_ROOMS_MAP.add_doors()
 
 BASE_PLAYER_START_POS = (120, 120)
-
-for NPC in NPCs:
-    NPC.physic.collision.get_collisions_around(BASE_ROOMS_MAP.get_current_room().collisions_map.map, TILE_SIZE)
+for i in range(BASE_ROOMS_MAP.size[0]):
+    for j in range(BASE_ROOMS_MAP.size[1]):
+        if BASE_ROOMS_MAP.map[i][j] is not None:
+            for NPC in BASE_ROOMS_MAP.map[i][j].NPCs:
+                get_collisions_around(NPC.physic.collision.rect, TILE_SIZE, BASE_ROOMS_MAP.map[i][j].collisions_map.map, NPC.physic.collision.collisions_around)
 
 BASE_PLAYER = Player(player_inventory, player_windows, PLAYER, start_pos=BASE_PLAYER_START_POS, current_weapon=player_sword, current_shield=player_shield)
-BASE_PLAYER.physic.collision.get_collisions_around(BASE_ROOMS_MAP.get_current_room().collisions_map.map, TILE_SIZE)
+get_collisions_around(BASE_PLAYER.physic.collision.rect, TILE_SIZE, BASE_ROOMS_MAP.get_current_room().collisions_map.map, BASE_PLAYER.physic.collision.collisions_around)

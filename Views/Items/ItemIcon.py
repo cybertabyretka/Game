@@ -1,7 +1,7 @@
 from Utils.Singleton import Singleton
 from Utils.Image import load_image
 
-from BaseVariables.Assets.PathsAsset import EMPTY_ICON
+from BaseVariables.PathsAsset import EMPTY_ICON
 
 
 class Icon:

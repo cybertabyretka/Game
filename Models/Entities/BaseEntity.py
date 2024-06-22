@@ -1,4 +1,4 @@
-from Controllers.Entities.Physic.BaseEntityPhysic import BaseEntityPhysics
+from Controllers.Entities.Physic.BaseEntityPhysic import BaseEntityPhysic
 
 from Models.HealthBar import HealthBar
 

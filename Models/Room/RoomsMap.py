@@ -7,7 +7,7 @@ from Controllers.RoomMap.RoomsMapUtils import connect_rooms
 class RoomsMap:
     def __init__(self, size, current_index=(0, 0)):
         self.size = size
-        self.map: list[list[None | Room]] = [[None for _ in range(size[0])] for _ in range(size[1])]
+        self.map: list[list[None | Room]] = [[None for _ in range(size[1])] for _ in range(size[0])]
         self.current_index = current_index
         self.doors_connections: dict[Door, list[Room]] = {}
 
@@ -34,8 +34,8 @@ class RoomsMap:
         new_rooms = {}
         copied_map = RoomsMap(self.size)
         copied_doors_connections = {}
-        for i in range(self.size[1]):
-            for j in range(self.size[0]):
+        for i in range(self.size[0]):
+            for j in range(self.size[1]):
                 if self.map[i][j] is not None:
                     copied_map.map[i][j] = self.map[i][j].copy_for_save()
                     new_rooms[self.map[i][j]] = copied_map.map[i][j]
@@ -53,7 +53,7 @@ class RoomsMap:
     def download_images(self):
         for door in self.doors_connections:
             door.download_images()
-        for i in range(self.size[1]):
-            for j in range(self.size[0]):
+        for i in range(self.size[0]):
+            for j in range(self.size[1]):
                 if self.map[i][j] is not None:
                     self.map[i][j].download_images()

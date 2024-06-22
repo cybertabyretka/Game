@@ -9,6 +9,7 @@ from Constants.Colours import WHITE_RGB, DARK_GRAY_RGB
 from Controllers.Game.States.BaseStates import MainMenuState
 from Controllers.Game.States.ButtonsCheck import check_buttons_collisions
 from Controllers.Saves.GetGame import get_game
+from Controllers.CheckMouseButtons import check_left_mouse_button
 
 from Models.AppStates.Game import Game
 
@@ -84,7 +85,7 @@ class SaveSelectionState(MainMenuState):
         elif event.type == pg.MOUSEMOTION:
             check_buttons_collisions(pg.mouse.get_pos(), self)
         elif event.type == pg.MOUSEBUTTONDOWN:
-            if pg.mouse.get_pressed(3)[0]:
+            if check_left_mouse_button():
                 if self.selected_button is not None:
                     mouse_click_pos = event.pos
                     if self.selected_button.view.rect.collidepoint(mouse_click_pos):

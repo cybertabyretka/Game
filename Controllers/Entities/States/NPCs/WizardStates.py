@@ -34,8 +34,7 @@ class WizardWalkState(NPCWalkState):
             self.old_player_center_pos = current_player_center_pos
         else:
             self.entity.states_stack.pop()
-        self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.view.tile_size)
-        entities_around = self.entity.physic.collision.update(self.entity.physic.velocity, entities)
+        entities_around = self.entity.physic.collision.update(self.entity.physic.velocity, entities, room.collisions_map.map)
         for direction in entities_around:
             if entities_around[direction] == player:
                 if time.time() - self.entity.time_since_previous_attack > self.entity.break_time:

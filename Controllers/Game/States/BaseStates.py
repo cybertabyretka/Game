@@ -22,8 +22,5 @@ class MainMenuState:
     def handle_input(self, event, processes_stack, main_process):
         pass
 
-    def update(self):
-        pass
-
     def draw(self):
         pass

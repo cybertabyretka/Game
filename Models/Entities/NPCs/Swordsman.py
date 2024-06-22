@@ -1,4 +1,4 @@
-from Controllers.Entities.Physic.NPCsPhysic.CloseRangeAttackNPCPhysic import CloseRangeAttackNPCPhysics
+from Controllers.Entities.Physic.NPCsPhysic.CloseRangeAttackNPCPhysic import CloseRangeAttackNPCPhysic
 from Controllers.Entities.States.NPCs.SwordsmanStates import SwordsmanIdleState
 
 from BaseVariables.Entities.SwordsmanStatesTypes import *
@@ -8,7 +8,7 @@ from Models.Entities.NPCs.BaseNPC import NPC
 
 class Swordsman(NPC):
     def __init__(self, inventory, paths_asset, width=35., height=35., start_pos=(0, 0), max_velocity=1, current_weapon=None, current_shield=None, max_health=2, current_health=2):
-        super().__init__(width, height, start_pos, max_velocity, current_weapon, current_shield, max_health, current_health, inventory, paths_asset, SWORDSMAN_STATES_TYPES, CloseRangeAttackNPCPhysics, SwordsmanIdleState(self))
+        super().__init__(width, height, start_pos, max_velocity, current_weapon, current_shield, max_health, current_health, inventory, paths_asset, SWORDSMAN_STATES_TYPES, CloseRangeAttackNPCPhysic, SwordsmanIdleState(self))
 
     def copy_for_save(self):
         return Swordsman(self.inventory.copy_for_save(), self.view.paths_asset,

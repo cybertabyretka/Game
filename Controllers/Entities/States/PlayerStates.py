@@ -1,15 +1,15 @@
-import pygame as pg
-
 from Utils.DistanceCounting import manhattan_distance
 
-from Models.InteractionObjects.GetPressedButton import get_pressed_button
+from Controllers.GetPressedButton import get_pressed_button
 from Models.Inventory.SwitchItems import switch_items
 
 from BaseVariables.Buttons.ButtonsTexts import SWITCH_SHIELDS, SWITCH_WEAPONS
 
+from Constants.Colours import GRAY_RGB
+
 from Controllers.CheckMouseButtons import *
 from Controllers.Entities.States.AbstractStates import PlayerAbstractState
-from Controllers.Entities.Physic.DamageProcess import check_damage_for_entity, check_damage_for_entity_with_ready_damage_and_movement
+from Controllers.Entities.Physic.DamageProcess import *
 
 
 class PlayerBaseState(PlayerAbstractState):
@@ -83,7 +83,7 @@ class PlayerWalkState(PlayerBaseState):
                         if steal_tile.collision.rect.collidepoint(mouse_pos):
                             self.entity.states_stack.push(PlayerStealState(self.entity, steal_tile.inventory))
                             return
-                self.entity.states_stack.push(InventoryOpenState(self.entity))
+                self.entity.states_stack.push(PlayerInventoryOpenState(self.entity))
         elif event.type == pg.KEYUP:
             if event.key == pg.K_w:
                 self.entity.physic.velocity[1] = 0
@@ -126,8 +126,7 @@ class PlayerWalkState(PlayerBaseState):
             elif direction == pg.K_d:
                 self.entity.view.rotate(90)
                 self.entity.physic.velocity[0] = self.entity.physic.max_velocity
-        self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.view.tile_size)
-        self.entity.physic.collision.update(self.entity.physic.velocity, entities)
+        self.entity.physic.collision.update(self.entity.physic.velocity, entities, room.collisions_map.map)
 
 
 class PlayerAfterPunchState(PlayerBaseState):
@@ -146,8 +145,7 @@ class PlayerAfterPunchState(PlayerBaseState):
             for damage_rect in self.damage[damage_type]:
                 damage += damage_rect.damage_types[damage_type]
         self.entity.health.health -= damage
-        self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.view.tile_size)
-        self.entity.physic.collision.update(self.entity.physic.velocity, entities, movement=self.movement)
+        self.entity.physic.collision.update(self.entity.physic.velocity, entities, room.collisions_map.map, movement=self.movement)
         self.finished = True
         self.entity.states_stack.pop()
         self.entity.states_stack.peek().handle_inputs(self.events, room)

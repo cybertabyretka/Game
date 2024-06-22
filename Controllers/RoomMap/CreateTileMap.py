@@ -3,7 +3,7 @@ from random import randint
 from Models.Room.TileMap import TileMap
 from Models.Room.Tile import Tile
 
-from BaseVariables.Assets.PathsAsset import TILES
+from BaseVariables.PathsAsset import TILES
 
 
 def create_base_tile_map(width, height, tile_size):

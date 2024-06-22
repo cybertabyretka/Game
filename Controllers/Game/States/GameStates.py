@@ -1,7 +1,6 @@
 import pygame as pg
 
 from BaseVariables.Buttons.ButtonsTexts import *
-from BaseVariables.Paths import *
 
 from Constants.Colours import *
 
@@ -10,7 +9,7 @@ from Controllers.Game.States.BaseStates import GameState
 from Controllers.Game.States.ButtonsCheck import check_buttons_collisions
 from Controllers.Saves.SaveGame import save_game
 
-from Models.InteractionObjects.GetPressedButton import get_pressed_button
+from Controllers.GetPressedButton import get_pressed_button
 from Models.Items.Item import EmptyItem
 
 from Utils.DistanceCounting import manhattan_distance
@@ -18,7 +17,6 @@ from Utils.DistanceCounting import manhattan_distance
 from Views.Entities.DrawEntities import draw_entities
 from Views.HealthBars.DrawHealthBars import draw_health_bars
 from Views.Items.Projectiles.DrawProjectiles import draw_projectiles
-from Views.Text.DrawText import draw_text
 from Views.AppStates.DrawSaveSelectionState import draw_save_selection_state
 
 
@@ -67,7 +65,6 @@ class Running(GameState):
         i = 0
         while i < len(self.game.room.collisions_map.movable_damage_map):
             current_projectile = self.game.room.collisions_map.movable_damage_map[i]
-            current_projectile.physic.collision.get_collisions_around(self.game.room.collisions_map.map, self.game.room.view.tile_size)
             current_projectile.physic.collision.update(current_projectile.physic.velocity, self.game.room, i)
             i += 1
 

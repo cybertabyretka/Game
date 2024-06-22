@@ -61,8 +61,7 @@ class NPCWalkState(NPCBaseState):
             self.old_player_center_pos = current_player_center_pos
         else:
             self.entity.states_stack.pop()
-        self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.view.tile_size)
-        entities_around = self.entity.physic.collision.update(self.entity.physic.velocity, entities)
+        entities_around = self.entity.physic.collision.update(self.entity.physic.velocity, entities, room.collisions_map.map)
         for direction in entities_around:
             if entities_around[direction] == player:
                 self.entity.states_stack.push(self.entity.states_types['punch_state'](self.entity, direction))
@@ -86,8 +85,7 @@ class NPCAfterPunchState(NPCBaseState):
             room.loot_tiles.append(LootTile(self.entity.physic.collision.rect.topleft, self.entity.inventory))
             self.entity.states_stack.push(self.entity.states_types['death_state'](self.entity))
             return
-        self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.view.tile_size)
-        self.entity.physic.collision.update(self.entity.physic.velocity, entities, movement=self.movement)
+        self.entity.physic.collision.update(self.entity.physic.velocity, entities, room.collisions_map.map, movement=self.movement)
         self.finished = True
         self.entity.states_stack.pop()
 

@@ -8,5 +8,4 @@ class MainMenuProcess:
     def do(self, processes_stack, main_process):
         for event in pg.event.get():
             self.main_menu.states_stack.peek().handle_input(event, processes_stack, main_process)
-        self.main_menu.states_stack.peek().update()
         self.main_menu.states_stack.peek().draw()

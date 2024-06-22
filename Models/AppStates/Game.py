@@ -5,6 +5,7 @@ from BaseVariables.Others import TILE_SIZE
 
 from Constants.Date import *
 
+from Controllers.Entities.Physic.GetCollisionsAround import get_collisions_around
 from Controllers.Game.Processes.GameProcess import GameProcess
 from Controllers.Game.States.GameStates import Running
 from Controllers.Saves.SaveGame import save_game
@@ -69,12 +70,11 @@ class Game:
         return self.player.copy_for_save(), self.view.rooms_map.copy_for_save()
 
     def download_entities(self):
-        for i in range(self.view.rooms_map.size[1]):
-            for j in range(self.view.rooms_map.size[0]):
+        for i in range(self.view.rooms_map.size[0]):
+            for j in range(self.view.rooms_map.size[1]):
                 if self.view.rooms_map.map[i][j] is not None:
                     self.view.rooms_map.map[i][j].download_map()
                     for NPC in self.view.rooms_map.map[i][j].NPCs:
                         NPC.view.download_images(NPC.current_weapon, NPC.current_shield, NPC.inventory)
-                        NPC.physic.collision.get_collisions_around(self.view.rooms_map.map[i][j].collisions_map.map, TILE_SIZE)
+                        get_collisions_around(NPC.physic.collision.rect, TILE_SIZE, self.room.collisions_map.map, NPC.physic.collision.collisions_around)
         self.player.view.download_images(self.player.current_weapon, self.player.current_shield, self.player.inventory)
-        self.player.physic.collision.get_collisions_around(self.room.collisions_map.map, TILE_SIZE)
