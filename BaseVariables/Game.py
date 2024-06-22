@@ -1,28 +1,28 @@
 import pygame as pg
 
-from Controllers.RoomMap.RoomsMapUtils import make_room
-from Utils.Setting import DISPLAY_WIDTH, DISPLAY_HEIGHT, TILE_SIZE
-from BaseVariables.Buttons.Buttons import WEAPONS_CHANGE_BUTTON, SHIELD_CHANGE_BUTTON
-from BaseVariables.Paths import FONT_PATH
-from Constants.Colours import WHITE_RGB, DARK_GRAY_RGB
-
 from BaseVariables.Assets.PathsAsset import *
-from Models.Room.RoomsMap import RoomsMap
-from Models.Room.Door import Door
-from Models.Entities.Player import Player
+from BaseVariables.Buttons.Buttons import WEAPONS_CHANGE_BUTTON, SHIELD_CHANGE_BUTTON
+from BaseVariables.Display import DISPLAY_WIDTH, DISPLAY_HEIGHT
+from BaseVariables.Paths import FONT_PATH
+from BaseVariables.Others import TILE_SIZE
+
+from Constants.Colours import WHITE_RGB, DARK_GRAY_RGB
+from Controllers.RoomMap.RoomsMapUtils import make_room
+
 from Models.Entities.NPCs.Swordsman import Swordsman
-from Models.Item.Weapons.Sword import Sword
-from Models.Room.Tile import Tile
-from Models.Inventory.Inventory import Inventory
-from Models.InteractionObjects.InGameWindow import InGameWindow
-from Models.Text import Text
-from Models.Item.Shield import Shield
 from Models.Entities.NPCs.Wizard import Wizard
-from Models.Item.Weapons.Staff import Staff
-from Models.Item.Weapons.Projectiles.FireBall import FireBall
-
-from Views.Item.ItemIcon import Icon
-
+from Models.Entities.Player import Player
+from Models.InteractionObjects.InGameWindow import InGameWindow
+from Models.Inventory.Inventory import Inventory
+from Models.Items.Shield import Shield
+from Models.Items.Weapons.Projectiles.FireBall import FireBall
+from Models.Items.Weapons.Staff import Staff
+from Models.Items.Weapons.Sword import Sword
+from Models.Room.Door import Door
+from Models.Room.RoomsMap import RoomsMap
+from Models.Room.Tile import Tile
+from Models.Text import Text
+from Views.Items.ItemIcon import Icon
 
 entities_surface = pg.Surface((DISPLAY_WIDTH, DISPLAY_HEIGHT))
 

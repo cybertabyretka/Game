@@ -1,4 +1,4 @@
-from Views.Image import load_image
+from Utils.Image import load_image
 
 
 class FireBallV:

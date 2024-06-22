@@ -1,4 +1,14 @@
+import pygame as pg
+
+from Utils.DistanceCounting import manhattan_distance
+
+from Models.InteractionObjects.GetPressedButton import get_pressed_button
+from Models.Inventory.SwitchItems import switch_items
+
+from BaseVariables.Buttons.ButtonsTexts import SWITCH_SHIELDS, SWITCH_WEAPONS
+
 from Controllers.Entities.States.AbstractStates import PlayerAbstractState
+from Controllers.Entities.Physic.DamageProcess import check_damage_for_entity, check_damage_for_entity_with_ready_damage_and_movement
 
 
 class PlayerBaseState(PlayerAbstractState):
@@ -23,7 +33,7 @@ class PlayerBaseState(PlayerAbstractState):
             self.entity.states_stack.peek().handle_inputs(self.events, room)
 
     def draw(self, surface):
-        self.entity.view.render(surface, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+        self.entity.view.draw(surface, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
 
 
 class PlayerIdleState(PlayerBaseState):
@@ -35,13 +45,10 @@ class PlayerIdleState(PlayerBaseState):
                 if not room.live_NPCs_count:
                     mouse_pos = pg.mouse.get_pos()
                     for steal_tile in room.loot_tiles:
-                        if steal_tile.collision.rect.collidepoint(mouse_pos) and manhattan_distance(
-                                steal_tile.collision.rect.topleft,
-                                self.entity.physic.collision.rect.topleft) <= min(
-                                self.entity.physic.collision.rect.w, self.entity.physic.collision.rect.h) * 2:
+                        if steal_tile.collision.rect.collidepoint(mouse_pos) and manhattan_distance(steal_tile.collision.rect.topleft, self.entity.physic.collision.rect.topleft) <= min(self.entity.physic.collision.rect.w, self.entity.physic.collision.rect.h) * 2:
                             self.entity.states_stack.push(PlayerStealState(self.entity, steal_tile.inventory))
                             return
-                    self.entity.states_stack.push(InventoryOpenState(self.entity))
+                    self.entity.states_stack.push(PlayerInventoryOpenState(self.entity))
         elif event.type == pg.MOUSEBUTTONDOWN:
             if pg.mouse.get_pressed(3)[0]:
                 self.entity.states_stack.push(PlayerPunchState(self.entity))
@@ -190,9 +197,9 @@ class PlayerPunchState(PlayerBaseState):
             self.entity.states_stack.peek().handle_inputs(self.events, room)
 
     def draw(self, surface):
-        self.entity.view.render(surface, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+        self.entity.view.draw(surface, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
         if not self.finished:
-            self.entity.current_weapon.view.copied_animation.render(surface)
+            self.entity.current_weapon.view.copied_animation.draw(surface)
 
 
 class PlayerShieldState(PlayerBaseState):
@@ -251,7 +258,7 @@ class PlayerShieldState(PlayerBaseState):
             pg.draw.rect(surface, GRAY_RGB, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y+self.entity.physic.collision.rect.height, self.entity.physic.collision.rect.width, 2))
         else:
             pg.draw.rect(surface, GRAY_RGB, (self.entity.physic.collision.rect.x-2, self.entity.physic.collision.rect.y, 2, self.entity.physic.collision.rect.height))
-        self.entity.view.render(surface, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+        self.entity.view.draw(surface, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
 
 
 class PlayerInventoryOpenState(PlayerBaseState):
@@ -308,7 +315,7 @@ class PlayerInventoryOpenState(PlayerBaseState):
     def draw(self, surface):
         self.entity.view.windows['inventory_base'].view.draw(surface, self.entity.inventory.view, self.entity.inventory.cells)
         for button in self.buttons:
-            button.view.render(surface)
+            button.view.draw(surface)
 
 
 class PlayerStealState(PlayerBaseState):
@@ -385,4 +392,4 @@ class PlayerStealState(PlayerBaseState):
         self.entity.view.windows['inventory_base'].view.draw(surface, self.entity.inventory.view, self.entity.inventory.cells)
         self.entity.view.windows['inventory_for_steal'].view.draw(surface, self.inventory_for_steal.view, self.inventory_for_steal.cells)
         for button in self.buttons:
-            button.view.render(surface)
+            button.view.draw(surface)

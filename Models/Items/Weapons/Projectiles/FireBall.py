@@ -1,6 +1,6 @@
-from Controllers.Weapon.Projectiles.FireBallPhysic import FireBallPhysic
+from Controllers.Weapons.Projectiles.FireBallPhysic import FireBallPhysic
 
-from Views.Item.Projectiles.FireBall import FireBallV
+from Views.Items.Projectiles.FireBall import FireBallV
 
 
 class FireBall:

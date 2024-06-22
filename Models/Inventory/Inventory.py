@@ -1,7 +1,7 @@
-from Models.Inventory.InventoryCell import InventoryCell
-from Models.Item.Item import EmptyItem
+from Constants.Colours import GRAY_RGB, GREEN_RGB
 
-from SwitchItems.Settings.Colours import GRAY_RGB, GREEN_RGB
+from Models.Inventory.InventoryCell import InventoryCell
+from Models.Items.Item import EmptyItem
 
 from Views.Inventory.Inventory import InventoryV
 

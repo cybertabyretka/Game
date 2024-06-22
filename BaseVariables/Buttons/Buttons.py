@@ -1,9 +1,9 @@
-from Models.InteractionObjects.Button import make_button
+from BaseVariables.Buttons.ButtonsTexts import *
+from BaseVariables.Paths import FONT_PATH
 
 from Constants.Colours import *
-from BaseVariables.Paths import FONT_PATH
-from BaseVariables.Buttons.ButtonsTexts import *
 
+from Models.InteractionObjects.MakeButton import make_button
 
 MAIN_MENU_START_BUTTON = make_button(300, 300, 100, 50, 1, GRAY_RGB, BLACK_RGB, START, BLACK_RGB, 20, FONT_PATH)
 MAIN_MENU_EXIT_BUTTON = make_button(300, 350, 100, 50, 1, GRAY_RGB, BLACK_RGB, EXIT, BLACK_RGB, 20, FONT_PATH)
@@ -30,10 +30,3 @@ NEW_GAME_BUTTON = make_button(50, 600, 100, 50, 1, GRAY_RGB, BLACK_RGB, NEW_GAME
 CONTINUE_BUTTON = make_button(275, 240, 150, 50, 0, GRAY_RGB, WHITE_RGB, CONTINUE, BLACK_RGB, 15, FONT_PATH)
 SAVE_GAME_BUTTON = make_button(275, 300, 150, 50, 0, GRAY_RGB, WHITE_RGB, SAVE_GAME, BLACK_RGB, 15, FONT_PATH)
 EXIT_TO_MAIN_MENU_BUTTON = make_button(275, 360, 150, 50, 0, GRAY_RGB, WHITE_RGB, EXIT_TO_MAIN_MENU, BLACK_RGB, 15, FONT_PATH)
-
-
-def get_pressed_button(buttons, mouse_clck_pos):
-    for button in buttons:
-        if button.view.rect.collidepoint(mouse_clck_pos):
-            return button
-    return None

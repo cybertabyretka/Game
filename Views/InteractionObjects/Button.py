@@ -10,9 +10,9 @@ class ButtonV:
         self.text = text
         self.selected = False
 
-    def render(self, surface):
+    def draw(self, surface):
         if self.selected:
             pg.draw.rect(surface, self.selected_rect_colour, self.rect, self.thickness)
         else:
             pg.draw.rect(surface, self.unselected_rect_colour, self.rect, self.thickness)
-        self.text.view.render(surface, self.rect)
+        self.text.view.draw(surface, self.rect)

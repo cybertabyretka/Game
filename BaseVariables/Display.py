@@ -1,3 +1,8 @@
+import pygame as pg
+
+from Views.Display import Display
+
+
 DISPLAY_WIDTH = 700
 DISPLAY_HEIGHT = 700
 DISPLAY_NAME = 'DUNGEON'

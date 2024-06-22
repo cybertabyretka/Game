@@ -1,4 +1,4 @@
-from Views.Image import load_image
+from Utils.Image import load_image
 
 
 class TileV:
@@ -10,6 +10,6 @@ class TileV:
         if self.path is not None:
             self.image = load_image(self.path)
 
-    def render(self, surface, pos):
+    def draw(self, surface, pos):
         if self.image is not None:
             surface.blit(self.image, pos)

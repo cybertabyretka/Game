@@ -1,7 +1,7 @@
-from Views.Item.Item import ItemV
+from Views.Items.Item import ItemV
 
 from Views.Animation import Animation
-from Views.Image import load_images
+from Utils.Image import load_images
 
 
 class WeaponV(ItemV):
@@ -19,7 +19,6 @@ class WeaponV(ItemV):
         self.icon.download_images()
 
     def set_animation(self, rotation, pos):
-        print(self.animation_asset)
         if rotation == 0:
             self.copied_animation = self.animation_asset['animation_up'].copy()
         elif rotation == 90:
@@ -31,8 +30,8 @@ class WeaponV(ItemV):
         if self.copied_animation is not None:
             self.copied_animation.pos = pos
 
-    def render_animation(self, surface):
-        self.copied_animation.render(surface)
+    def draw_animation(self, surface):
+        self.copied_animation.draw(surface)
 
     def get_pos(self):
         return self.copied_animation.pos

@@ -1,5 +1,5 @@
 from Utils.Singleton import Singleton
-from Views.Image import load_image
+from Utils.Image import load_image
 
 from BaseVariables.Assets.PathsAsset import EMPTY_ICON
 

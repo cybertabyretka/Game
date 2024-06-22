@@ -1,6 +1,6 @@
 import pygame as pg
 
-from Utils.Setting import get_font
+from Utils.GetFont import get_font
 
 
 class TextV:
@@ -16,6 +16,6 @@ class TextV:
         if font_path is not None:
             self.font_path = font_path
 
-    def render(self, surface: pg.Surface, rect):
+    def draw(self, surface: pg.Surface, rect):
         rendered_text = get_font(self.font_path, self.font_size).render(self.text, True, self.colour)
         surface.blit(rendered_text, rect)

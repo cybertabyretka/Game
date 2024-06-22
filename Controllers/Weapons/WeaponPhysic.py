@@ -1,4 +1,4 @@
-from Controllers.Weapon.AttackPhysic import SwordAttackPhysics, AttackPhysic, StaffAttackPhysic
+from Controllers.Weapons.AttackPhysic import SwordAttackPhysics, AttackPhysic, StaffAttackPhysic
 
 
 class WeaponPhysic:

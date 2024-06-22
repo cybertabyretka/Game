@@ -1,9 +1,10 @@
-from Controllers.Game.States.MainMenuStates import StartState
-from Controllers.Game.Processes.MainMenuProcess import MainMenuProcess
-
 from BaseVariables.Buttons.Buttons import *
-from DataStructures.Stack import Stack
 from BaseVariables.Saves.Saves import AUTO_SAVES, SAVES
+
+from Controllers.Game.Processes.MainMenuProcess import MainMenuProcess
+from Controllers.Game.States.MainMenuStates import StartState
+
+from DataStructures.Stack import Stack
 
 from Views.AppStates.MainMenu import MainMenuV
 

@@ -1,4 +1,4 @@
-from Models.Item.Item import Item
+from Models.Items.Item import Item
 
 
 class Shield(Item):

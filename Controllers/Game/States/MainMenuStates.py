@@ -1,17 +1,18 @@
 import pygame as pg
 import pygame.locals as loc
 
+from BaseVariables.Buttons.ButtonsTexts import *
+from BaseVariables.Game import BASE_ROOMS_MAP, BASE_PLAYER
+from BaseVariables.Paths import FONT_PATH
+
+from Constants.Colours import WHITE_RGB
 from Controllers.Game.States.BaseStates import MainMenuState
 from Controllers.Game.States.ButtonsCheck import check_buttons_collisions
 from Controllers.Saves.GetGame import get_game
 
 from Models.AppStates.Game import Game
 
-from BaseVariables.Game import BASE_ROOMS_MAP, BASE_PLAYER
-from Views.Text.RenderText import render_text
-from BaseVariables.Buttons.ButtonsTexts import *
-from Constants.Colours import WHITE_RGB
-from BaseVariables.Paths import FONT_PATH
+from Views.Text.DrawText import draw_text
 
 
 class StartState(MainMenuState):
@@ -67,7 +68,7 @@ class StartState(MainMenuState):
                         main_process.is_running = False
 
     def draw(self):
-        self.main_menu.view.render(self.buttons)
+        self.main_menu.view.draw(self.buttons)
         self.main_menu.view.display.update()
 
 
@@ -124,22 +125,22 @@ class SaveSelectionState(MainMenuState):
         line_start_pos = [135, 20]
         line_end_pos = [135, 200]
         date_start_pos = [0, 50]
-        self.main_menu.view.render(self.buttons)
-        render_text(self.main_menu.view.display.surface, self.main_menu.auto_saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+        self.main_menu.view.draw(self.buttons)
+        draw_text(self.main_menu.view.display.surface, self.main_menu.auto_saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
         for auto_save in self.main_menu.auto_saves[1:]:
             pg.draw.line(self.main_menu.view.display.surface, WHITE_RGB, line_start_pos, line_end_pos, 1)
             date_start_pos[0] += 140
-            render_text(self.main_menu.view.display.surface, auto_save.save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+            draw_text(self.main_menu.view.display.surface, auto_save.save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
             line_start_pos[0] += 140
             line_end_pos[0] += 140
         line_start_pos = [135, 210]
         line_end_pos = [135, 390]
         date_start_pos = [0, 250]
-        render_text(self.main_menu.view.display.surface, self.main_menu.saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+        draw_text(self.main_menu.view.display.surface, self.main_menu.saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
         for save in self.main_menu.saves[1:]:
             pg.draw.line(self.main_menu.view.display.surface, WHITE_RGB, line_start_pos, line_end_pos, 1)
             date_start_pos[0] += 140
-            render_text(self.main_menu.view.display.surface, save.save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+            draw_text(self.main_menu.view.display.surface, save.save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
             line_start_pos[0] += 140
             line_end_pos[0] += 140
         self.main_menu.view.display.update()

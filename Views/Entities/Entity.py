@@ -1,4 +1,4 @@
-from RenderEntities.Image import load_image
+from Utils.Image import load_image
 
 
 class EntityV:
@@ -32,5 +32,5 @@ class EntityV:
         elif rotation == 270:
             self.current_image = self.image_left
 
-    def render(self, surface, pos):
+    def draw(self, surface, pos):
         surface.blit(self.current_image, pos)

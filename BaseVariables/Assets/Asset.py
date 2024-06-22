@@ -1,7 +1,7 @@
 from BaseVariables.Assets.PathsAsset import *
 
 from Views.Animation import Animation
-from Views.Image import load_images, load_image
+from Utils.Image import load_images, load_image
 
 
 class TilesAssets:

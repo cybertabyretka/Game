@@ -1,9 +1,9 @@
-from Controllers.Weapon.WeaponPhysic import SwordPhysic
+from Controllers.Weapons.WeaponPhysic import SwordPhysic
 
 from Models.InteractionObjects.Button import Button
-from Models.Item.Weapons.Weapon import Weapon
+from Models.Items.Weapons.BaseWeapon import Weapon
 
-from Views.Item.ItemIcon import Icon
+from Views.Items.ItemIcon import Icon
 
 
 class Sword(Weapon):

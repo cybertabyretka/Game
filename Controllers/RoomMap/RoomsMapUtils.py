@@ -1,8 +1,11 @@
+from BaseVariables.Display import DISPLAY_WIDTH, DISPLAY_HEIGHT
+from BaseVariables.Others import TILE_SIZE
+
 from Controllers.RoomMap.CreateTileMap import create_base_tile_map
-from Utils.Setting import DISPLAY_WIDTH, DISPLAY_HEIGHT, TILE_SIZE
-from Utils.CoordinatesConverter import convert_to_string
 
 from Models.Room.Room import Room
+
+from Utils.CoordinatesConverter import convert_to_string
 
 
 def make_room(rooms_map, pos, NPCs, loot_tiles, width=DISPLAY_WIDTH, height=DISPLAY_HEIGHT, tile_size=TILE_SIZE, tile_map=None):

@@ -1,4 +1,4 @@
-from Controllers.Entities.Physic.DamageProcess import a_star
+from Controllers.RoomMap.PathFinding import a_star
 
 
 class Mind:

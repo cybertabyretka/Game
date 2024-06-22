@@ -2,7 +2,8 @@ import os
 import pickle
 
 from BaseVariables.Game import BASE_ROOMS_MAP, BASE_PLAYER
-from Utils.Settings.Saves.Utils import *
+
+from Constants.Date import *
 
 
 class Save:

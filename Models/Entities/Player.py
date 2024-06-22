@@ -1,5 +1,5 @@
 from Controllers.Entities.Physic.PlayerPhysic import PlayerPhysics
-from Controllers.Entity.States.PlayerStates import PlayerIdleState
+from Controllers.Entities.States.PlayerStates import PlayerIdleState
 
 from Models.Entities.BaseEntity import Entity
 
@@ -10,10 +10,8 @@ from Views.Entities.Player import PlayerV
 
 class Player(Entity):
     def __init__(self, inventory, windows, paths_asset, width=35., height=35., start_pos=(0, 0), max_velocity=2, current_weapon=None, current_shield=None, max_health=20, current_health=20):
-        super().__init__(current_weapon, current_shield, max_health, current_health, inventory, paths_asset)
+        super().__init__(width, height, start_pos, max_velocity, current_weapon, current_shield, max_health, current_health, inventory, paths_asset, PlayerPhysics, PlayerIdleState(self))
         self.view = PlayerV(windows, paths_asset)
-        self.physic = PlayerPhysics(width, height, start_pos, max_velocity)
-        self.states_stack = Stack(PlayerIdleState(self))
 
     @staticmethod
     def change_current_special_item(special_item, selected_cell):

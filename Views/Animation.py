@@ -22,6 +22,6 @@ class Animation:
             if self.frame >= self.image_duration * len(self.images) - 1:
                 self.done = True
 
-    def render(self, surface):
+    def draw(self, surface):
         surface.blit(self.get_image(), self.pos)
         self.update()

@@ -3,7 +3,7 @@ class MainMenuV:
         self.display = display
         self.background_surface = background_rect
 
-    def render(self, buttons):
+    def draw(self, buttons):
         self.display.surface.blit(self.background_surface, (0., 0.))
         for button in buttons:
-            button.view.render(self.display.surface)
+            button.view.draw(self.display.surface)

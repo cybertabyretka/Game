@@ -1,4 +1,4 @@
-from Utils.Setting import NEIGHBOUR_OFFSETS
+from BaseVariables.TileMapOffsets import NEIGHBOUR_OFFSETS
 
 
 class CollisionsMap:

@@ -1,4 +1,4 @@
-from Views.HealthBar import HealthBarV
+from Views.HealthBars.HealthBar import HealthBarV
 
 
 class HealthBar:

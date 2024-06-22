@@ -1,6 +1,6 @@
 import pygame as pg
 
-from Utils.Setting import NEIGHBOUR_OFFSETS
+from BaseVariables.TileMapOffsets import NEIGHBOUR_OFFSETS
 
 
 class FireBallPhysic:

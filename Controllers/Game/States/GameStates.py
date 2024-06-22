@@ -1,21 +1,24 @@
 import pygame as pg
 
-from Controllers.Entity.States.PlayerStates import InventoryOpenState, PlayerStealState
+from BaseVariables.Buttons.ButtonsTexts import *
+from BaseVariables.Paths import *
+
+from Constants.Colours import *
+
+from Controllers.Entities.States.PlayerStates import PlayerStealState, PlayerInventoryOpenState
 from Controllers.Game.States.BaseStates import GameState
 from Controllers.Game.States.ButtonsCheck import check_buttons_collisions
 from Controllers.Saves.SaveGame import save_game
 
-from Models.Item.Item import EmptyItem
+from Models.InteractionObjects.GetPressedButton import get_pressed_button
+from Models.Items.Item import EmptyItem
 
 from Utils.DistanceCounting import manhattan_distance
-from Views.Items.Projectiles.RenderProjectiles import render_projectiles
-from Views.Text.RenderText import render_text
-from BaseVariables.Buttons.Buttons import get_pressed_button
-from BaseVariables.Buttons.ButtonsTexts import *
-from Constants.Colours import *
-from BaseVariables.Paths import *
-from Views.Entities.RenderEntities import render_entities
-from Views.HealthBar import render_health_bars
+
+from Views.Entities.DrawEntities import draw_entities
+from Views.HealthBars.DrawHealthBars import draw_health_bars
+from Views.Items.Projectiles.DrawProjectiles import draw_projectiles
+from Views.Text.DrawText import draw_text
 
 
 class Running(GameState):
@@ -71,9 +74,9 @@ class Running(GameState):
         self.game.room.view.render_tile_map(self.game.rooms_surface)
         self.game.rooms_surface.blit(self.game.entities_surface, (0., 0.))
         self.game.view.display.surface.blit(self.game.rooms_surface, (self.game.rooms_surface.get_rect().x, self.game.rooms_surface.get_rect().y))
-        render_entities(self.game.room.NPCs, self.game.player, self.game.entities_surface)
-        render_health_bars(self.game.room.NPCs, self.game.player, self.game.entities_surface)
-        render_projectiles(self.game.room.collisions_map.movable_damage_map, self.game.entities_surface)
+        draw_entities(self.game.room.NPCs, self.game.player, self.game.entities_surface)
+        draw_health_bars(self.game.room.NPCs, self.game.player, self.game.entities_surface)
+        draw_projectiles(self.game.room.collisions_map.movable_damage_map, self.game.entities_surface)
         self.game.view.display.update()
 
 
@@ -90,7 +93,7 @@ class OnPause(GameState):
                 if type(self.game.player.states_stack.peek()) not in [InventoryOpenState, PlayerStealState]:
                     self.finished = not self.finished
             elif event.key == pg.K_e:
-                if type(self.game.player.states_stack.peek()) in [InventoryOpenState, PlayerStealState]:
+                if type(self.game.player.states_stack.peek()) in [PlayerInventoryOpenState, PlayerStealState]:
                     self.finished = not self.finished
         self.game.player.states_stack.peek().handle_input(event, self.game.room)
 
@@ -147,7 +150,7 @@ class EscState(GameState):
         self.game.view.display.surface.blit(self.game.rooms_surface, (self.game.rooms_surface.get_rect().x, self.game.rooms_surface.get_rect().y))
         self.game.player.states_stack.peek().draw(self.game.entities_surface)
         for button in self.game.buttons['esc_state_buttons']:
-            button.view.render(self.game.view.display.surface)
+            button.view.draw(self.game.view.display.surface)
         self.game.view.display.update()
 
 
@@ -207,22 +210,22 @@ class SaveSelectionState(GameState):
         line_end_pos = [135, 200]
         date_start_pos = [0, 50]
         for button in self.buttons:
-            button.view.render(self.game.view.display.surface)
-        render_text(self.game.view.display.surface, self.game.auto_saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+            button.view.draw(self.game.view.display.surface)
+        draw_text(self.game.view.display.surface, self.game.auto_saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
         for auto_save in self.game.auto_saves[1:]:
             pg.draw.line(self.game.view.display.surface, WHITE_RGB, line_start_pos, line_end_pos, 1)
             date_start_pos[0] += 140
-            render_text(self.game.view.display.surface, auto_save.save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+            draw_text(self.game.view.display.surface, auto_save.save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
             line_start_pos[0] += 140
             line_end_pos[0] += 140
         line_start_pos = [135, 210]
         line_end_pos = [135, 390]
         date_start_pos = [0, 250]
-        render_text(self.game.view.display.surface, self.game.saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+        draw_text(self.game.view.display.surface, self.game.saves[0].save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
         for save in self.game.saves[1:]:
             pg.draw.line(self.game.view.display.surface, WHITE_RGB, line_start_pos, line_end_pos, 1)
             date_start_pos[0] += 140
-            render_text(self.game.view.display.surface, save.save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
+            draw_text(self.game.view.display.surface, save.save_time, WHITE_RGB, 15, FONT_PATH, date_start_pos)
             line_start_pos[0] += 140
             line_end_pos[0] += 140
         self.game.view.display.update()

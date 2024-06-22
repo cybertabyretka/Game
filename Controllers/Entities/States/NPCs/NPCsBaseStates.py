@@ -1,4 +1,9 @@
+from Models.Room.Tile import LootTile
+
 from Controllers.Entities.States.AbstractStates import NPCAbstractState
+from Controllers.Entities.Physic.DamageProcess import check_damage_for_entity
+
+from Utils.DistanceCounting import manhattan_distance
 
 
 class NPCBaseState(NPCAbstractState):
@@ -11,7 +16,7 @@ class NPCBaseState(NPCAbstractState):
         pass
 
     def draw(self, surface):
-        self.entity.view.render(surface, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+        self.entity.view.draw(surface, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
 
 
 class NPCIdleState(NPCBaseState):
@@ -23,10 +28,10 @@ class NPCIdleState(NPCBaseState):
             return
         self.entity.mind.search_way_in_graph((self.entity.physic.collision.collisions_around["center"].rect.x, self.entity.physic.collision.collisions_around["center"].rect.y), (player.physic.collision.collisions_around["center"].rect.x, player.physic.collision.collisions_around["center"].rect.y), room.collisions_map.graph)
         self.old_player_center_pos = (player.physic.collision.collisions_around["center"].rect.x, player.physic.collision.collisions_around["center"].rect.y)
-        self.entity.states_stack.push(SwordsmanWalkState(self.entity))
+        self.entity.states_stack.push(self.entity.states_types['walk_state'](self.entity))
 
     def draw(self, surface):
-        self.entity.view.render(surface, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+        self.entity.view.draw(surface, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
 
 
 class NPCWalkState(NPCBaseState):
@@ -79,7 +84,7 @@ class NPCAfterPunchState(NPCBaseState):
         if self.entity.health.health <= 0:
             room.live_NPCs_count -= 1
             room.loot_tiles.append(LootTile(self.entity.physic.collision.rect.topleft, self.entity.inventory))
-            self.entity.states_stack.push(SwordsmanDeathState(self.entity))
+            self.entity.states_stack.push(self.entity.states_types['death_state'](self.entity))
             return
         self.entity.physic.collision.get_collisions_around(room.collisions_map.map, room.view.tile_size)
         self.entity.physic.collision.update(self.entity.physic.velocity, entities, movement=self.movement)
@@ -94,7 +99,7 @@ class NPCPunchState(NPCBaseState):
         self.copied_damage_rect = None
 
     def update(self, room, player, entities):
-        if check_damage_for_entity(self.entity, room.collisions_map.damage_map, room.collisions_map.movable_damage_map, SwordsmanAfterPunchState):
+        if check_damage_for_entity(self.entity, room.collisions_map.damage_map, room.collisions_map.movable_damage_map, self.entity.states_types['after_punch_state']):
             return
         if self.finished:
             if self.direction_for_punch == 'up':
@@ -116,9 +121,9 @@ class NPCPunchState(NPCBaseState):
             self.entity.states_stack.pop()
 
     def draw(self, surface):
-        self.entity.view.render(surface, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
+        self.entity.view.draw(surface, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
         if not self.finished:
-            self.entity.current_weapon.view.copied_animation.render(surface)
+            self.entity.current_weapon.view.copied_animation.draw(surface)
 
 
 class NPCDeathState(NPCBaseState):
