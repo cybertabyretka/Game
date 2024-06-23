@@ -7,15 +7,21 @@ from Controllers.SwitchItems import switch_items
 
 from BaseVariables.Buttons.ButtonsTexts import *
 
+from Models.Entities.BaseEntity import Entity
+from Models.Inventory.Inventory import Inventory
+from Models.Inventory.InventoryCell import InventoryCell
+from Models.InteractionObjects.Button import Button
+from Models.Room.Room import Room
+
 
 class PlayerStealState(PlayerBaseState):
-    def __init__(self, entity, inventory_for_steal):
+    def __init__(self, entity: Entity, inventory_for_steal: Inventory):
         super().__init__(entity)
-        self.inventory_for_steal = inventory_for_steal
-        self.selected_cell = None
-        self.buttons = []
+        self.inventory_for_steal: Inventory = inventory_for_steal
+        self.selected_cell: InventoryCell | None = None
+        self.buttons: list[Button] = []
 
-    def handle_input(self, event, room):
+    def handle_input(self, event: pg.event, room: Room) -> None:
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_e:
                 self.finished = not self.finished
@@ -78,7 +84,7 @@ class PlayerStealState(PlayerBaseState):
         elif event.type == pg.KEYUP and len(self.events) < 35:
             self.events.append(event)
 
-    def draw(self, surface):
+    def draw(self, surface: pg.Surface) -> None:
         self.entity.view.windows['inventory_base'].view.draw(surface, self.entity.inventory.view, self.entity.inventory.cells)
         self.entity.view.windows['inventory_for_steal'].view.draw(surface, self.inventory_for_steal.view, self.inventory_for_steal.cells)
         for button in self.buttons:

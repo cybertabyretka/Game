@@ -1,19 +1,27 @@
 from BaseVariables.TileMapOffsets import NEIGHBOUR_OFFSETS
 
+from Models.Room.Door import Door
+
+from Controllers.RoomMap.TilePhysic import TileCollision
+from Controllers.Weapons.AttackPhysic import AttackPhysic
+
+from Models.Items.Weapons.Projectiles.BaseProjectile import BaseProjectile
+from Models.Room.Tile import Tile
+
 
 class CollisionsMap:
     def __init__(self):
-        self.doors = []
-        self.map = {}
-        self.graph = {}
-        self.damage_map = {}
-        self.movable_damage_map = []
+        self.doors: list[Door] = []
+        self.map: dict[str, TileCollision] = {}
+        self.graph: dict[str, list[tuple[int, str]]] = {}
+        self.damage_map: dict[str, AttackPhysic] = {}
+        self.movable_damage_map: list[BaseProjectile] = []
 
-    def get_map_from_object(self, tile_map):
+    def get_map_from_object(self, tile_map: dict[str, Tile]) -> None:
         for loc in tile_map:
             self.map[loc] = tile_map[loc].collision
 
-    def get_graph(self):
+    def get_graph(self) -> None:
         for loc in self.map:
             straight_directions_cross_ability = {'up': 1, 'left': 1, 'right': 1, 'down': 1}
             current_tile = self.map[loc]
@@ -48,16 +56,9 @@ class CollisionsMap:
                         else:
                             self.graph[loc] = [(cross_ability, check_loc)]
 
-    def add_damage(self, damage, identifier):
+    def add_damage(self, damage: AttackPhysic, identifier: str) -> None:
         self.damage_map[identifier] = damage
 
-    def add_movable_damage(self, damage, identifier):
-        self.movable_damage_map[identifier] = damage
-
-    def remove_movable_damage(self, identifier):
-        if identifier in self.movable_damage_map:
-            del self.movable_damage_map[identifier]
-
-    def remove_damage(self, identifier):
+    def remove_damage(self, identifier: str) -> None:
         if identifier in self.damage_map:
             del self.damage_map[identifier]

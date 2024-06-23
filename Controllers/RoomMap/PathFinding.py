@@ -4,7 +4,7 @@ from Utils.CoordinatesConverter import convert_to_int, convert_to_string
 from Utils.DistanceCounting import chebyshev_distance
 
 
-def a_star(start_pos, end_pos, graph):
+def a_star(start_pos: tuple[int, int], end_pos: tuple[int, int], graph: dict[str, list[tuple[int, str]]]) -> list[tuple[int, int]]:
     queue = []
     heappush(queue, (0, start_pos))
     cost_visited = {start_pos: 0}

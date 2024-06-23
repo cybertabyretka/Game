@@ -2,6 +2,7 @@ import pygame as pg
 from abc import *
 
 from Models.Room.Room import Room
+from Models.Entities.BaseEntity import Entity
 
 
 class PlayerAbstractState(ABC):
@@ -14,7 +15,7 @@ class PlayerAbstractState(ABC):
         pass
 
     @abstractmethod
-    def update(self, room: Room, entities) -> None:
+    def update(self, room: Room, entities: list[Entity]) -> None:
         pass
 
     @abstractmethod

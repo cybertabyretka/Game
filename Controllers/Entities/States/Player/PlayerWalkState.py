@@ -6,14 +6,16 @@ from Controllers.CheckMouseButtons import *
 
 from Constants.StatesNames import *
 
+from Models.Room.Room import Room
+from Models.Entities.BaseEntity import Entity
 
 
 class PlayerWalkState(PlayerBaseState):
-    def __init__(self, entity):
+    def __init__(self, entity: Entity):
         super().__init__(entity)
-        self.directions = set()
+        self.directions: set[int] = set()
 
-    def handle_input(self, event, room):
+    def handle_input(self, event: pg.event, room: Room) -> None:
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_w:
                 self.directions.add(pg.K_w)
@@ -54,7 +56,7 @@ class PlayerWalkState(PlayerBaseState):
             elif check_right_mouse_button():
                 self.entity.states_stack.push(self.entity.states_types[SHIELD_STATE](self.entity))
 
-    def update(self, room, entities):
+    def update(self, room: Room, entities: list[Entity]) -> None:
         if check_damage_for_entity(self.entity, room.collisions_map.damage_map, room.collisions_map.movable_damage_map, self.entity.states_types[AFTER_PUNCH_STATE]):
             return
         if len(self.directions) == 0:

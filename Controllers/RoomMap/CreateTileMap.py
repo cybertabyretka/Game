@@ -6,7 +6,7 @@ from Models.Room.Tile import Tile
 from BaseVariables.PathsAsset import TILES
 
 
-def create_base_tile_map(width, height, tile_size):
+def create_base_tile_map(width: int, height: int, tile_size: tuple[int, int]) -> TileMap:
     tile_map = TileMap()
     for i in range(0, height, tile_size[0]):
         for j in range(0, width, tile_size[1]):

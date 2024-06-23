@@ -1,3 +1,5 @@
+import pygame as pg
+
 from Controllers.Entities.States.NPCs.BaseNPC.NPCsBaseState import NPCBaseState
 from Controllers.Weapons.AttackPhysic import AttackPhysic
 from Controllers.Entities.Physic.DamageProcess import check_damage_for_entity
@@ -6,6 +8,8 @@ from Constants.StatesNames import *
 from Constants.Directions import *
 
 from Models.Entities.BaseEntity import Entity
+from Models.Room.Room import Room
+from Models.Entities.Player import Player
 
 
 class NPCPunchState(NPCBaseState):
@@ -14,7 +18,7 @@ class NPCPunchState(NPCBaseState):
         self.direction_for_punch: str = direction_for_punch
         self.copied_damage_physic: AttackPhysic | None = None
 
-    def update(self, room, player, entities):
+    def update(self, room: Room, player: Player, entities: list[Entity]) -> None:
         if check_damage_for_entity(self.entity, room.collisions_map.damage_map, room.collisions_map.movable_damage_map, self.entity.states_types[AFTER_PUNCH_STATE]):
             return
         if self.finished:
@@ -26,7 +30,7 @@ class NPCPunchState(NPCBaseState):
                 direction = 180
             else:
                 direction = 270
-            if self.entity.current_weapon.attack(room, direction, self.entity, self):
+            if self.entity.current_weapon.try_attack(room, direction, self.entity, self):
                 self.finished = False
             else:
                 self.finished = True
@@ -36,7 +40,7 @@ class NPCPunchState(NPCBaseState):
             room.collisions_map.remove_damage(id(self.copied_damage_physic))
             self.entity.states_stack.pop()
 
-    def draw(self, surface):
+    def draw(self, surface: pg.Surface) -> None:
         self.entity.view.draw(surface, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y))
         if not self.finished:
             self.entity.current_weapon.view.copied_animation.draw(surface)

@@ -7,14 +7,19 @@ from Controllers.SwitchItems import switch_items
 
 from BaseVariables.Buttons.ButtonsTexts import *
 
+from Models.Entities.BaseEntity import Entity
+from Models.Inventory.InventoryCell import InventoryCell
+from Models.InteractionObjects.Button import Button
+from Models.Room.Room import Room
+
 
 class PlayerInventoryOpenState(PlayerBaseState):
-    def __init__(self, entity):
+    def __init__(self, entity: Entity):
         super().__init__(entity)
-        self.selected_cell = None
-        self.buttons = []
+        self.selected_cell: InventoryCell | None = None
+        self.buttons: list[Button] = []
 
-    def handle_input(self, event, room):
+    def handle_input(self, event: pg.event, room: Room) -> None:
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_e:
                 self.finished = not self.finished
@@ -59,7 +64,7 @@ class PlayerInventoryOpenState(PlayerBaseState):
         elif event.type == pg.KEYUP and len(self.events) < 35:
             self.events.append(event)
 
-    def draw(self, surface):
+    def draw(self, surface: pg.Surface) -> None:
         self.entity.view.windows['inventory_base'].view.draw(surface, self.entity.inventory.view, self.entity.inventory.cells)
         for button in self.buttons:
             button.view.draw(surface)

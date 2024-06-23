@@ -1,7 +1,7 @@
 import pygame as pg
 
 
-def draw_graph(graph, surface):
+def draw_graph(graph: dict[str, list[tuple[int, str]]], surface: pg.Surface) -> None:
     for coord in graph:
         lst = graph[coord]
         coord1_int = coord.split(';')
@@ -12,7 +12,7 @@ def draw_graph(graph, surface):
             pg.draw.line(surface, (255, 0, 0), coord1_int, coord2_int)
 
 
-def draw_way(way, surface):
+def draw_way(way: list[tuple[int, int]], surface: pg.Surface) -> None:
     if way:
         start_pos = way[0]
         for pos in way[1:]:

@@ -14,4 +14,5 @@ from BaseVariables.Game import BACKGROUND_PICTURE
 if __name__ == '__main__':
     main_menu = MainMenu(DISPLAY, BACKGROUND_PICTURE, ENTITIES_SURFACE, ROOMS_SURFACE)
     main = Main(DISPLAY, main_menu)
+    main.process.processes_stack.push(main_menu)
     main.process.run()

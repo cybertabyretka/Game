@@ -6,7 +6,7 @@ from Models.Items.Weapons.Projectiles.BaseProjectile import BaseProjectile
 
 
 class FireBall(BaseProjectile):
-    def __init__(self, image_path, damage_types, size, max_velocity):
+    def __init__(self, image_path: str, damage_types: dict[str, int], size: tuple[int, int], max_velocity: int):
         super().__init__(image_path, damage_types, size, max_velocity, FireBallPhysic, FireBallV)
 
     def copy(self):

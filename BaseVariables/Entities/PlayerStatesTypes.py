@@ -7,12 +7,13 @@ from Controllers.Entities.States.Player.PlayerShieldState import PlayerShieldSta
 from Controllers.Entities.States.Player.PlayerInventoryOpenState import PlayerInventoryOpenState
 from Controllers.Entities.States.Player.PlayerStealState import PlayerStealState
 from Controllers.Entities.States.Player.PlayerIdleState import PlayerIdleState
+from Controllers.Entities.States.Player.PlayerBaseState import PlayerBaseState
 
 
-PLAYER_STATES_TYPES = {WALK_STATE: PlayerWalkState,
-                       PUNCH_STATE: PlayerPunchState,
-                       AFTER_PUNCH_STATE: PlayerAfterPunchState,
-                       SHIELD_STATE: PlayerShieldState,
-                       INVENTORY_OPEN_STATE: PlayerInventoryOpenState,
-                       STEAL_STATE: PlayerStealState,
-                       IDLE_STATE: PlayerIdleState}
+PLAYER_STATES_TYPES: dict[str, type[PlayerBaseState]] = {WALK_STATE: PlayerWalkState,
+                                                         PUNCH_STATE: PlayerPunchState,
+                                                         AFTER_PUNCH_STATE: PlayerAfterPunchState,
+                                                         SHIELD_STATE: PlayerShieldState,
+                                                         INVENTORY_OPEN_STATE: PlayerInventoryOpenState,
+                                                         STEAL_STATE: PlayerStealState,
+                                                         IDLE_STATE: PlayerIdleState}

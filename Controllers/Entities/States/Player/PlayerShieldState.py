@@ -7,13 +7,16 @@ from Controllers.CheckMouseButtons import *
 from Constants.StatesNames import *
 from Constants.Colours import *
 
+from Models.Entities.BaseEntity import Entity
+from Models.Room.Room import Room
+
 
 class PlayerShieldState(PlayerBaseState):
-    def __init__(self, entity):
+    def __init__(self, entity: Entity):
         super().__init__(entity)
-        self.direction = None
+        self.direction: int | None = None
 
-    def handle_input(self, event, room):
+    def handle_input(self, event: pg.event, room: Room) -> None:
         if self.finished:
             if event.type == pg.MOUSEBUTTONDOWN and check_right_mouse_button():
                 if event.pos[1] < self.entity.physic.collision.rect.y and self.entity.physic.collision.rect.x < event.pos[0] < self.entity.physic.collision.rect.x + self.entity.physic.collision.rect.width:
@@ -36,7 +39,7 @@ class PlayerShieldState(PlayerBaseState):
             elif event.type == pg.KEYUP or event.type == pg.KEYDOWN:
                 self.events.append(event)
 
-    def update(self, room, entities):
+    def update(self, room: Room, entities: list[Entity]) -> None:
         if self.finished:
             self.entity.states_stack.pop()
             self.entity.states_stack.peek().handle_inputs(self.events, room)
@@ -55,7 +58,7 @@ class PlayerShieldState(PlayerBaseState):
                             damage_rect.damage_types[damage_type] = max(0, damage_rect.damage_types[damage_type] - self.entity.current_shield.damage_types[damage_type])
             check_damage_for_entity_with_ready_damage_and_movement(self.entity, damage, movement, self.entity.states_types[AFTER_PUNCH_STATE])
 
-    def draw(self, surface):
+    def draw(self, surface: pg.Surface) -> None:
         if self.direction == 0:
             pg.draw.rect(surface, GRAY_RGB, (self.entity.physic.collision.rect.x, self.entity.physic.collision.rect.y-2, self.entity.physic.collision.rect.width, 2))
         elif self.direction == 90:

@@ -2,16 +2,19 @@ from Controllers.RoomMap.MapPhysic import CollisionsMap
 
 from Views.Room.Room import RoomV
 
+from Models.Room.TileMap import TileMap
+from Models.Room.Tile import LootTile
+
 
 class Room:
-    def __init__(self, tile_map, tile_size, NPCs, loot_tiles):
-        self.loot_tiles = loot_tiles
-        self.live_NPCs_count = len(NPCs)
-        self.collisions_map = CollisionsMap()
-        self.view = RoomV(tile_map, tile_size)
+    def __init__(self, tile_map: TileMap, tile_size: tuple[int, int], NPCs, loot_tiles: list[LootTile]):
+        self.loot_tiles: list[LootTile] = loot_tiles
+        self.live_NPCs_count: int = len(NPCs)
+        self.collisions_map: CollisionsMap = CollisionsMap()
+        self.view: RoomV = RoomV(tile_map, tile_size)
         self.NPCs = NPCs
 
-    def download_images(self):
+    def download_images(self) -> None:
         for loot_tile in self.loot_tiles:
             loot_tile.download_images()
         for NPC in self.NPCs:
@@ -29,6 +32,6 @@ class Room:
         copied_room.live_NPCs_count = self.live_NPCs_count
         return copied_room
 
-    def download_map(self):
+    def download_map(self) -> None:
         self.collisions_map.get_map_from_object(self.view.tile_map.map)
         self.collisions_map.get_graph()

@@ -1,16 +1,18 @@
 import pygame as pg
 
+from Models.Text import Text
+
 
 class ButtonV:
-    def __init__(self, rect, thickness, selected_rect_colour, unselected_rect_colour, text):
-        self.rect = rect
-        self.thickness = thickness
-        self.selected_rect_colour = selected_rect_colour
-        self.unselected_rect_colour = unselected_rect_colour
-        self.text = text
-        self.selected = False
+    def __init__(self, rect: pg.Rect, thickness: int, selected_rect_colour: tuple[int, int, int], unselected_rect_colour: tuple[int, int, int], text: Text):
+        self.rect: pg.Rect = rect
+        self.thickness: int = thickness
+        self.selected_rect_colour: tuple[int, int, int] = selected_rect_colour
+        self.unselected_rect_colour: tuple[int, int, int] = unselected_rect_colour
+        self.text: Text = text
+        self.selected: bool = False
 
-    def draw(self, surface):
+    def draw(self, surface: pg.Surface) -> None:
         if self.selected:
             pg.draw.rect(surface, self.selected_rect_colour, self.rect, self.thickness)
         else:

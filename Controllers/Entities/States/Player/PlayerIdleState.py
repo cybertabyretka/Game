@@ -8,9 +8,12 @@ from Constants.StatesNames import *
 
 from Utils.DistanceCounting import manhattan_distance
 
+from Models.Room.Room import Room
+from Models.Entities.BaseEntity import Entity
+
 
 class PlayerIdleState(PlayerBaseState):
-    def handle_input(self, event, room):
+    def handle_input(self, event: pg.event, room: Room) -> None:
         if event.type == pg.KEYDOWN:
             if event.key in (pg.K_w, pg.K_s, pg.K_a, pg.K_d):
                 self.entity.states_stack.push(self.entity.states_types[WALK_STATE](self.entity))
@@ -28,6 +31,6 @@ class PlayerIdleState(PlayerBaseState):
             elif check_right_mouse_button():
                 self.entity.states_stack.push(self.entity.states_types[SHIELD_STATE](self.entity))
 
-    def update(self, room, entities):
+    def update(self, room: Room, entities: list[Entity]) -> None:
         if check_damage_for_entity(self.entity, room.collisions_map.damage_map, room.collisions_map.movable_damage_map, self.entity.states_types[AFTER_PUNCH_STATE]):
             return

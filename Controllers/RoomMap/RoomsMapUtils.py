@@ -4,11 +4,15 @@ from BaseVariables.Others import TILE_SIZE
 from Controllers.RoomMap.CreateTileMap import create_base_tile_map
 
 from Models.Room.Room import Room
+from Models.Entities.NPCs.BaseNPC import NPC
+from Models.Room.Tile import LootTile
+from Models.Room.TileMap import TileMap
+from Models.Room.Door import Door
 
 from Utils.CoordinatesConverter import convert_to_string
 
 
-def make_room(rooms_map, pos, NPCs, loot_tiles, width=DISPLAY_WIDTH, height=DISPLAY_HEIGHT, tile_size=TILE_SIZE, tile_map=None):
+def make_room(rooms_map: list[list[Room | None]], pos: tuple[int, int], NPCs: list[NPC], loot_tiles: list[LootTile], width: int = DISPLAY_WIDTH, height: int = DISPLAY_HEIGHT, tile_size: tuple[int, int] = TILE_SIZE, tile_map: TileMap | None = None) -> None:
     if tile_map is None:
         tile_map = create_base_tile_map(width, height, tile_size)
     room = Room(tile_map, tile_size, NPCs, loot_tiles)
@@ -18,7 +22,7 @@ def make_room(rooms_map, pos, NPCs, loot_tiles, width=DISPLAY_WIDTH, height=DISP
     rooms_map[pos[0]][pos[1]] = room
 
 
-def connect_rooms(doors):
+def connect_rooms(doors: list[Door]) -> None:
     for door in doors:
         add_doors(door)
         door.current_room.collisions_map.get_map_from_object(door.current_room.view.tile_map.map)
@@ -27,7 +31,7 @@ def connect_rooms(doors):
         door.next_room.collisions_map.get_graph()
 
 
-def add_doors(door):
+def add_doors(door: Door) -> None:
     current_str_coordinates = convert_to_string(door.current_tile.collision.rect.topleft)
     next_str_coordinates = convert_to_string(door.next_tile.collision.rect.topleft)
     door.current_room.collisions_map.doors.append(door)

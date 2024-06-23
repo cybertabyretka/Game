@@ -8,9 +8,13 @@ from Utils.DistanceCounting import manhattan_distance
 from Constants.Directions import *
 from Constants.StatesNames import *
 
+from Models.Room.Room import Room
+from Models.Entities.BaseEntity import Entity
+from Models.Entities.Player import Player
+
 
 class WizardWalkState(NPCWalkState):
-    def update(self, room, player, entities):
+    def update(self, room: Room, player: Player, entities: list[Entity]) -> None:
         if check_damage_for_entity(self.entity, room.collisions_map.damage_map, room.collisions_map.movable_damage_map, self.entity.states_types[AFTER_PUNCH_STATE]):
             return
         current_player_center_pos = (player.physic.collision.collisions_around[CENTER].rect.x, player.physic.collision.collisions_around[CENTER].rect.y)

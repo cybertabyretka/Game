@@ -5,32 +5,32 @@ from Controllers.RoomMap.RoomsMapUtils import connect_rooms
 
 
 class RoomsMap:
-    def __init__(self, size, current_index=(0, 0)):
-        self.size = size
+    def __init__(self, size: tuple[int, int], current_index: tuple[int, int] = (0, 0)):
+        self.size: tuple[int, int] = size
         self.map: list[list[None | Room]] = [[None for _ in range(size[1])] for _ in range(size[0])]
-        self.current_index = current_index
+        self.current_index: tuple[int, int] = current_index
         self.doors_connections: dict[Door, list[Room]] = {}
 
-    def get_current_room(self):
+    def get_current_room(self) -> None:
         return self.map[self.current_index[0]][self.current_index[1]]
 
-    def new_object_preprocess(self, doors_connections):
+    def new_object_preprocess(self, doors_connections: dict[Door, list[Room]]) -> None:
         self.download_images()
         self.add_doors_connections(doors_connections)
         self.add_doors()
 
-    def after_load_preprocess(self):
+    def after_load_preprocess(self) -> None:
         self.download_images()
 
-    def add_doors_connections(self, doors_connections):
+    def add_doors_connections(self, doors_connections: dict[Door, list[Room]]) -> None:
         self.doors_connections = doors_connections
 
-    def add_doors(self):
+    def add_doors(self) -> None:
         for door in self.doors_connections:
             door.add_rooms(self.doors_connections[door][0], self.doors_connections[door][1])
-        connect_rooms(self.doors_connections.keys())
+        connect_rooms(list(self.doors_connections.keys()))
 
-    def copy_for_save(self, current_room):
+    def copy_for_save(self, current_room: Room):
         new_rooms = {}
         copied_map = RoomsMap(self.size)
         copied_doors_connections = {}
@@ -50,7 +50,7 @@ class RoomsMap:
         copied_map.add_doors()
         return copied_map
 
-    def download_images(self):
+    def download_images(self) -> None:
         for door in self.doors_connections:
             door.download_images()
         for i in range(self.size[0]):

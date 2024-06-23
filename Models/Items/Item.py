@@ -2,18 +2,20 @@ from BaseVariables.Others import EMPTY_NAME, EMPTY_SIZE
 
 from Utils.Singleton import Singleton
 
+from Models.InteractionObjects.Button import Button
+
 from Views.Items.Item import ItemV
-from Views.Items.ItemIcon import EmptyIcon
+from Views.Items.ItemIcon import EmptyIcon, Icon
 
 
 class Item:
-    def __init__(self, name, size, icon, buttons):
-        self.name = name
-        self.size = size
-        self.view = ItemV(icon)
-        self.buttons = buttons
+    def __init__(self, name: str, size: tuple[int, int], icon: Icon, buttons: list[Button]):
+        self.name: str = name
+        self.size: tuple[int, int] = size
+        self.view: ItemV = ItemV(icon)
+        self.buttons: list[Button] = buttons
 
-    def set_buttons_start_pos(self, start_pos):
+    def set_buttons_start_pos(self, start_pos: tuple[int, int]) -> None:
         previous_button_height = 0
         previous_button_y = 0
         for button in self.buttons:

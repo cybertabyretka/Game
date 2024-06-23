@@ -3,26 +3,30 @@ import pygame.locals as loc
 
 from BaseVariables.Buttons.ButtonsTexts import *
 from BaseVariables.Game import BASE_ROOMS_MAP, BASE_PLAYER
-from BaseVariables.Paths import FONT_PATH
 
-from Constants.Colours import WHITE_RGB, DARK_GRAY_RGB
+from DataStructures.Stack import Stack
+
+from Constants.Colours import DARK_GRAY_RGB
+
 from Controllers.Game.States.BaseStates import MainMenuState
 from Controllers.Game.States.ButtonsCheck import check_buttons_collisions
 from Controllers.Saves.GetGame import get_game
 from Controllers.CheckMouseButtons import check_left_mouse_button
+from Controllers.Game.Processes.MainProcess import MainProcess
 
 from Models.AppStates.Game import Game
 
-from Views.Text.DrawText import draw_text
 from Views.AppStates.DrawSaveSelectionState import draw_save_selection_state
+
+from Models.InteractionObjects.Button import Button
 
 
 class StartState(MainMenuState):
-    def __init__(self, main_menu, buttons):
+    def __init__(self, main_menu, buttons: list[Button]):
         super().__init__(main_menu, buttons)
-        self.selected_button = None
+        self.selected_button: Button | None = None
 
-    def handle_input(self, event, processes_stack, main_process):
+    def handle_input(self, event: pg.event, processes_stack: Stack, main_process: MainProcess) -> None:
         if event.type == pg.QUIT:
             main_process.is_running = False
         elif event.type == pg.MOUSEMOTION:
@@ -69,17 +73,17 @@ class StartState(MainMenuState):
                     elif self.selected_button.view.text.view.text == EXIT:
                         main_process.is_running = False
 
-    def draw(self):
+    def draw(self) -> None:
         self.main_menu.view.draw(self.buttons)
         self.main_menu.view.display.update()
 
 
 class SaveSelectionState(MainMenuState):
-    def __init__(self, main_menu, buttons):
+    def __init__(self, main_menu, buttons: list[Button]):
         super().__init__(main_menu, buttons)
-        self.selected_button = None
+        self.selected_button: Button | None = None
 
-    def handle_input(self, event, processes_stack, main_process):
+    def handle_input(self, event: pg.event, processes_stack: Stack, main_process: MainProcess) -> None:
         if event.type == pg.QUIT:
             main_process.is_running = False
         elif event.type == pg.MOUSEMOTION:
@@ -123,6 +127,6 @@ class SaveSelectionState(MainMenuState):
                                 self.selected_button = None
                             processes_stack.push(game)
 
-    def draw(self):
+    def draw(self) -> None:
         draw_save_selection_state(self.main_menu.view.display.surface, self.buttons, self.main_menu.auto_saves, self.main_menu.saves, DARK_GRAY_RGB)
         self.main_menu.view.display.update()

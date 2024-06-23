@@ -3,7 +3,7 @@ from BaseVariables.Paths import FONT_PATH
 
 from Constants.Colours import *
 
-from Models.InteractionObjects.MakeButton import make_button
+from Utils.MakeButton import make_button
 from Models.InteractionObjects.Button import Button
 
 MAIN_MENU_START_BUTTON: Button = make_button(300, 300, 100, 50, 1, GRAY_RGB, BLACK_RGB, START, BLACK_RGB, 20, FONT_PATH)

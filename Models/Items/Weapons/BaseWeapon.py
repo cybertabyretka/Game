@@ -2,6 +2,7 @@ from Controllers.Weapons.WeaponPhysic import WeaponPhysic
 
 from Models.InteractionObjects.Button import Button
 from Models.Items.Item import Item
+from Models.Room.Room import Room
 
 from Views.Items.ItemIcon import Icon
 from Views.Items.Weapon import WeaponV
@@ -13,10 +14,13 @@ class Weapon(Item):
         self.view: WeaponV = WeaponV(icon, paths_asset)
         self.physic: WeaponPhysic
 
+    def try_attack(self, room: Room, direction: int, entity, state) -> bool:
+        pass
+
     def copy_for_save(self):
         return Weapon(self.name, self.size, self.view.icon.copy_for_save(), self.view.paths_asset, self.buttons)
 
-    def set_animation(self, rotation, entity):
+    def set_animation(self, rotation: int, entity) -> tuple[int, int]:
         pos = (0, 0)
         if rotation == 0:
             pos = (entity.physic.collision.rect.x, entity.physic.collision.rect.y - entity.physic.collision.rect.height)

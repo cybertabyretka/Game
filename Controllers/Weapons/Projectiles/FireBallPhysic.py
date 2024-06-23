@@ -8,7 +8,7 @@ from Controllers.Entities.Physic.GetCollisionsAround import get_collisions_aroun
 
 
 class FireBallPhysic(BaseProjectilePhysic):
-    def __init__(self, size, max_velocity, damage_types):
+    def __init__(self, size: tuple[int, int], max_velocity: int, damage_types: dict[str, int]):
         super().__init__(size, max_velocity, damage_types, FireBallCollision)
 
     def copy(self):

@@ -2,8 +2,10 @@ import random
 
 from DataStructures.Stack import Stack
 
+from Models.Save import Save
 
-def partition(start_index: int, end_index: int, current_index: int, saves, indexes) -> int:
+
+def partition(start_index: int, end_index: int, current_index: int, saves: list[Save], indexes: list[int]) -> int:
     while start_index < end_index:
         start_date, start_time = saves[start_index].get_date_and_time_as_tuples()
         current_date, current_time = saves[current_index].get_date_and_time_as_tuples()
@@ -32,7 +34,7 @@ def partition(start_index: int, end_index: int, current_index: int, saves, index
     return current_index
 
 
-def saves_indexes_quick_sort(saves, indexes):
+def saves_indexes_quick_sort(saves: list[Save], indexes: list[int]) -> None:
     if len(saves) in [0, 1]:
         return
     stack = Stack((0, len(saves) - 1))

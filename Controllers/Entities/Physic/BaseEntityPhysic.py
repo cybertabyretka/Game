@@ -15,7 +15,7 @@ from Utils.DistanceCounting import manhattan_distance
 
 
 class BaseEntityCollision:
-    def __init__(self, pos, size):
+    def __init__(self, pos: tuple[int, int], size: tuple[int, int]):
         self.rect: pg.Rect = pg.Rect(pos[0], pos[1], size[0], size[1])
         self.collisions_around: dict[str, TileCollision | None] = {}
 

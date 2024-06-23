@@ -16,7 +16,7 @@ class LongRangeAttackNPCCollision(BaseNPCCollision):
                 entities_process(movement, entity.physic.collision.rect, self.rect)
         return movement, entities_around
 
-    def find_entities_intersections(self, entity, entities_around):
+    def find_entities_intersections(self, entity: Entity, entities_around: dict[str, Entity]) -> None:
         if abs(self.rect.y - entity.physic.collision.rect.y) < self.rect.h and (entity.physic.collision.rect.x - self.rect.x) > 0:
             entities_around[RIGHT] = entity
         elif abs(self.rect.y - entity.physic.collision.rect.y) < self.rect.h and (entity.physic.collision.rect.x - self.rect.x) < 0:
@@ -28,5 +28,5 @@ class LongRangeAttackNPCCollision(BaseNPCCollision):
 
 
 class LongRangeAttackNPCPhysic(BaseNPCPhysic):
-    def __init__(self, width, height, start_pos, max_velocity):
+    def __init__(self, width: int, height: int, start_pos: tuple[int, int], max_velocity: int):
         super().__init__(width, height, start_pos, max_velocity, LongRangeAttackNPCCollision)

@@ -1,13 +1,16 @@
 import pygame as pg
 
-from Views.Text.DrawText import draw_text
+from Utils.Draw.DrawText import draw_text
 
 from BaseVariables.Paths import FONT_PATH
 
 from Constants.Colours import WHITE_RGB
 
+from Models.InteractionObjects.Button import Button
+from Models.Save import Save
 
-def draw_save_selection_state(surface, buttons, auto_saves, saves, background_colour):
+
+def draw_save_selection_state(surface: pg.Surface, buttons: list[Button], auto_saves: list[Save], saves: list[Save], background_colour: tuple[int, int, int]):
     surface.fill(background_colour)
     ratio_of_display_length_to_number_of_saves = surface.get_width() // len(auto_saves)
     line_start_pos = [ratio_of_display_length_to_number_of_saves - 5, 20]
