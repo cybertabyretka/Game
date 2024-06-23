@@ -1,4 +1,5 @@
 from BaseVariables.Others import EMPTY_NAME, EMPTY_SIZE
+
 from Utils.Singleton import Singleton
 
 from Views.Items.Item import ItemV

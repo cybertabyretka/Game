@@ -1,4 +1,4 @@
-from BaseVariables.Display import DISPLAY_WIDTH, DISPLAY_HEIGHT
+from BaseVariables.Surfaces import DISPLAY_WIDTH, DISPLAY_HEIGHT
 from BaseVariables.Others import TILE_SIZE
 
 from Controllers.RoomMap.CreateTileMap import create_base_tile_map

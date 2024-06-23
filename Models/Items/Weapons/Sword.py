@@ -17,7 +17,7 @@ class Sword(Weapon):
             copied_attack_physic = self.physic.attack_physic.copy()
             copied_attack_physic.set_attack_rect(pos, direction)
             room.collisions_map.add_damage(copied_attack_physic, id(copied_attack_physic))
-            state.copied_damage_rect = copied_attack_physic
+            state.copied_damage_physic = copied_attack_physic
             return True
         return False
 

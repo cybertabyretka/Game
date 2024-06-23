@@ -1,5 +1,6 @@
 from Controllers.Entities.Physic.PlayerPhysic import PlayerPhysics
-from Controllers.Entities.States.PlayerStates import PlayerIdleState
+
+from BaseVariables.Entities.PlayerStatesTypes import PLAYER_STATES_TYPES
 
 from Models.Entities.BaseEntity import Entity
 
@@ -10,7 +11,7 @@ from Views.Entities.Player import PlayerV
 
 class Player(Entity):
     def __init__(self, inventory, windows, paths_asset, width=35., height=35., start_pos=(0, 0), max_velocity=2, current_weapon=None, current_shield=None, max_health=20, current_health=20):
-        super().__init__(width, height, start_pos, max_velocity, current_weapon, current_shield, max_health, current_health, inventory, paths_asset, PlayerPhysics, PlayerIdleState(self))
+        super().__init__(width, height, start_pos, max_velocity, current_weapon, current_shield, max_health, current_health, inventory, paths_asset, PlayerPhysics, PLAYER_STATES_TYPES)
         self.view = PlayerV(windows, paths_asset)
 
     @staticmethod

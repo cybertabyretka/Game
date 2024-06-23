@@ -1,10 +1,11 @@
 import pygame as pg
 
 from BaseVariables.Buttons.ButtonsTexts import *
+from BaseVariables.Entities.PlayerStatesTypes import *
 
 from Constants.Colours import *
+from Constants.StatesNames import *
 
-from Controllers.Entities.States.PlayerStates import PlayerStealState, PlayerInventoryOpenState
 from Controllers.Game.States.BaseStates import GameState
 from Controllers.Game.States.ButtonsCheck import check_buttons_collisions
 from Controllers.Saves.SaveGame import save_game

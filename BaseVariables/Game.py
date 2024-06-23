@@ -2,10 +2,14 @@ import pygame as pg
 
 from BaseVariables.PathsAsset import *
 from BaseVariables.Buttons.Buttons import WEAPONS_CHANGE_BUTTON, SHIELD_CHANGE_BUTTON
-from BaseVariables.Paths import FONT_PATH
+from BaseVariables.Paths import *
 from BaseVariables.Others import TILE_SIZE
 
+from Views.Display import Display
+from Views.Items.ItemIcon import Icon
+
 from Constants.Colours import WHITE_RGB, DARK_GRAY_RGB
+from Constants.Display import *
 
 from Controllers.RoomMap.RoomsMapUtils import make_room
 from Controllers.Entities.Physic.GetCollisionsAround import get_collisions_around
@@ -25,7 +29,13 @@ from Models.Room.Door import Door
 from Models.Room.RoomsMap import RoomsMap
 from Models.Room.Tile import Tile
 from Models.Text import Text
-from Views.Items.ItemIcon import Icon
+
+from Utils.Image import load_image
+
+
+DISPLAY: Display = Display(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_NAME)
+
+BACKGROUND_PICTURE: pg.Surface = load_image(BASE_PATH + 'ReadyData/Images/MainMenu/background.png')
 
 sword_icon: Icon = Icon(SWORD['icon'])
 player_sword: Sword = Sword('Base sword', (30, 30), sword_icon, SWORD, [WEAPONS_CHANGE_BUTTON], (35, 35), {'cut': 1})

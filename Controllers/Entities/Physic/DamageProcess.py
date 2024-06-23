@@ -55,7 +55,7 @@ def check_damage_for_entity(entity: Entity, damage_map: dict[str, AttackPhysic],
     return False
 
 
-def check_damage_for_entity_with_ready_damage_and_movement(entity: Entity, damage: int, movement: list[int], after_punch_state) -> bool:
+def check_damage_for_entity_with_ready_damage_and_movement(entity: Entity, damage: dict[str, list[AttackPhysic | BaseProjectile]], movement: tuple[int, int], after_punch_state) -> bool:
     if damage:
         entity.states_stack.push(after_punch_state(entity, movement, damage))
         return True
