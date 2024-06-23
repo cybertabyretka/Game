@@ -1,3 +1,5 @@
+from collections.abc import Iterable
+
 from Models.Room.Door import Door
 from Models.Room.Room import Room
 
@@ -9,12 +11,12 @@ class RoomsMap:
         self.size: tuple[int, int] = size
         self.map: list[list[None | Room]] = [[None for _ in range(size[1])] for _ in range(size[0])]
         self.current_index: tuple[int, int] = current_index
-        self.doors_connections: dict[Door, list[Room]] = {}
+        self.doors_connections: dict[Door, Iterable[Room]] = {}
 
-    def get_current_room(self) -> None:
+    def get_current_room(self) -> Room:
         return self.map[self.current_index[0]][self.current_index[1]]
 
-    def new_object_preprocess(self, doors_connections: dict[Door, list[Room]]) -> None:
+    def new_object_preprocess(self, doors_connections: dict[Door, Iterable[Room]]) -> None:
         self.download_images()
         self.add_doors_connections(doors_connections)
         self.add_doors()
@@ -22,7 +24,7 @@ class RoomsMap:
     def after_load_preprocess(self) -> None:
         self.download_images()
 
-    def add_doors_connections(self, doors_connections: dict[Door, list[Room]]) -> None:
+    def add_doors_connections(self, doors_connections: dict[Door, Iterable[Room]]) -> None:
         self.doors_connections = doors_connections
 
     def add_doors(self) -> None:

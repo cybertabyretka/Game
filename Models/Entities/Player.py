@@ -8,6 +8,7 @@ from Models.InteractionObjects.InGameWindow import InGameWindow
 from Models.Items.Weapons.BaseWeapon import Weapon
 from Models.Items.Shield import Shield
 from Models.Inventory.InventoryCell import InventoryCell
+from Models.Items.Item import Item
 
 from DataStructures.Stack import Stack
 
@@ -20,7 +21,7 @@ class Player(Entity):
         self.view: PlayerV = PlayerV(windows, paths_asset)
 
     @staticmethod
-    def change_current_special_item(special_item: Weapon | Shield, selected_cell: InventoryCell) -> Weapon | Shield:
+    def change_current_special_item(special_item: Weapon | Shield, selected_cell: InventoryCell) -> Weapon | Shield | Item:
         special_item, selected_cell.item = selected_cell.item, special_item
         return special_item
 

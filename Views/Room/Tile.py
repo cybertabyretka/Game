@@ -1,4 +1,5 @@
 import pygame as pg
+from collections.abc import Iterable
 
 from Utils.Image import load_image
 
@@ -12,6 +13,7 @@ class TileV:
         if self.path is not None:
             self.image = load_image(self.path)
 
-    def draw(self, surface: pg.Surface, pos: tuple[int, int]) -> None:
+    def draw(self, surface: pg.Surface, pos: Iterable[int]) -> None:
+        pos = tuple(pos)
         if self.image is not None:
             surface.blit(self.image, pos)

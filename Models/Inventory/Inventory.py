@@ -1,3 +1,5 @@
+from collections.abc import Iterable
+
 from Constants.Colours import GRAY_RGB, GREEN_RGB
 
 from Models.Inventory.InventoryCell import InventoryCell
@@ -13,7 +15,7 @@ class Inventory:
         self.view: InventoryV = InventoryV(tile_size)
         self.cells: list[list[InventoryCell]] = [[InventoryCell(EmptyItem(), GREEN_RGB, GRAY_RGB) for _ in range(size[0])] for _ in range(size[1])]
 
-    def get_cell(self, index: tuple[int, int]) -> InventoryCell:
+    def get_cell(self, index: Iterable[int]) -> InventoryCell:
         return self.cells[index[0]][index[1]]
 
     def copy_for_save(self):
@@ -34,9 +36,9 @@ class Inventory:
             for j in range(self.size[1]):
                 self.get_cell((i, j)).item.view.download_images()
 
-    def place_items(self, index: tuple[int, int], items: list[Item]) -> None:
-        for i in range(len(index)):
-            self.place_item(index[i], items[i])
+    def place_items(self, indexes: list[tuple[int, int]], items: list[Item]) -> None:
+        for i in range(len(indexes)):
+            self.place_item(indexes[i], items[i])
 
     def get_cell_index_from_pos(self, pos: tuple[int, int], window: InGameWindow) -> list[int]:
         inventory_start_pos = (window.view.rect.topleft[0], window.view.rect.topleft[1] + window.view.name.view.font_size)

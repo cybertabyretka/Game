@@ -76,7 +76,7 @@ class Game:
         self.download_entities()
 
     def copy_for_save(self) -> tuple[Player, RoomsMap]:
-        return self.player.copy_for_save(), self.view.rooms_map.copy_for_save()
+        return self.player.copy_for_save(), self.view.rooms_map.copy_for_save(self.room)
 
     def download_entities(self) -> None:
         for i in range(self.view.rooms_map.size[0]):

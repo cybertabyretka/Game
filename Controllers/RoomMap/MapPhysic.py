@@ -14,7 +14,7 @@ class CollisionsMap:
         self.doors: list[Door] = []
         self.map: dict[str, TileCollision] = {}
         self.graph: dict[str, list[tuple[int, str]]] = {}
-        self.damage_map: dict[str, AttackPhysic] = {}
+        self.damage_map: dict[int, AttackPhysic] = {}
         self.movable_damage_map: list[BaseProjectile] = []
 
     def get_map_from_object(self, tile_map: dict[str, Tile]) -> None:
@@ -56,9 +56,9 @@ class CollisionsMap:
                         else:
                             self.graph[loc] = [(cross_ability, check_loc)]
 
-    def add_damage(self, damage: AttackPhysic, identifier: str) -> None:
+    def add_damage(self, damage: AttackPhysic, identifier: int) -> None:
         self.damage_map[identifier] = damage
 
-    def remove_damage(self, identifier: str) -> None:
+    def remove_damage(self, identifier: int) -> None:
         if identifier in self.damage_map:
             del self.damage_map[identifier]

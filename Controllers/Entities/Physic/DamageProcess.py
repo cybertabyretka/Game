@@ -6,7 +6,7 @@ from Models.Items.Weapons.Projectiles.BaseProjectile import BaseProjectile
 from Models.Entities.BaseEntity import Entity
 
 
-def get_damage_and_movement(damage_map: dict[str, AttackPhysic], movable_damage_map: list[BaseProjectile], entity_rect: pg.Rect) -> tuple[dict[str, list[AttackPhysic | BaseProjectile]], tuple[int, int]]:
+def get_damage_and_movement(damage_map: dict[int, AttackPhysic], movable_damage_map: list[BaseProjectile], entity_rect: pg.Rect) -> tuple[dict[str, list[AttackPhysic | BaseProjectile]], tuple[int, int]]:
     types: dict[str, list[AttackPhysic | BaseProjectile]] = {}
     movement: tuple[int, int] = (0, 0)
     for identifier in damage_map:
@@ -47,7 +47,7 @@ def get_damage_and_movement(damage_map: dict[str, AttackPhysic], movable_damage_
     return types, movement
 
 
-def check_damage_for_entity(entity: Entity, damage_map: dict[str, AttackPhysic], movable_damage_map: list[BaseProjectile], after_punch_state_type) -> bool:
+def check_damage_for_entity(entity: Entity, damage_map: dict[int, AttackPhysic], movable_damage_map: list[BaseProjectile], after_punch_state_type) -> bool:
     damage, movement = get_damage_and_movement(damage_map, movable_damage_map, entity.physic.collision.rect)
     if damage:
         entity.states_stack.push(after_punch_state_type(entity, movement, damage))
