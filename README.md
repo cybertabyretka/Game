@@ -25,7 +25,10 @@ Game for the second semester of study at UrFU
 <a name="dataframes"></a>
 ## Core technologies and dataframes
  - `Pickle` - Module for serialization and deserialization. Serialization is the process of converting a `Python` object into a stream of bytes, which can then be stored on disk or transmitted over the network. Deserialization is the reverse process where a stream of bytes is converted back into a `Python` object;
- - `Pygame` - `Python` module for game creating.
+ - `Pygame` - `Python` module for game creating;
+ - `MVC` - The project uses `MVC`, almost all modules used in the game are divided into three components (Model, View, Controller);
+ - `A*` - The `A*` algorithm is used to find the path to the player from the NPC;
+ - `Singleton` - This template is used for some modules in the project.
 <br /> <br />
 
 <a name="notes"></a>
