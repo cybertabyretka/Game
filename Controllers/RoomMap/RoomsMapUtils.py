@@ -5,7 +5,7 @@ from Controllers.RoomMap.CreateTileMap import create_base_tile_map
 
 from Models.Room.Room import Room
 from Models.Entities.NPCs.BaseNPC import NPC
-from Models.Room.Tile import LootTile
+from Models.Room.Tile import LootTile, Tile
 from Models.Room.TileMap import TileMap
 from Models.Room.Door import Door
 
@@ -20,6 +20,13 @@ def make_room(rooms_map: list[list[Room | None]], pos: tuple[int, int], NPCs: li
     room.collisions_map.get_map_from_object(room.view.tile_map.map)
     room.collisions_map.get_graph()
     rooms_map[pos[0]][pos[1]] = room
+
+
+def create_tile_map(tiles: list[Tile], width: int = DISPLAY_WIDTH, height: int = DISPLAY_HEIGHT, tile_size: tuple[int, int] = TILE_SIZE):
+    tile_map = create_base_tile_map(width, height, tile_size)
+    for tile in tiles:
+        tile_map.map[convert_to_string((tile.collision.rect.x, tile.collision.rect.y))] = tile
+    return tile_map
 
 
 def connect_rooms(doors: list[Door]) -> None:

@@ -12,7 +12,7 @@ from Constants.Colours import WHITE_RGB, DARK_GRAY_RGB
 from Constants.Display import *
 from Constants.DamageTypes import *
 
-from Controllers.RoomMap.RoomsMapUtils import make_room
+from Controllers.RoomMap.RoomsMapUtils import make_room, create_tile_map
 from Controllers.Entities.Physic.GetCollisionsAround import get_collisions_around
 
 from Models.Room.Room import Room
@@ -61,15 +61,20 @@ player_windows: dict[str, InGameWindow] = {'inventory_base': InGameWindow(Text('
 
 wizard: WIZARD = Wizard(wizard_inventory, WIZARD, start_pos=(140, 560), current_weapon=wizard_staff)
 swordsman: Swordsman = Swordsman(swordsman_inventory, SWORDSMAN, start_pos=(140, 595), current_weapon=swordsman_sword, current_shield=swordsman_shield)
-NPCs: list[NPC] = [swordsman, wizard]
 
-BASE_ROOMS_MAP: RoomsMap = RoomsMap((1, 2))
-make_room(BASE_ROOMS_MAP.map, (0, 0), NPCs, [])
+tiles = [Tile(f'{TILES["front_wall"]}/0.png', 0, (70, 140)), Tile(f'{TILES["front_wall"]}/0.png', 0, (70, 175)), Tile(f'{TILES["front_wall"]}/0.png', 0, (105, 175))]
+tile_map = create_tile_map(tiles)
+BASE_ROOMS_MAP: RoomsMap = RoomsMap((2, 2))
+make_room(BASE_ROOMS_MAP.map, (0, 0), [swordsman], [])
 make_room(BASE_ROOMS_MAP.map, (0, 1), [], [])
-doors: list[Door] = [Door(Tile(f'{TILES["side_door"]}/{0}.png', 0, (665, 350)),
-                     Tile(f'{TILES["side_door"]}/{0}.png', 0, (0, 350)),
-                     (630, 350), (35, 350))]
-doors_connections: dict[Door, tuple[Room, Room]] = {doors[0]: (BASE_ROOMS_MAP.map[0][0], BASE_ROOMS_MAP.map[0][1])}
+make_room(BASE_ROOMS_MAP.map, (1, 0), [wizard], [], tile_map=tile_map)
+doors: list[Door] = [Door(Tile(f'{TILES["side_door"]}/0.png', 0, (665, 350)),
+                          Tile(f'{TILES["side_door"]}/0.png', 0, (0, 350)),
+                          (630, 350), (35, 350)),
+                     Door(Tile(f'{TILES["front_door"]}/0.png', 0, (350, 665)),
+                          Tile(f'{TILES["side_door"]}/0.png', 0, (350, 0)),
+                          (350, 630), (350, 35))]
+doors_connections: dict[Door, tuple[Room, Room]] = {doors[0]: (BASE_ROOMS_MAP.map[0][0], BASE_ROOMS_MAP.map[0][1]), doors[1]: (BASE_ROOMS_MAP.map[0][0], BASE_ROOMS_MAP.map[1][0])}
 BASE_ROOMS_MAP.add_doors_connections(doors_connections)
 BASE_ROOMS_MAP.add_doors()
 
