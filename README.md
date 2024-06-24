@@ -23,7 +23,7 @@ Game for the second semester of study at UrFU
 <br /> <br />
 
 <a name="frameworks"></a>
-## Core technologies and dataframes
+## Core technologies and frameworks
  - `Pickle` - Module for serialization and deserialization. Serialization is the process of converting a `Python` object into a stream of bytes, which can then be stored on disk or transmitted over the network. Deserialization is the reverse process where a stream of bytes is converted back into a `Python` object;
  - `Pygame` - `Python` module for game creating;
  - `MVC` - The project uses `MVC`, almost all modules used in the game are divided into three components (Model, View, Controller);
