@@ -72,7 +72,7 @@ doors: list[Door] = [Door(Tile(f'{TILES["side_door"]}/0.png', 0, (665, 350)),
                           Tile(f'{TILES["side_door"]}/0.png', 0, (0, 350)),
                           (630, 350), (35, 350)),
                      Door(Tile(f'{TILES["front_door"]}/0.png', 0, (350, 665)),
-                          Tile(f'{TILES["side_door"]}/0.png', 0, (350, 0)),
+                          Tile(f'{TILES["front_door"]}/0.png', 0, (350, 0)),
                           (350, 630), (350, 35))]
 doors_connections: dict[Door, tuple[Room, Room]] = {doors[0]: (BASE_ROOMS_MAP.map[0][0], BASE_ROOMS_MAP.map[0][1]), doors[1]: (BASE_ROOMS_MAP.map[0][0], BASE_ROOMS_MAP.map[1][0])}
 BASE_ROOMS_MAP.add_doors_connections(doors_connections)
