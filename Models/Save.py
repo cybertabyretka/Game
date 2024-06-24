@@ -12,7 +12,7 @@ from Constants.Date import *
 class Save:
     def __init__(self, file_path: str):
         self.path: str = file_path
-        if not os.listdir(file_path):
+        if len(os.listdir(file_path)) == 1:
             self.set_rooms_map(BASE_ROOMS_MAP)
             self.set_player(BASE_PLAYER)
             self.set_date(f'{BASE_DATE} {BASE_TIME}')
