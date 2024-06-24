@@ -22,19 +22,10 @@ class BaseEntityCollision:
     def update(self, velocity: list[int], entities: list[Entity], collisions_map: dict[str, TileCollision], movement: tuple[int] = (0, 0)) -> None:
         get_collisions_around(self.rect, TILE_SIZE, collisions_map, self.collisions_around)
         movement = [movement[0] + velocity[0], movement[1] + velocity[1]]
-        if (movement[0] != 0 and movement[1] == 0) or (movement[0] == 0 and movement[1] != 0):
-            movement = self.straight_contacts_process(movement)
-        elif movement[0] != 0 and movement[1] != 0:
-            movement = self.corner_contacts_process(movement)
+        movement = self.contacts_process(movement)
         movement = self.entities_contacts_process(movement, entities)
         self.rect.x += movement[0]
         self.rect.y += movement[1]
-
-    def entities_contacts_process(self, movement: list[int], entities: list[Entity]) -> list[int]:
-        for entity in entities:
-            if entity.health.health > 0 and entity.physic.collision is not self and manhattan_distance((entity.physic.collision.rect.x, entity.physic.collision.rect.y), (self.rect.x, self.rect.y)) <= max(self.rect.width, self.rect.height) * 2:
-                entities_process(movement, entity.physic.collision.rect, self.rect)
-        return movement
 
     def right_contacts_process(self, movement: list[int]) -> list[int]:
         if not self.collisions_around[RIGHT].cross_ability and self.collisions_around[RIGHT].rect.y - self.rect.y < self.rect.height:
@@ -72,29 +63,20 @@ class BaseEntityCollision:
             movement[1] = min(movement[1], self.collisions_around[LEFT_DOWN].rect.y - self.rect.bottomleft[1])
         return movement
 
-    def corner_contacts_process(self, movement: list[int]) -> list[int]:
-        if movement[0] > 0 and movement[1] > 0:
-            movement = self.right_contacts_process(movement)
-            movement = self.down_contacts_process(movement)
-        elif movement[0] > 0 > movement[1]:
-            movement = self.right_contacts_process(movement)
-            movement = self.up_contacts_process(movement)
-        elif movement[0] < 0 < movement[1]:
-            movement = self.left_contacts_process(movement)
-            movement = self.down_contacts_process(movement)
-        else:
-            movement = self.left_contacts_process(movement)
-            movement = self.up_contacts_process(movement)
+    def entities_contacts_process(self, movement: list[int], entities: list[Entity]) -> list[int]:
+        for entity in entities:
+            if entity.health.health > 0 and entity.physic.collision is not self and manhattan_distance((entity.physic.collision.rect.x, entity.physic.collision.rect.y), (self.rect.x, self.rect.y)) <= max(self.rect.width, self.rect.height) * 2:
+                entities_process(movement, entity.physic.collision.rect, self.rect)
         return movement
 
-    def straight_contacts_process(self, movement: list[int]) -> list[int]:
+    def contacts_process(self, movement: list[int]) -> list[int]:
         if movement[0] > 0:
             movement = self.right_contacts_process(movement)
-        elif movement[0] < 0:
+        if movement[0] < 0:
             movement = self.left_contacts_process(movement)
-        elif movement[1] < 0:
+        if movement[1] < 0:
             movement = self.up_contacts_process(movement)
-        else:
+        if movement[1] > 0:
             movement = self.down_contacts_process(movement)
         return movement
 

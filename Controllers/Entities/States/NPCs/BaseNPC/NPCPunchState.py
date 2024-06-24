@@ -20,6 +20,8 @@ class NPCPunchState(NPCBaseState):
 
     def update(self, room: Room, player: Player, entities: list[Entity]) -> None:
         if check_damage_for_entity(self.entity, room.collisions_map.damage_map, room.collisions_map.movable_damage_map, self.entity.states_types[AFTER_PUNCH_STATE]):
+            if self.copied_damage_physic is not None:
+                room.collisions_map.remove_damage(id(self.copied_damage_physic))
             return
         if self.finished:
             if self.direction_for_punch == UP:
