@@ -9,7 +9,7 @@ from Models.Items.Shield import Shield
 
 
 class Swordsman(NPC):
-    def __init__(self, inventory: Inventory, paths_asset: dict[str, str], width: int = 35., height: int = 35., start_pos: tuple[int, int] = (0, 0), max_velocity: int = 1, current_weapon: Weapon | None = None, current_shield: Shield | None = None, max_health: int = 2, current_health: int = 2):
+    def __init__(self, inventory: Inventory, paths_asset: dict[str, str], width: int = 35., height: int = 35., start_pos: tuple[int, int] = (0, 0), max_velocity: int = 1, current_weapon: Weapon | None = None, current_shield: Shield | None = None, max_health: int = 15, current_health: int = 15):
         super().__init__(width, height, start_pos, max_velocity, current_weapon, current_shield, max_health, current_health, inventory, paths_asset, SWORDSMAN_STATES_TYPES, CloseRangeAttackNPCPhysic)
 
     def copy_for_save(self):

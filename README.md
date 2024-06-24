@@ -5,6 +5,7 @@ Game for the second semester of study at UrFU
 - [Installing the project on PC](#download_project)
 - [Project settings](#project_settings)
 - [Core technologies and frameworks](#frameworks)
+- [Controls](#controls)
 - [Notes](#notes)
 <br /> <br />
 
@@ -29,6 +30,18 @@ Game for the second semester of study at UrFU
  - `MVC` - The project uses `MVC`, almost all modules used in the game are divided into three components (Model, View, Controller);
  - `A*` - The `A*` algorithm is used to find the path to the player from the NPC;
  - `Singleton` - This template is used for some modules in the project.
+<br /> <br />
+
+<a name="controls"></a>
+## Controls
+ - `W` - go up;
+ - `A` - go left;
+ - `S` - go down;
+ - `D` - go right;
+ - `E` - open inventory or loot something that you can loot;
+ - `F` - go through a door (only possible if all NPCs on the level are dead);
+ - `P` - pause the game;
+ - `esc` - the ability to exit to the main menu or save the game.
 <br /> <br />
 
 <a name="notes"></a>
