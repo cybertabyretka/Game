@@ -12,7 +12,7 @@ Game for the second semester of study at UrFU
 ## Installing the project on PC
 1. Откройте консоль, вбив в поисковике ПК: `cmd`;
 2. Перейдите в директорию, куда хотите установить проект, пропишите следующую команду в консоль: `cd N:\Путь\до\папки\с\проектами`;
-3. Введите следующую команду: `git clone https://github.com/cybertaburetka/Face_ID.git`;
+3. Введите следующую команду: `git clone https://github.com/cybertabyretka/Game.git`;
 4. В скачанном репозитории по пути `BaseVariables/Paths.py` измените переменную `BASE_PATH` на ваш путь до проекта.
 <br /> <br />
 
