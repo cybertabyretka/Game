@@ -10,6 +10,7 @@ from Views.Items.ItemIcon import Icon
 
 from Constants.Colours import WHITE_RGB, DARK_GRAY_RGB
 from Constants.Display import *
+from Constants.DamageTypes import *
 
 from Controllers.RoomMap.RoomsMapUtils import make_room
 from Controllers.Entities.Physic.GetCollisionsAround import get_collisions_around
@@ -42,11 +43,11 @@ player_sword: Sword = Sword('Base sword', (30, 30), sword_icon, SWORD, [WEAPONS_
 swordsman_sword: Sword = Sword('Base sword', (30, 30), sword_icon, SWORD, [WEAPONS_CHANGE_BUTTON], (35, 35), {'cut': 1})
 
 shield_icon: Icon = Icon(SHIELD['icon'])
-player_shield: Shield = Shield('Base shield', (30, 30), shield_icon, [SHIELD_CHANGE_BUTTON], {'cut': 2})
-swordsman_shield: Shield = Shield('Base shield', (30, 30), shield_icon, [SHIELD_CHANGE_BUTTON], {'cut': 2})
+player_shield: Shield = Shield('Base shield', (30, 30), shield_icon, [SHIELD_CHANGE_BUTTON], {CUT: 2})
+swordsman_shield: Shield = Shield('Base shield', (30, 30), shield_icon, [SHIELD_CHANGE_BUTTON], {CUT: 2})
 
 staff_icon: Icon = Icon(STAFF['icon'])
-fire_ball: FireBall = FireBall(FIRE_BALL['image'], {'fire': 2}, (30, 30), 1)
+fire_ball: FireBall = FireBall(FIRE_BALL['image'], {FIRE: 2}, (30, 30), 1)
 wizard_staff: Staff = Staff('Base staff', (30, 30), staff_icon, STAFF, [WEAPONS_CHANGE_BUTTON], fire_ball)
 
 wizard_inventory: Inventory = Inventory((5, 5), (30, 30))

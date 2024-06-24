@@ -1,0 +1,2 @@
+CUT = 'cut'
+FIRE = 'fire'

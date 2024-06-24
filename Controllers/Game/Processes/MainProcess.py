@@ -5,7 +5,7 @@ from DataStructures.Stack import Stack
 
 class MainProcess:
     def __init__(self):
-        self.processes_stack: Stack = Stack()
+        self.models_stack: Stack = Stack()
         self.is_running: bool = False
         self.clock: pg.time.Clock = pg.time.Clock()
         self.speed: float = 1.0
@@ -15,5 +15,5 @@ class MainProcess:
     def run(self) -> None:
         self.is_running = True
         while self.is_running:
-            self.processes_stack.peek().process.do(self.processes_stack, self)
+            self.models_stack.peek().process.do(self.models_stack, self)
             self.clock.tick(self.fps)
