@@ -19,8 +19,8 @@ def a_star(start_pos: tuple[int, int], end_pos: tuple[int, int], graph: dict[str
             neighbour_node = convert_to_int(neighbour_node)
             new_cost = cost_visited[cur_node] + neighbour_cost
             if neighbour_node not in cost_visited or new_cost < cost_visited[neighbour_node]:
-                priority = new_cost + chebyshev_distance(neighbour_node, end_pos)
-                heappush(queue, (priority, neighbour_node))
+                cost = new_cost + chebyshev_distance(neighbour_node, end_pos)
+                heappush(queue, (cost, neighbour_node))
                 cost_visited[neighbour_node] = new_cost
                 visited[neighbour_node] = cur_node
     path_head, path_segment = end_pos, end_pos
