@@ -11,7 +11,10 @@ class AttackPhysic:
         self.damage_types: dict[str, int] = damage_types
 
     def copy(self):
-        return AttackPhysic(self.attack_size, self.damage_types)
+        new_instance = self.__class__(self.attack_size, self.damage_types)
+        new_instance.direction = self.direction
+        new_instance.rect = self.rect
+        return new_instance
 
     def set_attack_rect(self, start_pos: tuple[int, int], direction: int) -> None:
         self.rect = pg.Rect(start_pos, self.attack_size)
@@ -19,8 +22,7 @@ class AttackPhysic:
 
 
 class SwordAttackPhysics(AttackPhysic):
-    def copy(self):
-        return SwordAttackPhysics(self.attack_size, self.damage_types)
+    pass
 
 
 class StaffAttackPhysic:

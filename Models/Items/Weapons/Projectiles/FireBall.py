@@ -10,7 +10,9 @@ class FireBall(BaseProjectile):
         super().__init__(image_path, damage_types, size, max_velocity, FireBallPhysic, FireBallV)
 
     def copy(self):
-        return FireBall(self.view.path, self.physic.damage_types, (self.physic.collision.rect.w, self.physic.collision.rect.h), self.physic.max_velocity)
+        new_instance = FireBall(self.view.path, self.physic.damage_types, (self.physic.collision.rect.w, self.physic.collision.rect.h), self.physic.max_velocity)
+        new_instance.physic = self.physic.copy()
+        return new_instance
 
     def copy_for_save(self):
         return FireBall(self.view.path, self.physic.damage_types, (self.physic.collision.rect.w, self.physic.collision.rect.h), self.physic.max_velocity)

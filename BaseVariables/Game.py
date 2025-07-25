@@ -39,8 +39,8 @@ DISPLAY: Display = Display(DISPLAY_WIDTH, DISPLAY_HEIGHT, DISPLAY_NAME)
 BACKGROUND_PICTURE: pg.Surface = load_image(BASE_PATH + 'ReadyData/Images/MainMenu/background.png')
 
 sword_icon: Icon = Icon(SWORD['icon'])
-player_sword: Sword = Sword('Base sword', (30, 30), sword_icon, SWORD, [WEAPONS_CHANGE_BUTTON], (35, 35), {'cut': 1})
-swordsman_sword: Sword = Sword('Base sword', (30, 30), sword_icon, SWORD, [WEAPONS_CHANGE_BUTTON], (35, 35), {'cut': 1})
+player_sword: Sword = Sword('Base sword', (30, 30), sword_icon, SWORD, [WEAPONS_CHANGE_BUTTON], (35, 35), {CUT: 1})
+swordsman_sword: Sword = Sword('Base sword', (30, 30), sword_icon, SWORD, [WEAPONS_CHANGE_BUTTON], (35, 35), {CUT: 1})
 
 shield_icon: Icon = Icon(SHIELD['icon'])
 player_shield: Shield = Shield('Base shield', (30, 30), shield_icon, [SHIELD_CHANGE_BUTTON], {CUT: 2})
